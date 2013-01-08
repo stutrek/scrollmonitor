@@ -10,7 +10,7 @@ Watchers are _very_ cheap. Create them liberally.
 ## Basic Usage
 
 ```javascript
-var scrollMonitor = require("shared/scripts/bam/scrollMonitor/1.0/scrollMonitor");
+var scrollMonitor = require("./scrollMonitor");
 var myElement = document.getElementById("itemToWatch");
 
 var elementWatcher = scrollMonitor.beget( myElement );
