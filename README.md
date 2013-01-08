@@ -61,7 +61,7 @@ Watchers are automatically recalculated on the first scroll event after the heig
 Element watchers trigger six events:
 
 * `visibilityChange` - when the element enters or exits the viewport.
-* `locationChange` - similar to `visibilityChange` but is also called if the element goes from below the viewport to above it in one scroll event or when the element goes from partially to fully visible or vice versa.
+* `stateChange` - similar to `visibilityChange` but is also called if the element goes from below the viewport to above it in one scroll event or when the element goes from partially to fully visible or vice versa.
 * `enterViewport` - when the element enters the viewport.
 * `fullyEnterViewport` - when the element is completely in the viewport [1].
 * `exitViewport` - when the element completely leaves the viewport.
