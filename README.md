@@ -57,9 +57,9 @@ Element watchers trigger six events:
 * `visibilityChange` - when the element enters or exits the viewport.
 * `locationChange` - similar to `visibilityChange` but is also called if the element goes from below the viewport to above it in one scroll event or when the element goes from partially to fully visible or vice versa.
 * `enterViewport` - when the element enters the viewport.
-* `fullyEnterViewport` - when the element is completely in the viewport ^1^.
+* `fullyEnterViewport` - when the element is completely in the viewport [1].
 * `exitViewport` - when the element completely leaves the viewport.
-* `partiallyExitViewport` - when the element goes from being fully in the viewport to only partially ^2^.
+* `partiallyExitViewport` - when the element goes from being fully in the viewport to only partially [2].
 
 1. If the element is larger than the viewport `fullyEnterViewport` will be triggered when the element spans the entire viewport.
 2. If the element is larger than the viewport `partiallyExitViewport` will be triggered when the element no longer spans the entire viewport.
@@ -67,14 +67,14 @@ Element watchers trigger six events:
 ### Properties
 
 * `elementWatcher.isInViewport` - true if any part of the element is visible, false if not.
-* `elementWatcher.isFullyInViewport` - true if the entire element is visible ^1^.
+* `elementWatcher.isFullyInViewport` - true if the entire element is visible [1].
 * `elementWatcher.isAboveViewport` - true if any part of the element is above the viewport.
 * `elementWatcher.isBelowViewport` - true if any part of the element is below the viewport.
 * `elementWatcher.top` - distance from the top of the document to the top of this watcher.
 * `elementWatcher.bottom` - distance from the top of the document to the bottom of this watcher.
 * `elementWatcher.height` - top - bottom.
 * `elementWatcher.watchItem` - the element, number, or object that this watcher is watching.
-* `elementWatcher.offsets` - an object that determines the offsets of this watcher. See "Offsets".
+* `elementWatcher.offsets` - an object that determines the offsets of this watcher. See "[Offsets](#offsets)".
 
 1. If the element is larger than the viewport `isFullyInViewport` is true when the element spans the entire viewport.
 
@@ -83,7 +83,7 @@ Element watchers trigger six events:
 * `elementWatcher.on/off/one` - the standard event functions.
 * `elementWatcher.recalculateLocation` - recalculates the location of the element in relation to the document.
 * `elementWatcher.destroy` - removes this watcher and clears out its event listeners.
-* `elementWatcher.lock` - locks this watcher at its current location. See "Locking".
+* `elementWatcher.lock` - locks this watcher at its current location. See "[Locking](#locking)".
 * `elementWatcher.unlock` - unlocks this watcher.
 
 These methods are automatically called by the scrollMonitor, you should never need them:
