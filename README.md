@@ -22,6 +22,12 @@ elementWatcher.exitViewport(function() {
     console.log( 'I have left the viewport' );
 });
 ```
+## Demos
+
+* [Stress Test](http://sakabako.github.com/scrollMonitor/demos/stress.html) - Test with as many watchers as you'd like
+* [Fixed Positioning and Locking](http://sakabako.github.com/scrollMonitor/demos/fixed.html)
+* [Complex sidebar behavior](http://sakabako.github.com/scrollMonitor/demos/scoreboard.html)
+
 
 ## scrollMonitor Module
 
@@ -128,8 +134,3 @@ scollMonitor.beget( element, -200 )
 scrollMonitor.beget( element, {top: 200, bottom: 0})
 ```
 
-## Demos
-
-* [Stress Test](http://sakabako.github.com/scrollMonitor/demos/stress.html) - Test with as many watchers as you'd like
-* [Fixed Positioning and Locking](http://sakabako.github.com/scrollMonitor/demos/fixed.html)
-* [Complex sidebar behavior](http://sakabako.github.com/scrollMonitor/demos/scoreboard.html)
