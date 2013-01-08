@@ -1,0 +1,80 @@
+<!doctype html>
+<head>
+	<style type="text/css">
+		ol {
+			counter-reset: licounter;
+		}
+		li {
+			display: inline-block;
+			background-color: #ccc;
+			width: 75px;
+			height: 75px;
+			margin: 5px;
+			line-height: 75px;
+			text-align: center;
+			font-family: helvetica;
+			color: #999;
+			/*border: 1px solid black;*/
+		}
+		li:before {
+			content: counter(licounter);
+			counter-increment: licounter;
+			position: relative;
+			left: 0px;
+		}
+		li.in {
+			background-color: #fcc;
+		}
+		li.partial-above {
+			background-color: #ccf;
+		}
+		li.partial-below {
+			background-color: #ffc;
+		}
+	​</style>
+</head>
+<body>
+<p>Add ?1000 to the url to change the number of elements. Default is 10000.</p>
+<p>There may be a long delay as the DOM elements are created.</p>
+<ol id="container">
+</ol>
+<script type="text/javascript">
+	var count = parseInt(window.location.search.substr(1), 10) || 10000;
+	count += 1;
+	var html = new Array(count).join('<li></li>');
+	document.getElementById('container').innerHTML = html;
+</script>
+<script src="http://requirejs.org/docs/release/2.1.2/minified/require.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+requirejs(['../scrollMonitor'], function( scrollMonitor ) {
+	function makeWatcher( element ) {
+		var watcher = scrollMonitor.beget( element );
+
+		function addClass() {
+			if (!watcher.isInViewport) {
+				return
+			} else if (watcher.isFullyInViewport) {
+				element.style.backgroundColor = '#fcc'
+			} else if (watcher.isAboveViewport) {
+				element.style.backgroundColor = '#ccf'
+			} else if (watcher.isBelowViewport) {
+				element.style.backgroundColor = '#ffc'
+			}
+		}
+
+		watcher.stateChange(addClass);
+		addClass();
+	}
+
+	var spans = document.querySelectorAll('ol > li');
+
+	var i = 0;
+	while( spans[i] ) {
+		makeWatcher(spans[i]);
+		i += 1;
+	}
+});
+</script>
+
+</body>

@@ -1,0 +1,56 @@
+<!doctype html>
+<head>
+	<style type="text/css">
+		body {
+			height: 10000px;
+		}
+		span {
+			position: absolute;
+			top: 100px;
+			left: 100px;
+			width: 300px;
+			height: 200px;
+
+			background-color: gray;
+		}
+		span.two {
+			left: 400px;
+			top: 1000px;
+			background-color: red;
+		}
+		span.three {
+			left: 700px;
+			top: 2000px;
+			background-color: blue;
+		}
+		span.fixed {
+			position: fixed;
+			top: 0;
+		}
+	​</style>
+</head>
+<body>
+<div>
+	<span class="one">One!</span>
+	<span class="two">Two!</span>
+	<span class="three">Three!</span>
+</div>
+<script src="http://requirejs.org/docs/release/2.1.2/minified/require.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+requirejs(['../scrollMonitor'], function( scrollMonitor ) {
+
+	$('span').each(function(i, element) {
+
+		var watcher = scrollMonitor.beget( element );
+
+		watcher.lock();
+
+		watcher.stateChange(function() {
+			$(element).toggleClass('fixed', this.isAboveViewport)
+		});
+
+	})
+});
+</script>
+</body>
