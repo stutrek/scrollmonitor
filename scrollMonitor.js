@@ -260,10 +260,11 @@ define(function( require, exports, module ) {
 
 		},
 		destroy: function() {
-			var index = watchers.indexOf(this);
+			var index = watchers.indexOf(this),
+				self  = this;
 			watchers.splice(index, 1);
 			eventTypes.forEach(function(type) {
-				this.callbacks[type].length = 0;
+				self.callbacks[type].length = 0;
 			});
 		},
 		// prevent recalculating the element location
