@@ -121,12 +121,12 @@ If you want to trigger an event when the edge of an element is near the edge of 
 
 This will trigger events when an element gets within 200px of the viewport: 
 ```javascript
-scollMonitor.beget( element, 200 )
+scrollMonitor.beget( element, 200 )
 ```
 
 This will trigger when the element is 200px inside the viewport:
 ```javascript
-scollMonitor.beget( element, -200 )
+scrollMonitor.beget( element, -200 )
 ```
 
  If you only want it to affect the top and not the bottom you can send an object in. 
