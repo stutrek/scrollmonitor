@@ -61,9 +61,8 @@ requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 			htmlBuffer.push('</li></section>');
 		});
 		$('#target').html(htmlBuffer.join(''));
-		
-		
-		// fixed headline code
+			
+		// anchor the section header
 		var h2Height = $('h2').innerHeight();
 		
 		$('section').each(function(index, section) {
