@@ -1,0 +1,88 @@
+<!doctype html>
+<head>
+	<style type="text/css">
+		body, html {
+			margin: 0;
+			padding: 0;
+			font-family: helvetica, arial, sans-serif;
+		}
+		section {
+			padding: 60px 0 20px 0;
+			margin: 0;
+			position: relative;
+		}
+		h2 {
+			height: 29px;
+			padding: 10px;
+			margin: 0;
+			background-color: white;
+			border-top: 1px solid #aaa;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+		
+		section.bottom h2 {
+			top: auto;
+			bottom: 0;
+		}
+		
+		section.fixed h2 {
+			position: fixed;
+		}
+		
+		ul {
+			padding: 0 0 0 2em;
+			margin: 0;
+		}
+		
+	​</style>
+</head>
+<body>
+<div id="target"></div>
+<script src="http://requirejs.org/docs/release/2.1.2/minified/require.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+requirejs(['../scrollMonitor'], function( scrollMonitor ) {
+	$.getJSON('./listdata.json', function( data ) {
+		
+		// fill the document with HTML
+		var htmlBuffer = [];
+		$.each(data, function( type, beerMap ) {
+			htmlBuffer.push('<section><h2>'+type+'</h2><ul>');
+				
+			var breweries = Object.keys(beerMap);
+			breweries.sort();
+			breweries.forEach(function( brewery ) {
+				var beers = beerMap[brewery].sort();
+				htmlBuffer.push('<li>'+brewery+': <i>'+beers.join(', ')+'</i></li>');
+			})
+			htmlBuffer.push('</li></section>');
+		});
+		$('#target').html(htmlBuffer.join(''));
+		
+		
+		// fixed headline code
+		var h2Height = $('h2').innerHeight();
+		
+		$('section').each(function(index, section) {
+			
+			var sectionWatcher = scrollMonitor.beget(section, {top: 0, bottom: -1*h2Height});
+			
+			sectionWatcher.stateChange( function() {
+				if (sectionWatcher.isInViewport && sectionWatcher.isAboveViewport) {
+					section.className = 'fixed';
+				} else if (sectionWatcher.isInViewport) {
+					section.className = '';
+				} else if (sectionWatcher.isAboveViewport) {
+					section.className = 'bottom';
+				}
+				
+			} )
+		})
+		
+	});
+});
+</script>
+</body>
