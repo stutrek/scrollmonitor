@@ -73,10 +73,10 @@ requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 			sectionWatcher.stateChange( function() {
 				if (sectionWatcher.isInViewport && sectionWatcher.isAboveViewport) {
 					section.className = 'fixed';
-				} else if (sectionWatcher.isInViewport) {
-					section.className = '';
 				} else if (sectionWatcher.isAboveViewport) {
 					section.className = 'bottom';
+				} else {
+				 	section.className = '';
 				}
 				
 			} )
