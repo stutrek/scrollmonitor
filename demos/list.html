@@ -67,14 +67,20 @@ requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 		// anchor the section header
 		var h2Height = $('h2').innerHeight();
 		
+		
 		$('section').each(function(index, section) {
 			
-			var sectionWatcher = scrollMonitor.beget(section, {top: 0, bottom: -1*h2Height});
+			var sectionWatcher = scrollMonitor.beget(section)
 			
-			sectionWatcher.stateChange( function() {
-				if (sectionWatcher.isInViewport && sectionWatcher.isAboveViewport) {
+			var sectionMinusBottomHeadline = scrollMonitor.beget(section, {top: 0, bottom: -1*h2Height});
+			
+			sectionMinusBottomHeadline.stateChange( function() {
+				
+				if (!sectionWatcher.isInViewport) {
+				 	section.className = '';
+				} else if (sectionMinusBottomHeadline.isInViewport && sectionMinusBottomHeadline.isAboveViewport) {
 					section.className = 'fixed';
-				} else if (sectionWatcher.isAboveViewport) {
+				} else if (sectionMinusBottomHeadline.isAboveViewport) {
 					section.className = 'bottom';
 				} else {
 				 	section.className = '';
