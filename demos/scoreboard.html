@@ -75,6 +75,8 @@ requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 	var footerWatcherTop = $minisb.height() + $header.height();
 	var footerWatcher = scrollMonitor.beget( $footer, {top: footerWatcherTop, bottom: 0} );
 
+	// the elements these two watchers get are going to have position: fixed
+	// so we need to be sure that it keeps watching their original location.
 	accountWatcher.lock();
 	headerWatcher.lock();
 
