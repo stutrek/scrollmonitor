@@ -1,0 +1,27 @@
+{
+  "name": "scrollMonitor",
+  "version": "1.0.0",
+  "author": "Stu Kabakoff <stukabakoff@gmail.com>",
+  "description": "A simple and fast API to monitor DOM elements as you scroll",
+  "contributors": [ 
+	{
+	  "name": "Stu Kabakoff",
+	  "email": "stukabakoff@gmail.com"
+	},
+	{
+	  "name": "Terrence Lee",
+	  "email": "mr.lee@terrenceishere.com"
+	}
+  ],
+  "repository": {
+	"type": "git",
+	"url": "https://github.com/sakabako/scrollMonitor.git"
+  },
+  "keywords": [
+	"scroll",
+	"dom"
+  ],
+  "dependencies" : {
+	"jquery"   :  ">=1.2.6"
+  }
+}
