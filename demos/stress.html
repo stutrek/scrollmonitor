@@ -66,8 +66,8 @@
 </div>
 <div id="counter"><div><div id="status">Rendering elements...</div><div id="progress_numbers"></div><progress></progress></div></div>
 <a href="https://github.com/sakabako/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
-<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="../scrollMonitor.js"></script>
 <script type="text/javascript">
 	
 	var setImmediate = (function(){
@@ -94,7 +94,7 @@
 			   }())
 	}())
 	
-	requirejs(['../scrollMonitor'], function( scrollMonitor ) {
+	//requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 		var count = parseInt(window.location.search.substr(1), 10) || 10000;
 		$('.fill-with-count').html(count);
 		
@@ -156,7 +156,7 @@
 			addClass();
 		}
 	
-	});
+	//});
 </script>
 
 </body>

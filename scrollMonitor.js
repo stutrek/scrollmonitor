@@ -1,6 +1,16 @@
-define(function( require, exports, module ) {
-
-	var $ = require('jquery');
+(function( factory ) {
+	if (typeof define !== 'undefined' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module !== 'undefined' && module.exports) {
+		var jQuery = require('jquery');
+		module.exports = factory( $ );
+	} else {
+		window.scrollMonitor = factory( $ );
+	}
+})(function( $ ) {
+	
+	var exports = {};
+	
 	var $window = $(window);
 	var $document = $(document);
 
@@ -154,7 +164,7 @@ define(function( require, exports, module ) {
 				case wasFullyInViewport !== this.isFullyInViewport:
 				case wasAboveViewport !== this.isAboveViewport:
 				case wasBelowViewport !== this.isBelowViewport:
-				triggerCallbackArray( this.callbacks[STATECHANGE] );
+					triggerCallbackArray( this.callbacks[STATECHANGE] );
 			}
 
 			wasInViewport = this.isInViewport;
@@ -316,4 +326,6 @@ define(function( require, exports, module ) {
 		exports.documentHeight = 0;
 		exports.update();
 	};
-})
+	
+	return exports;
+});
