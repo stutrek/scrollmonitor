@@ -22,6 +22,6 @@
 	"dom"
   ],
   "dependencies" : {
-	"jquery"   :  ">=1.2.6"
+	"jquery"   :  ">= 1.2.6"
   }
 }
