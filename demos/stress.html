@@ -1,10 +1,7 @@
 <!doctype html>
 <head>
 	<style type="text/css">
-		ol {
-			counter-reset: licounter;
-		}
-		li {
+		span {
 			display: inline-block;
 			background-color: #ccc;
 			width: 75px;
@@ -16,19 +13,13 @@
 			color: #999;
 			/*border: 1px solid black;*/
 		}
-		li:before {
-			content: counter(licounter);
-			counter-increment: licounter;
-			position: relative;
-			left: 0px;
-		}
-		li.in {
+		span.in {
 			background-color: #fcc;
 		}
-		li.partial-above {
+		span.partial-above {
 			background-color: #ccf;
 		}
-		li.partial-below {
+		span.partial-below {
 			background-color: #ffc;
 		}
 	​</style>
@@ -36,13 +27,21 @@
 <body>
 <p>Add ?1000 to the url to change the number of elements. Default is 10000.</p>
 <p>There may be a long delay as the DOM elements are created.</p>
-<ol id="container">
-</ol>
+<div id="container">
+</div>
 <script type="text/javascript">
 	var count = parseInt(window.location.search.substr(1), 10) || 10000;
 	count += 1;
-	var html = new Array(count).join('<li></li>');
-	document.getElementById('container').innerHTML = html;
+	//var html = new Array(count).join('<li></li>');
+	var frag = document.createDocumentFragment();
+	
+	var el;
+	for(var i = 0; i < count; i += 1) {
+		el = document.createElement('span');
+		el.innerHTML = i+1;
+		frag.appendChild(el);
+	}
+	document.getElementById('container').appendChild( frag );
 </script>
 <script src="http://requirejs.org/docs/release/2.1.2/minified/require.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
@@ -66,8 +65,8 @@ requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 		watcher.stateChange(addClass);
 		addClass();
 	}
-
-	var spans = document.querySelectorAll('ol > li');
+	
+	var spans = document.querySelectorAll('span');
 
 	var i = 0;
 	while( spans[i] ) {
