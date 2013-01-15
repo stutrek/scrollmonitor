@@ -1,7 +1,14 @@
 <!doctype html>
 <head>
 	<style type="text/css">
-		span {
+		body {
+			font-family: helvetica, arial;
+		}
+		.center {
+			text-align: center;
+			margin: 20px;
+		}
+		#container span {
 			display: inline-block;
 			background-color: #ccc;
 			width: 75px;
@@ -9,17 +16,16 @@
 			margin: 5px;
 			line-height: 75px;
 			text-align: center;
-			font-family: helvetica, arial;
 			color: #999;
 			/*border: 1px solid black;*/
 		}
-		span.in {
+		#container span.in {
 			background-color: #fcc;
 		}
-		span.partial-above {
+		#container span.partial-above {
 			background-color: #ccf;
 		}
-		span.partial-below {
+		#container span.partial-below {
 			background-color: #ffc;
 		}
 		
@@ -30,7 +36,6 @@
 			left: 50%;
 			color: black;
 			opacity: 0.8;
-			font-family: helvetica, arial;
 			text-align: center;
 		}
 		#counter > div {
@@ -39,16 +44,27 @@
 			padding: 30px;
 			border-radius: 30px;
 			left: -50%;
-			top: -50px;
+			top: -80px;
 		}
 	​</style>
 </head>
 <body>
-<p>Add ?1000 to the url to change the number of elements. Default is 10000.</p>
-<p>There may be a long delay as the DOM elements are created.</p>
+<h1 class="center">scrollMonitor stress test</h1>
+<div class="center">
+	Showing <span class="fill-with-count"></span> elements.
+</div>
+<div class="center">
+	<a href="?100">100</a> -
+	<a href="?1000">1,000</a> -
+	<a href="?10000">10,000</a> -
+	<a href="?50000">50,000</a> -
+	<a href="?100000">100,000</a> -
+	<a href="?250000">250,000</a> -
+	<a href="?500000">500,000</a>
+</div>
 <div id="container">
 </div>
-<div id="counter"><div>Rendering elements...<div></div><progress></progress></div></div>
+<div id="counter"><div><div id="status">Rendering elements...</div><div id="progress_numbers"></div><progress></progress></div></div>
 <a href="https://github.com/sakabako/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <script src="http://requirejs.org/docs/release/2.1.2/minified/require.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
@@ -80,11 +96,13 @@
 	
 	requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 		var count = parseInt(window.location.search.substr(1), 10) || 10000;
-		var container = document.getElementById('container');
-		var counter = $('#counter div div')[0]
-		var progress = $('#counter progress')[0]
-		var frag = document.createDocumentFragment();
+		$('.fill-with-count').html(count);
 		
+		var container = document.getElementById('container');
+		var counter = $('#progress_numbers')[0]
+		var progress = $('#counter progress')[0]
+		
+		var frag = document.createDocumentFragment();
 		var i = 0;
 		
 		function draw() {
@@ -94,7 +112,7 @@
 				el.innerHTML = i += 1;
 				frag.appendChild(el);
 				
-				if ((i % 100) === 0) {
+				if ((i % 423) === 0) {
 					var elements = Array.prototype.slice.apply(frag.childNodes);
 					container.appendChild( frag );
 					elements.forEach(makeWatcher);
@@ -104,7 +122,13 @@
 				}
 			}
 			if (i === count) {
-				$('#counter').remove();
+				$(counter).remove();
+				$('#status').html('recalculating locations...');
+				progress.removeAttribute('value');
+				setImmediate(function() {
+					scrollMonitor.recalculateLocations();
+					$('#counter').remove();
+				});
 			} else {
 				setImmediate(draw);
 			}
