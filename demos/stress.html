@@ -109,6 +109,12 @@
 		var frag = document.createDocumentFragment();
 		var i = 0;
 		
+		function addElements() {
+			var elements = Array.prototype.slice.apply(frag.childNodes);
+			container.appendChild( frag );
+			elements.forEach(makeWatcher);
+		}
+		
 		function draw() {
 			var el;
 			while (i < count) {
@@ -117,15 +123,14 @@
 				frag.appendChild(el);
 				
 				if ((i % 423) === 0) {
-					var elements = Array.prototype.slice.apply(frag.childNodes);
-					container.appendChild( frag );
-					elements.forEach(makeWatcher);
+					addElements();
 					counter.innerHTML = (i)+' of '+count;
 					progress.value = i;
 					break;
 				}
 			}
 			if (i === count) {
+				addElements();
 				$(counter).remove();
 				$('#status').html('recalculating locations...');
 				progress.removeAttribute('value');
