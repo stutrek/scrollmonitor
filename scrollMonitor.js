@@ -106,10 +106,10 @@
 
 		this.locked = false;
 
-		var wasInViewport = this.isInViewport;
-		var wasFullyInViewport = this.isFullyInViewport;
-		var wasAboveViewport = this.isAboveViewport;
-		var wasBelowViewport = this.isBelowViewport;
+		var wasInViewport;
+		var wasFullyInViewport;
+		var wasAboveViewport;
+		var wasBelowViewport;
 
 		var listenerToTriggerListI;
 		var listener;
@@ -219,6 +219,11 @@
 
 		this.recalculateLocation();
 		this.update();
+
+		wasInViewport = this.isInViewport;
+		wasFullyInViewport = this.isFullyInViewport;
+		wasAboveViewport = this.isAboveViewport;
+		wasBelowViewport = this.isBelowViewport;
 	}
 
 	ElementWatcher.prototype = {
