@@ -21,8 +21,8 @@
 	var FULLYENTERVIEWPORT = 'fullyEnterViewport';
 	var EXITVIEWPORT = 'exitViewport';
 	var PARTIALLYEXITVIEWPORT = 'partiallyExitViewport';
-	var LOCATIONCHANGE = 'locationChange'
-	var STATECHANGE = 'stateChange'
+	var LOCATIONCHANGE = 'locationChange';
+	var STATECHANGE = 'stateChange';
 
 	var eventTypes = [
 		VISIBILITYCHANGE,
@@ -33,6 +33,8 @@
 		LOCATIONCHANGE,
 		STATECHANGE
 	];
+
+	var defaultOffsets = {top: 0, bottom: 0};
 
 	exports.viewportTop;
 	exports.viewportBottom;
@@ -78,7 +80,7 @@
 
 		updateAndTriggerWatchersI = watchers.length;
 		while( updateAndTriggerWatchersI-- ) {
-			watchers[updateAndTriggerWatchersI].triggerCallbacks()
+			watchers[updateAndTriggerWatchersI].triggerCallbacks();
 		}
 
 	}
@@ -89,14 +91,14 @@
 		this.watchItem = watchItem;
 		
 		if (!offsets) {
-			this.offsets = {top: 0, bottom: 0}
+			this.offsets = defaultOffsets;
 		} else if (offsets === +offsets) {
-			this.offsets = {top: offsets, bottom: offsets}
+			this.offsets = {top: offsets, bottom: offsets};
 		} else {
-			this.offsets = offsets;
+			this.offsets = $.extend({}, offsets, defaultOffsets);
 		}
 
-		this.callbacks = {} // {callback: function, isOne: true }
+		this.callbacks = {}; // {callback: function, isOne: true }
 
 		eventTypes.forEach(function(type) {
 			self.callbacks[type] = [];
@@ -231,7 +233,7 @@
 				case event === PARTIALLYEXITVIEWPORT && this.isAboveViewport:
 					callback();
 					if (isOne) {
-						return
+						return;
 					}
 			}
 
@@ -289,7 +291,7 @@
 	eventTypes.forEach(function( type ) {
 		ElementWatcher.prototype[type] = function( callback, isOne) {
 			this.on.call(this, type, callback, isOne);
-		}
+		};
 	});
 
 
@@ -309,7 +311,7 @@
 			element = $(element)[0];
 		}
 		if (element instanceof $) {
-			element = element[0]
+			element = element[0];
 		}
 		var watcher = new ElementWatcher( element, offsets );
 		watchers.push(watcher);
