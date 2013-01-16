@@ -73,7 +73,7 @@
 
 	// watch an area above the footer as tall as the scoreboard and header
 	var footerWatcherTop = $minisb.height() + $header.height();
-	var footerWatcher = scrollMonitor.create( $footer, {top: footerWatcherTop, bottom: 0} );
+	var footerWatcher = scrollMonitor.create( $footer, {top: footerWatcherTop} );
 
 	// the elements these two watch are going to have position: fixed.
 	// we need to be sure that it always watches their original location.
