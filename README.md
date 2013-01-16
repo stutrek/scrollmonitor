@@ -10,10 +10,10 @@ Watchers are _very_ cheap. Create them liberally.
 ## Basic Usage
 
 ```javascript
-var scrollMonitor = require("./scrollMonitor");
+var scrollMonitor = require("./scrollMonitor"); // if you're not using require, you can use the scrollMonitor global.
 var myElement = document.getElementById("itemToWatch");
 
-var elementWatcher = scrollMonitor.beget( myElement );
+var elementWatcher = scrollMonitor.create( myElement );
 
 elementWatcher.enterViewport(function() {
     console.log( 'I have entered the viewport' );
@@ -33,7 +33,7 @@ elementWatcher.exitViewport(function() {
 ## scrollMonitor Module
 
 ### Methods
-* `scrollMonitor.beget( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
+* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
 * `scrollMonitor.update()` - update and trigger all watchers.
 * `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
 
@@ -103,7 +103,7 @@ These methods are automatically called by the scrollMonitor, you should never ne
 Sometimes you want to change the element you're watching, but want to continue watching the original area. One common use case is setting `position: fixed` on an element when it exits the viewport, then removing positioning when it when it reenters.
 
 ```javascript
-var watcher = scrollMonitor.beget( $element );
+var watcher = scrollMonitor.create( $element );
 watcher.lock(); // ensure that we're always watching the place the element originally was
 
 watcher.exitViewport(function() {
@@ -122,16 +122,16 @@ If you want to trigger an event when the edge of an element is near the edge of 
 
 This will trigger events when an element gets within 200px of the viewport: 
 ```javascript
-scrollMonitor.beget( element, 200 )
+scrollMonitor.create( element, 200 )
 ```
 
 This will trigger when the element is 200px inside the viewport:
 ```javascript
-scrollMonitor.beget( element, -200 )
+scrollMonitor.create( element, -200 )
 ```
 
  If you only want it to affect the top and not the bottom you can send an object in. 
 ```javascript
-scrollMonitor.beget( element, {top: 200, bottom: 0})
+scrollMonitor.create( element, {top: 200, bottom: 0})
 ```
 

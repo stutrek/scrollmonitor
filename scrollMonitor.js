@@ -304,11 +304,11 @@
 	$window.on('scroll', scrollMonitorListener);
 	$window.on('resize', debouncedRecalcuateAndTrigger);
 
-	exports.beget = function( element, offsets ) {
+	exports.beget = exports.create = function( element, offsets ) {
 		if (typeof element === 'string') {
 			element = $(element)[0];
 		}
-		if (element instanceof jQuery) {
+		if (element instanceof $) {
 			element = element[0]
 		}
 		var watcher = new ElementWatcher( element, offsets );
