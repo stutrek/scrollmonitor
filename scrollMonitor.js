@@ -34,6 +34,8 @@
 		STATECHANGE
 	];
 
+	var defaultOffsets = {top: 0, bottom: 0};
+
 	exports.viewportTop;
 	exports.viewportBottom;
 	exports.documentHeight;
@@ -89,11 +91,11 @@
 		this.watchItem = watchItem;
 		
 		if (!offsets) {
-			this.offsets = {top: 0, bottom: 0};
+			this.offsets = defaultOffsets;
 		} else if (offsets === +offsets) {
 			this.offsets = {top: offsets, bottom: offsets};
 		} else {
-			this.offsets = offsets;
+			this.offsets = $.extend({}, offsets, defaultOffsets);
 		}
 
 		this.callbacks = {}; // {callback: function, isOne: true }
