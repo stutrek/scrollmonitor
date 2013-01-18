@@ -95,7 +95,7 @@
 		} else if (offsets === +offsets) {
 			this.offsets = {top: offsets, bottom: offsets};
 		} else {
-			this.offsets = $.extend({}, offsets, defaultOffsets);
+			this.offsets = $.extend({}, defaultOffsets, offsets);
 		}
 
 		this.callbacks = {}; // {callback: function, isOne: true }
