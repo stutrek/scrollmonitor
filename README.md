@@ -29,25 +29,14 @@ elementWatcher.exitViewport(function() {
 * [Anchored section headers](http://sakabako.github.com/scrollMonitor/demos/list.html)
 * [Complex sidebar behavior](http://sakabako.github.com/scrollMonitor/demos/scoreboard.html)
 
-
-## scrollMonitor Module
-
-### Methods
-* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
-* `scrollMonitor.update()` - update and trigger all watchers.
-* `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
-
-### Properties
-* `scrollMonitor.viewportTop` - distance from the top of the document to the top of the viewport.
-* `scrollMonitor.viewportBottom` - distance from the top of the document to the bottom of the viewport.
-* `scrollMonitor.viewportHeight` - height of the viewport.
-* `scrollMonitor.documentHeight` - height of the document.
-
 ## Watcher Objects
 
-Watcher objects have an item they are watching and an offset. 
+Watcher objects have an item they are watching and an offset. Watcher objects can watch a DOM element, an object with `top` and `bottom` properties, or a number.
 
-Watcher objects can watch a DOM element, an object with `top` and `bottom` properties, or a number.
+
+Create watcher objects with `scrollMonitor.create( watchItem, offsets )`. 
+
+
 
 * **DOM Elements** - the watcher will watch the area contained by the DOM element.
 * **Objects** - `obj.top` and `obj.bottom` will be used for watcher.top and watcher.bottom.
@@ -134,4 +123,17 @@ scrollMonitor.create( element, -200 )
 ```javascript
 scrollMonitor.create( element, {top: 200, bottom: 0})
 ```
+
+## scrollMonitor Module
+
+### Methods
+* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
+* `scrollMonitor.update()` - update and trigger all watchers.
+* `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
+
+### Properties
+* `scrollMonitor.viewportTop` - distance from the top of the document to the top of the viewport.
+* `scrollMonitor.viewportBottom` - distance from the top of the document to the bottom of the viewport.
+* `scrollMonitor.viewportHeight` - height of the viewport.
+* `scrollMonitor.documentHeight` - height of the document.
 
