@@ -34,7 +34,7 @@ elementWatcher.exitViewport(function() {
 Watcher objects have an item they are watching and an offset. Watcher objects can watch a DOM element, an object with `top` and `bottom` properties, or a number.
 
 
-Create watcher objects with `scrollMonitor.create( watchItem, offsets )`. 
+Create watcher objects with `scrollMonitor.create( watchItem )`. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number. An optional argument lets you receive events before or after this element enters the viewport. See [Offsets](#offsets)
 
 
 
@@ -107,7 +107,7 @@ Because the watcher was locked on the second line, the scroll monitor will never
 
 ### Offsets
 
-If you want to trigger an event when the edge of an element is near the edge of the viewport, you can use offsets.
+If you want to trigger an event when the edge of an element is near the edge of the viewport, you can use offsets. The offset is the second argument to `scrollMonitor.create`.
 
 This will trigger events when an element gets within 200px of the viewport: 
 ```javascript
@@ -119,10 +119,15 @@ This will trigger when the element is 200px inside the viewport:
 scrollMonitor.create( element, -200 )
 ```
 
- If you only want it to affect the top and not the bottom you can send an object in. 
-```javascript
-scrollMonitor.create( element, {top: 200, bottom: 0})
-```
+ If you only want it to affect the top and bottom differently you can send an object in. 
+ ```javascript
+ scrollMonitor.create( element, {top: 200, bottom: 50})
+ ```
+
+ If you only want it to affect the top and not the bottom you can use only one property in.
+ ```javascript
+ scrollMonitor.create( element, {top: 200})
+ ```
 
 ## scrollMonitor Module
 
