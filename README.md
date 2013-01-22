@@ -31,8 +31,6 @@ elementWatcher.exitViewport(function() {
 
 ## Watcher Objects
 
-Watcher objects have an item they are watching and an offset. Watcher objects can watch a DOM element or a static location.
-
 Create watcher objects with `scrollMonitor.create( watchItem )`. An optional second argument lets you receive events before or after this element enters the viewport. _See "[Offsets](#offsets)"_.
 
 `watchItem` can be one of the following:
