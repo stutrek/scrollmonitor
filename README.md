@@ -31,18 +31,17 @@ elementWatcher.exitViewport(function() {
 
 ## Watcher Objects
 
-Watcher objects have an item they are watching and an offset. Watcher objects can watch a DOM element, an object with `top` and `bottom` properties, or a number.
+Watcher objects have an item they are watching and an offset. Watcher objects can watch a DOM element or a static location.
 
+Create watcher objects with `scrollMonitor.create( watchItem )`. An optional second argument lets you receive events before or after this element enters the viewport. _See "[Offsets](#offsets)"_.
 
-Create watcher objects with `scrollMonitor.create( watchItem )`. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number. An optional argument lets you receive events before or after this element enters the viewport. See [Offsets](#offsets)
+`watchItem` can be one of the following:
 
-
-
-* **DOM Elements** - the watcher will watch the area contained by the DOM element.
-* **Objects** - `obj.top` and `obj.bottom` will be used for watcher.top and watcher.bottom.
-* **Numbers** - the watcher will watch a 1px area this many pixels from the top. Negative numbers will watch from the bottom.
-
-If you pass in a jQuery object it will use the first item, if you pass in a string it will use it as a CSS selector and use the first match.
+* **DOM Element** - the watcher will watch the area contained by the DOM element.
+* **Object** - `obj.top` and `obj.bottom` will be used for watcher.top and watcher.bottom.
+* **Number** - the watcher will watch a 1px area this many pixels from the top. Negative numbers will watch from the bottom.
+* **jQuery object** - it will use the first DOM element.
+* **string** - it will use the string as a CSS selector and watch the first match.
 
 Watchers are automatically recalculated on the first scroll event after the height of the document changes.
 
@@ -70,7 +69,7 @@ Element watchers trigger six events:
 * `elementWatcher.bottom` - distance from the top of the document to the bottom of this watcher.
 * `elementWatcher.height` - top - bottom.
 * `elementWatcher.watchItem` - the element, number, or object that this watcher is watching.
-* `elementWatcher.offsets` - an object that determines the offsets of this watcher. See "[Offsets](#offsets)".
+* `elementWatcher.offsets` - an object that determines the offsets of this watcher. _See "[Offsets](#offsets)"_.
 
 1. If the element is larger than the viewport `isFullyInViewport` is true when the element spans the entire viewport.
 
@@ -79,7 +78,7 @@ Element watchers trigger six events:
 * `elementWatcher.on/off/one` - the standard event functions.
 * `elementWatcher.recalculateLocation` - recalculates the location of the element in relation to the document.
 * `elementWatcher.destroy` - removes this watcher and clears out its event listeners.
-* `elementWatcher.lock` - locks this watcher at its current location. See "[Locking](#locking)".
+* `elementWatcher.lock` - locks this watcher at its current location. _See "[Locking](#locking)"_.
 * `elementWatcher.unlock` - unlocks this watcher.
 
 These methods are automatically called by the scrollMonitor, you should never need them:
