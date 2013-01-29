@@ -10,9 +10,6 @@
 })(function( $ ) {
 	
 	var exports = {};
-	
-	var $window = $(window);
-	var $document = $(document);
 
 	var watchers = [];
 
@@ -39,7 +36,6 @@
 	exports.viewportTop;
 	exports.viewportBottom;
 	exports.documentHeight;
-	exports.viewportHeight = $window.height();
 
 	var previousDocumentHeight;
 	var latestEvent;
@@ -63,16 +59,16 @@
 			recalculateAndTriggerTimer = setTimeout( $.proxy(self.recalculateWatchLocationsAndTrigger, self), 100 );
 		}
 
-		$window.on('scroll', scrollMonitorListener);
-		$window.on('resize', debouncedRecalcuateAndTrigger);
+		this.$viewport.on('scroll', scrollMonitorListener);
+		this.$viewport.on('resize', debouncedRecalcuateAndTrigger);
 	}
 
 	ScrollMonitor.prototype = {
 		calculateViewport: function() {
 			var calculateViewportI;
-			exports.viewportTop = $window.scrollTop();
+			exports.viewportTop = this.$viewport.scrollTop();
 			exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
-			exports.documentHeight = $document.height();
+			exports.documentHeight = this.$container.height();
 			if (exports.documentHeight !== previousDocumentHeight) {
 				calculateViewportI = watchers.length;
 				while( calculateViewportI-- ) {
@@ -82,7 +78,7 @@
 			}
 		},
 		recalculateWatchLocationsAndTrigger: function() {
-			exports.viewportHeight = $window.height();
+			exports.viewportHeight = this.$viewport.height();
 			this.calculateViewport();
 			this.updateAndTriggerWatchers();
 		},
@@ -318,6 +314,8 @@
 
 
 	var scrollMonitor = new ScrollMonitor( $(window), $(document) );
+
+	exports.viewportHeight = scrollMonitor.$viewport.height();
 
 	scrollMonitor.calculateViewport();
 
