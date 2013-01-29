@@ -41,7 +41,7 @@
 	var latestEvent;
 
 
-	function ScrollMonitor ( $viewport, $container ) {
+	function ScrollMonitor( $viewport, $container ) {
 		var self = this;
 
 		this.$viewport = $viewport;
@@ -94,7 +94,27 @@
 			while( updateAndTriggerWatchersI-- ) {
 				watchers[updateAndTriggerWatchersI].triggerCallbacks();
 			}
-
+		},
+		create: function( element, offsets ) {
+			if (typeof element === 'string') {
+				element = $(element)[0];
+			}
+			if (element instanceof $) {
+				element = element[0];
+			}
+			var watcher = new ElementWatcher( element, offsets );
+			watchers.push(watcher);
+			watcher.update();
+			return watcher;
+		},
+		update: function() {
+			latestEvent = null;
+			this.calculateViewport();
+			this.updateAndTriggerWatchers();
+		},
+		recalculateLocations: function() {
+			exports.documentHeight = 0;
+			this.update();
 		}
 	};
 
@@ -320,26 +340,14 @@
 	scrollMonitor.calculateViewport();
 
 	exports.beget = exports.create = function( element, offsets ) {
-		if (typeof element === 'string') {
-			element = $(element)[0];
-		}
-		if (element instanceof $) {
-			element = element[0];
-		}
-		var watcher = new ElementWatcher( element, offsets );
-		watchers.push(watcher);
-		watcher.update();
-		return watcher;
+		return scrollMonitor.create(element, offsets);
 	};
 
 	exports.update = function() {
-		latestEvent = null;
-		scrollMonitor.calculateViewport();
-		scrollMonitor.updateAndTriggerWatchers();
+		scrollMonitor.update();
 	};
 	exports.recalculateLocations = function() {
-		exports.documentHeight = 0;
-		exports.update();
+		scrollMonitor.recalculateLocations();
 	};
 	
 	return exports;
