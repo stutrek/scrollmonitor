@@ -44,46 +44,63 @@
 	var previousDocumentHeight;
 	var latestEvent;
 
-	var calculateViewportI;
-	function calculateViewport() {
-		exports.viewportTop = $window.scrollTop();
-		exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
-		exports.documentHeight = $document.height();
-		if (exports.documentHeight !== previousDocumentHeight) {
-			calculateViewportI = watchers.length;
-			while( calculateViewportI-- ) {
-				watchers[calculateViewportI].recalculateLocation();
+
+	function ScrollMonitor ( $viewport, $container ) {
+		var self = this;
+
+		this.$viewport = $viewport;
+		this.$container = $container;
+
+		function scrollMonitorListener(event) {
+			latestEvent = event;
+			self.calculateViewport();
+			self.updateAndTriggerWatchers();
+		}
+
+		var recalculateAndTriggerTimer;
+		function debouncedRecalcuateAndTrigger() {
+			clearTimeout(recalculateAndTriggerTimer);
+			recalculateAndTriggerTimer = setTimeout( $.proxy(self.recalculateWatchLocationsAndTrigger, self), 100 );
+		}
+
+		$window.on('scroll', scrollMonitorListener);
+		$window.on('resize', debouncedRecalcuateAndTrigger);
+	}
+
+	ScrollMonitor.prototype = {
+		calculateViewport: function() {
+			var calculateViewportI;
+			exports.viewportTop = $window.scrollTop();
+			exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
+			exports.documentHeight = $document.height();
+			if (exports.documentHeight !== previousDocumentHeight) {
+				calculateViewportI = watchers.length;
+				while( calculateViewportI-- ) {
+					watchers[calculateViewportI].recalculateLocation();
+				}
+				previousDocumentHeight = exports.documentHeight;
 			}
-			previousDocumentHeight = exports.documentHeight;
+		},
+		recalculateWatchLocationsAndTrigger: function() {
+			exports.viewportHeight = $window.height();
+			this.calculateViewport();
+			this.updateAndTriggerWatchers();
+		},
+		updateAndTriggerWatchers: function() {
+			var updateAndTriggerWatchersI;
+			// update all watchers then trigger the events so one can rely on another being up to date.
+			updateAndTriggerWatchersI = watchers.length;
+			while( updateAndTriggerWatchersI-- ) {
+				watchers[updateAndTriggerWatchersI].update();
+			}
+
+			updateAndTriggerWatchersI = watchers.length;
+			while( updateAndTriggerWatchersI-- ) {
+				watchers[updateAndTriggerWatchersI].triggerCallbacks();
+			}
+
 		}
-	}
-
-	function recalculateWatchLocationsAndTrigger() {
-		exports.viewportHeight = $window.height();
-		calculateViewport();
-		updateAndTriggerWatchers();
-	}
-
-	var recalculateAndTriggerTimer;
-	function debouncedRecalcuateAndTrigger() {
-		clearTimeout(recalculateAndTriggerTimer);
-		recalculateAndTriggerTimer = setTimeout( recalculateWatchLocationsAndTrigger, 100 );
-	}
-
-	var updateAndTriggerWatchersI;
-	function updateAndTriggerWatchers() {
-		// update all watchers then trigger the events so one can rely on another being up to date.
-		updateAndTriggerWatchersI = watchers.length;
-		while( updateAndTriggerWatchersI-- ) {
-			watchers[updateAndTriggerWatchersI].update();
-		}
-
-		updateAndTriggerWatchersI = watchers.length;
-		while( updateAndTriggerWatchersI-- ) {
-			watchers[updateAndTriggerWatchersI].triggerCallbacks();
-		}
-
-	}
+	};
 
 	function ElementWatcher( watchItem, offsets ) {
 		var self = this;
@@ -300,16 +317,9 @@
 	});
 
 
-	calculateViewport();
+	var scrollMonitor = new ScrollMonitor( $(window), $(document) );
 
-	function scrollMonitorListener(event) {
-		latestEvent = event;
-		calculateViewport();
-		updateAndTriggerWatchers();
-	}
-
-	$window.on('scroll', scrollMonitorListener);
-	$window.on('resize', debouncedRecalcuateAndTrigger);
+	scrollMonitor.calculateViewport();
 
 	exports.beget = exports.create = function( element, offsets ) {
 		if (typeof element === 'string') {
@@ -326,8 +336,8 @@
 
 	exports.update = function() {
 		latestEvent = null;
-		calculateViewport();
-		updateAndTriggerWatchers();
+		scrollMonitor.calculateViewport();
+		scrollMonitor.updateAndTriggerWatchers();
 	};
 	exports.recalculateLocations = function() {
 		exports.documentHeight = 0;
