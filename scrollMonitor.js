@@ -35,10 +35,6 @@
 	exports.viewportBottom;
 	exports.documentHeight;
 
-	var previousDocumentHeight;
-	var latestEvent;
-
-
 	function ScrollMonitor( $viewport, $container ) {
 		var self = this;
 
@@ -47,7 +43,7 @@
 		this.$container = $container;
 
 		function scrollMonitorListener(event) {
-			latestEvent = event;
+			self.latestEvent = event;
 			self.calculateViewport();
 			self.updateAndTriggerWatchers();
 		}
@@ -68,12 +64,12 @@
 			exports.viewportTop = this.$viewport.scrollTop();
 			exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
 			exports.documentHeight = this.$container.height();
-			if (exports.documentHeight !== previousDocumentHeight) {
+			if (exports.documentHeight !== this.previousDocumentHeight) {
 				calculateViewportI = this.watchers.length;
 				while( calculateViewportI-- ) {
 					this.watchers[calculateViewportI].recalculateLocation();
 				}
-				previousDocumentHeight = exports.documentHeight;
+				this.previousDocumentHeight = exports.documentHeight;
 			}
 		},
 		recalculateWatchLocationsAndTrigger: function() {
@@ -107,7 +103,7 @@
 			return watcher;
 		},
 		update: function() {
-			latestEvent = null;
+			self.latestEvent = null;
 			this.calculateViewport();
 			this.updateAndTriggerWatchers();
 		},
@@ -153,7 +149,7 @@
 			listenerToTriggerListI = listeners.length;
 			while( listenerToTriggerListI-- ) {
 				listener = listeners[listenerToTriggerListI];
-				listener.callback.call( self, latestEvent );
+				listener.callback.call( self, self.scrollMonitor.latestEvent );
 				if (listener.isOne) {
 					listeners.splice(listenerToTriggerListI, 1);
 				}
