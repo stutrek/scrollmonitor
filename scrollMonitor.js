@@ -31,9 +31,6 @@
 
 	var defaultOffsets = {top: 0, bottom: 0};
 
-	exports.viewportTop;
-	exports.viewportBottom;
-	exports.documentHeight;
 
 	function ScrollMonitor( $viewport, $container ) {
 		var self = this;
@@ -41,6 +38,8 @@
 		this.watchers = [];
 		this.$viewport = $viewport;
 		this.$container = $container;
+
+		this.viewportHeight = this.$viewport.height();
 
 		function scrollMonitorListener(event) {
 			self.latestEvent = event;
@@ -61,19 +60,19 @@
 	ScrollMonitor.prototype = {
 		calculateViewport: function() {
 			var calculateViewportI;
-			exports.viewportTop = this.$viewport.scrollTop();
-			exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
-			exports.documentHeight = this.$container.height();
-			if (exports.documentHeight !== this.previousDocumentHeight) {
+			this.viewportTop = this.$viewport.scrollTop();
+			this.viewportBottom = this.viewportTop + this.viewportHeight;
+			this.documentHeight = this.$container.height();
+			if (this.documentHeight !== this.previousDocumentHeight) {
 				calculateViewportI = this.watchers.length;
 				while( calculateViewportI-- ) {
 					this.watchers[calculateViewportI].recalculateLocation();
 				}
-				this.previousDocumentHeight = exports.documentHeight;
+				this.previousDocumentHeight = this.documentHeight;
 			}
 		},
 		recalculateWatchLocationsAndTrigger: function() {
-			exports.viewportHeight = this.$viewport.height();
+			this.viewportHeight = this.$viewport.height();
 			this.calculateViewport();
 			this.updateAndTriggerWatchers();
 		},
@@ -108,7 +107,7 @@
 			this.updateAndTriggerWatchers();
 		},
 		recalculateLocations: function() {
-			exports.documentHeight = 0;
+			this.documentHeight = 0;
 			this.update();
 		}
 	};
@@ -229,7 +228,7 @@
 				if (this.watchItem > 0) {
 					this.top = this.bottom = this.watchItem;
 				} else {
-					this.top = this.bottom = exports.documentHeight - this.watchItem;
+					this.top = this.bottom = this.scrollMonitor.documentHeight - this.watchItem;
 				}
 
 			} else { // an object with a top and bottom property
@@ -297,11 +296,11 @@
 			this.bottom = this.top + this.height;
 		},
 		update: function() {
-			this.isAboveViewport = this.top < exports.viewportTop;
-			this.isBelowViewport = this.bottom > exports.viewportBottom;
+			this.isAboveViewport = this.top < this.scrollMonitor.viewportTop;
+			this.isBelowViewport = this.bottom > this.scrollMonitor.viewportBottom;
 
-			this.isInViewport = (this.top <= exports.viewportBottom && this.bottom >= exports.viewportTop);
-			this.isFullyInViewport = (this.top >= exports.viewportTop && this.bottom <= exports.viewportBottom) ||
+			this.isInViewport = (this.top <= this.scrollMonitor.viewportBottom && this.bottom >= this.scrollMonitor.viewportTop);
+			this.isFullyInViewport = (this.top >= this.scrollMonitor.viewportTop && this.bottom <= this.scrollMonitor.viewportBottom) ||
 								 (this.isAboveViewport && this.isBelowViewport);
 
 		},
@@ -331,7 +330,10 @@
 
 	var scrollMonitor = new ScrollMonitor( $(window), $(document) );
 
-	exports.viewportHeight = scrollMonitor.$viewport.height();
+	exports.viewportTop = scrollMonitor.viewportTop;
+	exports.viewportBottom = scrollMonitor.viewportBottom;
+	exports.documentHeight = scrollMonitor.documentHeight;
+	exports.viewportHeight = scrollMonitor.viewportHeight;
 
 	scrollMonitor.calculateViewport();
 
