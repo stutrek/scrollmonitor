@@ -102,7 +102,7 @@
 			return watcher;
 		},
 		update: function() {
-			self.latestEvent = null;
+			this.latestEvent = null;
 			this.calculateViewport();
 			this.updateAndTriggerWatchers();
 		},
