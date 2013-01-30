@@ -11,8 +11,6 @@
 	
 	var exports = {};
 
-	var watchers = [];
-
 	var VISIBILITYCHANGE = 'visibilityChange';
 	var ENTERVIEWPORT = 'enterViewport';
 	var FULLYENTERVIEWPORT = 'fullyEnterViewport';
@@ -44,6 +42,7 @@
 	function ScrollMonitor( $viewport, $container ) {
 		var self = this;
 
+		this.watchers = [];
 		this.$viewport = $viewport;
 		this.$container = $container;
 
@@ -70,9 +69,9 @@
 			exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
 			exports.documentHeight = this.$container.height();
 			if (exports.documentHeight !== previousDocumentHeight) {
-				calculateViewportI = watchers.length;
+				calculateViewportI = this.watchers.length;
 				while( calculateViewportI-- ) {
-					watchers[calculateViewportI].recalculateLocation();
+					this.watchers[calculateViewportI].recalculateLocation();
 				}
 				previousDocumentHeight = exports.documentHeight;
 			}
@@ -85,14 +84,14 @@
 		updateAndTriggerWatchers: function() {
 			var updateAndTriggerWatchersI;
 			// update all watchers then trigger the events so one can rely on another being up to date.
-			updateAndTriggerWatchersI = watchers.length;
+			updateAndTriggerWatchersI = this.watchers.length;
 			while( updateAndTriggerWatchersI-- ) {
-				watchers[updateAndTriggerWatchersI].update();
+				this.watchers[updateAndTriggerWatchersI].update();
 			}
 
-			updateAndTriggerWatchersI = watchers.length;
+			updateAndTriggerWatchersI = this.watchers.length;
 			while( updateAndTriggerWatchersI-- ) {
-				watchers[updateAndTriggerWatchersI].triggerCallbacks();
+				this.watchers[updateAndTriggerWatchersI].triggerCallbacks();
 			}
 		},
 		create: function( element, offsets ) {
@@ -102,8 +101,8 @@
 			if (element instanceof $) {
 				element = element[0];
 			}
-			var watcher = new ElementWatcher( element, offsets );
-			watchers.push(watcher);
+			var watcher = new ElementWatcher( element, offsets, this );
+			this.watchers.push(watcher);
 			watcher.update();
 			return watcher;
 		},
@@ -118,10 +117,11 @@
 		}
 	};
 
-	function ElementWatcher( watchItem, offsets ) {
+	function ElementWatcher( watchItem, offsets, scrollMonitor ) {
 		var self = this;
 
 		this.watchItem = watchItem;
+		this.scrollMonitor = scrollMonitor;
 		
 		if (!offsets) {
 			this.offsets = defaultOffsets;
@@ -310,9 +310,9 @@
 
 		},
 		destroy: function() {
-			var index = watchers.indexOf(this),
+			var index = this.scrollMonitor.watchers.indexOf(this),
 				self  = this;
-			watchers.splice(index, 1);
+			this.scrollMonitor.watchers.splice(index, 1);
 			eventTypes.forEach(function(type) {
 				self.callbacks[type].length = 0;
 			});
