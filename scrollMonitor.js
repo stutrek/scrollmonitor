@@ -32,19 +32,20 @@
 	var defaultOffsets = {top: 0, bottom: 0};
 
 
-	function ScrollMonitor( $viewport, $container ) {
+	function ScrollMonitor( $container ) {
 		var self = this;
 
 		this.watchers = [];
-		this.$viewport = $viewport;
-		if ($container) {
-			this.$container = $container;
+
+		this.$container = $container;
+		if (this.$container[0] === window) {
+			this.$document = $(document);
 		}
 
 		this.viewportTop = null;
 		this.viewportBottom = null;
 		this.documentHeight = null;
-		this.viewportHeight = this.$viewport.height();
+		this.viewportHeight = this.$container.height();
 
 		function scrollMonitorListener(event) {
 			self.latestEvent = event;
@@ -58,8 +59,10 @@
 			recalculateAndTriggerTimer = setTimeout( $.proxy(self.recalculateWatchLocationsAndTrigger, self), 100 );
 		}
 
-		this.$viewport.on('scroll', scrollMonitorListener);
-		this.$viewport.on('resize', debouncedRecalcuateAndTrigger);
+		this.$container.on('scroll', scrollMonitorListener);
+		if (this.$document) {
+			this.$container.on('resize', debouncedRecalcuateAndTrigger);
+		}
 
 		this.calculateViewport();
 	}
@@ -67,9 +70,9 @@
 	ScrollMonitor.prototype = {
 		calculateViewport: function() {
 			var calculateViewportI;
-			this.viewportTop = this.$viewport.scrollTop();
+			this.viewportTop = this.$container.scrollTop();
 			this.viewportBottom = this.viewportTop + this.viewportHeight;
-			this.documentHeight = this.$container ? this.$container.height() : this.$viewport.prop("scrollHeight");
+			this.documentHeight = this.$document ? this.$document.height() : this.$container.prop("scrollHeight");
 			if (this.documentHeight !== this.previousDocumentHeight) {
 				calculateViewportI = this.watchers.length;
 				while( calculateViewportI-- ) {
@@ -79,7 +82,7 @@
 			}
 		},
 		recalculateWatchLocationsAndTrigger: function() {
-			this.viewportHeight = this.$viewport.height();
+			this.viewportHeight = this.$container.height();
 			this.calculateViewport();
 			this.updateAndTriggerWatchers();
 		},
@@ -226,7 +229,7 @@
 				if (!this.$watchItem) {
 					this.$watchItem = $(this.watchItem);
 				}
-				var elementLocation = this.scrollMonitor.$container ? this.$watchItem.offset() : this.$watchItem.position();
+				var elementLocation = this.scrollMonitor.$document ? this.$watchItem.offset() : this.$watchItem.position();
 				this.top = elementLocation.top;
 				this.bottom = elementLocation.top + this.watchItem.offsetHeight;
 
@@ -338,7 +341,7 @@
 	});
 
 
-	var windowScrollMonitor = new ScrollMonitor( $(window), $(document) );
+	var windowScrollMonitor = new ScrollMonitor( $(window) );
 
 	exports.viewportTop = windowScrollMonitor.viewportTop;
 	exports.viewportBottom = windowScrollMonitor.viewportBottom;
