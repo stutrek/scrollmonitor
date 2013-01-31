@@ -218,7 +218,10 @@
 					this.watchItem.style.display = '';
 				}
 				
-				var elementLocation = $(this.watchItem).offset();
+				if (!this.$watchItem) {
+					this.$watchItem = $(this.watchItem);
+				}
+				var elementLocation = this.$watchItem.offset();
 				this.top = elementLocation.top;
 				this.bottom = elementLocation.top + this.watchItem.offsetHeight;
 
