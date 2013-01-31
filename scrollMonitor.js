@@ -55,6 +55,8 @@
 
 		this.$viewport.on('scroll', scrollMonitorListener);
 		this.$viewport.on('resize', debouncedRecalcuateAndTrigger);
+
+		this.calculateViewport();
 	}
 
 	ScrollMonitor.prototype = {
@@ -334,8 +336,6 @@
 	exports.viewportBottom = scrollMonitor.viewportBottom;
 	exports.documentHeight = scrollMonitor.documentHeight;
 	exports.viewportHeight = scrollMonitor.viewportHeight;
-
-	scrollMonitor.calculateViewport();
 
 	exports.beget = exports.create = function( element, offsets ) {
 		return scrollMonitor.create(element, offsets);
