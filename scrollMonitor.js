@@ -37,8 +37,13 @@
 
 		this.watchers = [];
 		this.$viewport = $viewport;
-		this.$container = $container;
+		if ($container) {
+			this.$container = $container;
+		}
 
+		this.viewportTop = null;
+		this.viewportBottom = null;
+		this.documentHeight = null;
 		this.viewportHeight = this.$viewport.height();
 
 		function scrollMonitorListener(event) {
@@ -64,7 +69,7 @@
 			var calculateViewportI;
 			this.viewportTop = this.$viewport.scrollTop();
 			this.viewportBottom = this.viewportTop + this.viewportHeight;
-			this.documentHeight = this.$container.height();
+			this.documentHeight = this.$container ? this.$container.height() : this.$viewport.prop("scrollHeight");
 			if (this.documentHeight !== this.previousDocumentHeight) {
 				calculateViewportI = this.watchers.length;
 				while( calculateViewportI-- ) {
@@ -221,7 +226,7 @@
 				if (!this.$watchItem) {
 					this.$watchItem = $(this.watchItem);
 				}
-				var elementLocation = this.$watchItem.offset();
+				var elementLocation = this.scrollMonitor.$container ? this.$watchItem.offset() : this.$watchItem.position();
 				this.top = elementLocation.top;
 				this.bottom = elementLocation.top + this.watchItem.offsetHeight;
 
@@ -340,16 +345,27 @@
 	exports.documentHeight = windowScrollMonitor.documentHeight;
 	exports.viewportHeight = windowScrollMonitor.viewportHeight;
 
-	exports.beget = exports.create = function( element, offsets ) {
-		return windowScrollMonitor.create(element, offsets);
+	exports.beget = exports.create = function( element, offsets, $container ) {
+		var scrollMonitor = $container ? $container.data('scrollMonitor') : windowScrollMonitor;
+		if ($container && !scrollMonitor) {
+			scrollMonitor = new ScrollMonitor($container);
+			$container.data('scrollMonitor', scrollMonitor);
+		}
+		return scrollMonitor.create(element, offsets);
 	};
-
-	exports.update = function() {
-		windowScrollMonitor.update();
+	exports.update = function( $container ) {
+		if ($container && $container.data('scrollMonitor')) {
+			$container.data('scrollMonitor').update();
+		} else {
+			windowScrollMonitor.update();
+		}
 	};
-	exports.recalculateLocations = function() {
-		windowScrollMonitor.recalculateLocations();
+	exports.recalculateLocations = function( $container ) {
+		if ($container && $container.data('scrollMonitor')) {
+			$container.data('scrollMonitor').recalculateLocations();
+		} else {
+			windowScrollMonitor.recalculateLocations();
+		}
 	};
-	
 	return exports;
 });
