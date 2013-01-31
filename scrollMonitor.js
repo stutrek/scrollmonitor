@@ -333,22 +333,22 @@
 	});
 
 
-	var scrollMonitor = new ScrollMonitor( $(window), $(document) );
+	var windowScrollMonitor = new ScrollMonitor( $(window), $(document) );
 
-	exports.viewportTop = scrollMonitor.viewportTop;
-	exports.viewportBottom = scrollMonitor.viewportBottom;
-	exports.documentHeight = scrollMonitor.documentHeight;
-	exports.viewportHeight = scrollMonitor.viewportHeight;
+	exports.viewportTop = windowScrollMonitor.viewportTop;
+	exports.viewportBottom = windowScrollMonitor.viewportBottom;
+	exports.documentHeight = windowScrollMonitor.documentHeight;
+	exports.viewportHeight = windowScrollMonitor.viewportHeight;
 
 	exports.beget = exports.create = function( element, offsets ) {
-		return scrollMonitor.create(element, offsets);
+		return windowScrollMonitor.create(element, offsets);
 	};
 
 	exports.update = function() {
-		scrollMonitor.update();
+		windowScrollMonitor.update();
 	};
 	exports.recalculateLocations = function() {
-		scrollMonitor.recalculateLocations();
+		windowScrollMonitor.recalculateLocations();
 	};
 	
 	return exports;
