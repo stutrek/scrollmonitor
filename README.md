@@ -132,10 +132,8 @@ scrollMonitor.create( element, -200 )
 * `scrollMonitor.create( watchItem, offsets, container )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number. `container` is a jQuery element on which the watchItem is attached.
 * `scrollMonitor.update( container )` - update and trigger all watchers.  Optionally pass in `container` to update the scrollMonitor instance attached to that jQuery element.
 * `scrollMonitor.recalculateLocations( container )` - recalculate the location of all unlocked watchers and trigger if needed.  Optionally pass in `container` to recalculateLocations on the scrollMonitor instance attached to that jQuery element.
-
-### Properties
-* `scrollMonitor.viewportTop` - distance from the top of the document to the top of the viewport.
-* `scrollMonitor.viewportBottom` - distance from the top of the document to the bottom of the viewport.
-* `scrollMonitor.viewportHeight` - height of the viewport.
-* `scrollMonitor.documentHeight` - height of the document.
+* `scrollMonitor.viewportTop( container )` - distance from the top of the document to the top of the viewport.  Optionally pass in `container` to return property for the scrollMonitor instance attached to that jQuery element.
+* `scrollMonitor.viewportBottom( container )` - distance from the top of the document to the bottom of the viewport.  Optionally pass in `container` to return property for the scrollMonitor instance attached to that jQuery element.
+* `scrollMonitor.viewportHeight( container )` - height of the viewport.  Optionally pass in `container` to return property for the scrollMonitor instance attached to that jQuery element.
+* `scrollMonitor.documentHeight( container )` - height of the document.  Optionally pass in `container` to return property for the scrollMonitor instance attached to that jQuery element.
 
