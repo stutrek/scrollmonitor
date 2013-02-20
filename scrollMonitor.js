@@ -343,11 +343,13 @@
 
 	var windowScrollMonitor = new ScrollMonitor( $(window) );
 
-	exports.viewportTop = windowScrollMonitor.viewportTop;
-	exports.viewportBottom = windowScrollMonitor.viewportBottom;
-	exports.documentHeight = windowScrollMonitor.documentHeight;
-	exports.viewportHeight = windowScrollMonitor.viewportHeight;
-
+	exports.getInstance = function( $container ) {
+		if ($container && $container.data('scrollMonitor')) {
+			return $container.data('scrollMonitor');
+		} else {
+			return windowScrollMonitor;
+		}
+	};
 	exports.beget = exports.create = function( element, offsets, $container ) {
 		var scrollMonitor = $container ? $container.data('scrollMonitor') : windowScrollMonitor;
 		if ($container && !scrollMonitor) {
@@ -357,18 +359,22 @@
 		return scrollMonitor.create(element, offsets);
 	};
 	exports.update = function( $container ) {
-		if ($container && $container.data('scrollMonitor')) {
-			$container.data('scrollMonitor').update();
-		} else {
-			windowScrollMonitor.update();
-		}
+		this.getInstance($container).update();
 	};
 	exports.recalculateLocations = function( $container ) {
-		if ($container && $container.data('scrollMonitor')) {
-			$container.data('scrollMonitor').recalculateLocations();
-		} else {
-			windowScrollMonitor.recalculateLocations();
-		}
+		this.getInstance($container).recalculateLocations();
+	};
+	exports.viewportTop = function( $container ) {
+		return this.getInstance($container).viewportTop;
+	};
+	exports.viewportBottom = function( $container ) {
+		return this.getInstance($container).viewportBottom;
+	};
+	exports.documentHeight = function( $container ) {
+		return this.getInstance($container).documentHeight;
+	};
+	exports.viewportHeight = function( $container ) {
+		return this.getInstance($container).viewportHeight;
 	};
 	return exports;
 });
