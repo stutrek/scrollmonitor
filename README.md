@@ -31,7 +31,7 @@ elementWatcher.exitViewport(function() {
 
 ## Watcher Objects
 
-Create watcher objects with `scrollMonitor.create( watchItem )`. An optional second argument lets you receive events before or after this element enters the viewport. _See "[Offsets](#offsets)"_.
+Create watcher objects with `scrollMonitor.create( watchItem )`. An optional second argument lets you receive events before or after this element enters the viewport. _See "[Offsets](#offsets)"_.  An optional third arguments lets you create a watcher object on a container other than the document's window.
 
 `watchItem` can be one of the following:
 
@@ -129,9 +129,9 @@ scrollMonitor.create( element, -200 )
 ## scrollMonitor Module
 
 ### Methods
-* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
-* `scrollMonitor.update()` - update and trigger all watchers.
-* `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
+* `scrollMonitor.create( watchItem, offsets, container )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number. `container` is a jQuery element on which the watchItem is attached.
+* `scrollMonitor.update( container )` - update and trigger all watchers.  Optionally pass in `container` to update the scrollMonitor instance attached to that jQuery element.
+* `scrollMonitor.recalculateLocations( container )` - recalculate the location of all unlocked watchers and trigger if needed.  Optionally pass in `container` to recalculateLocations on the scrollMonitor instance attached to that jQuery element.
 
 ### Properties
 * `scrollMonitor.viewportTop` - distance from the top of the document to the top of the viewport.
