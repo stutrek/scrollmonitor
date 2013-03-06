@@ -31,7 +31,7 @@ elementWatcher.exitViewport(function() {
 
 ## Watcher Objects
 
-Create watcher objects with `scrollMonitor.create( watchItem )`. An optional second argument lets you receive events before or after this element enters the viewport. _See "[Offsets](#offsets)"_.
+Create watcher objects with `scrollMonitor.create( watchItem )`. An optional second argument lets you receive events before or after this element enters the viewport. _See "[Offsets](#offsets)"_.  An optional third arguments lets you create a watcher object on a container other than the document's window.
 
 `watchItem` can be one of the following:
 
@@ -129,13 +129,14 @@ scrollMonitor.create( element, -200 )
 ## scrollMonitor Module
 
 ### Methods
-* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
-* `scrollMonitor.update()` - update and trigger all watchers.
-* `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
+For all methods you can pass an optional jQuery object to access the scrollMonitor instance attached to that jQuery object.
 
-### Properties
-* `scrollMonitor.viewportTop` - distance from the top of the document to the top of the viewport.
-* `scrollMonitor.viewportBottom` - distance from the top of the document to the bottom of the viewport.
-* `scrollMonitor.viewportHeight` - height of the viewport.
-* `scrollMonitor.documentHeight` - height of the document.
+* `scrollMonitor.create( watchItem, offsets, container )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
+* `scrollMonitor.update( container )` - update and trigger all watchers.
+* `scrollMonitor.recalculateLocations( container )` - recalculate the location of all unlocked watchers and trigger if needed.
+
+* `scrollMonitor.viewportTop( container )` - distance from the top of the document to the top of the viewport.
+* `scrollMonitor.viewportBottom( container )` - distance from the top of the document to the bottom of the viewport.
+* `scrollMonitor.viewportHeight( container )` - height of the viewport.
+* `scrollMonitor.documentHeight( container )` - height of the document.
 
