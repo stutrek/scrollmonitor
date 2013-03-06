@@ -343,15 +343,25 @@
 
 	var windowScrollMonitor = new ScrollMonitor( $(window) );
 
-	exports.getInstance = function( $container ) {
-		if ($container && $container.data('scrollMonitor')) {
-			return $container.data('scrollMonitor');
+	function isWindowScrollMonitor( $container ) {
+		if (!$container) {
+			return true;
+		} else if ($container[0] == window || $container[0] == document.body) {
+			return true;
 		} else {
+			return false;
+		}
+	}
+
+	exports.getInstance = function( $container ) {
+		if (isWindowScrollMonitor($container)) {
 			return windowScrollMonitor;
+		} else {
+			return $container.data('scrollMonitor');
 		}
 	};
 	exports.beget = exports.create = function( element, offsets, $container ) {
-		var scrollMonitor = $container ? $container.data('scrollMonitor') : windowScrollMonitor;
+		var scrollMonitor = isWindowScrollMonitor($container) ? windowScrollMonitor : $container.data('scrollMonitor');
 		if ($container && !scrollMonitor) {
 			scrollMonitor = new ScrollMonitor($container);
 			$container.data('scrollMonitor', scrollMonitor);
