@@ -2,7 +2,7 @@
 	if (typeof define !== 'undefined' && define.amd) {
 		define(['jquery'], factory);
 	} else if (typeof module !== 'undefined' && module.exports) {
-		var jQuery = require('jquery');
+		var $ = require('jquery');
 		module.exports = factory( $ );
 	} else {
 		window.scrollMonitor = factory( $ );
