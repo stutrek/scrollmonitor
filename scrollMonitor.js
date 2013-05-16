@@ -5,7 +5,7 @@
 		var $ = require('jquery');
 		module.exports = factory( $ );
 	} else {
-		window.scrollMonitor = factory( $ );
+		window.scrollMonitor = factory( jQuery );
 	}
 })(function( $ ) {
 	
