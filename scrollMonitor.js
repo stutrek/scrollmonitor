@@ -100,9 +100,9 @@
 
 		this.callbacks = {}; // {callback: function, isOne: true }
 
-		eventTypes.forEach(function(type) {
-			self.callbacks[type] = [];
-		});
+		for (var i = 0, j = eventTypes.length; i < j; i++) {
+			self.callbacks[eventTypes[i]] = [];
+		}
 
 		this.locked = false;
 
@@ -280,9 +280,9 @@
 			var index = watchers.indexOf(this),
 				self  = this;
 			watchers.splice(index, 1);
-			eventTypes.forEach(function(type) {
-				self.callbacks[type].length = 0;
-			});
+			for (var i = 0, j = eventTypes.length; i < j; i++) {
+				self.callbacks[eventTypes[i]].length = 0;
+			}
 		},
 		// prevent recalculating the element location
 		lock: function() {
@@ -293,12 +293,16 @@
 		}
 	};
 
-	eventTypes.forEach(function( type ) {
-		ElementWatcher.prototype[type] = function( callback, isOne) {
+	var eventHandlerFactory = function (type) {
+		return function( callback, isOne ) {
 			this.on.call(this, type, callback, isOne);
 		};
-	});
+	};
 
+	for (var i = 0, j = eventTypes.length; i < j; i++) {
+		var type =  eventTypes[i];
+		ElementWatcher.prototype[type] = eventHandlerFactory(type);
+	}
 
 	calculateViewport();
 
