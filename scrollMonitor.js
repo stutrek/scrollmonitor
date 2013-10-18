@@ -308,7 +308,11 @@
 		ElementWatcher.prototype[type] = eventHandlerFactory(type);
 	}
 
-	calculateViewport();
+	try {
+		calculateViewport();
+	} catch (e) {
+		$(calculateViewport);
+	}
 
 	function scrollMonitorListener(event) {
 		latestEvent = event;
