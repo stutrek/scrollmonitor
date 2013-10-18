@@ -1,0 +1,41 @@
+<html>
+<head>
+  <style type="text/css" media="screen">
+		.spacer {
+			display: block;
+			height: 1600px;
+		}
+
+		.block {
+			display: block;
+			width: 100px;
+			height: 100px;
+			background-color: blue;
+		}
+	</style>
+</head>
+<body>
+
+<div id="one" class="block"></div>
+<div class="spacer"></div>
+<div id="two" class="block"></div>
+<div class="spacer"></div>
+<div id="three" class="block"></div>
+<div class="spacer"></div>
+<div id="four" class="block"></div>
+
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"></script>
+	<script src="scrollMonitor.js" type="text/javascript"></script>
+	<script>
+		$('.block').each(function (i, el) {
+			var watcher = scrollMonitor.create(el);
+			watcher.enterViewport(function () {
+				console.log('enter', $(el).attr('id'));
+			});
+			watcher.exitViewport(function () {
+				console.log('exit', $(el).attr('id'));
+			});
+		});
+	</script>
+</body>
+</html>

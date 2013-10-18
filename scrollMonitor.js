@@ -39,10 +39,14 @@
 	exports.viewportTop;
 	exports.viewportBottom;
 	exports.documentHeight;
-	exports.viewportHeight = $window.height();
+	exports.viewportHeight = windowHeight();
 
 	var previousDocumentHeight;
 	var latestEvent;
+
+	function windowHeight() {
+		return window.innerHeight || document.documentElement.clientHeight;
+	}
 
 	var calculateViewportI;
 	function calculateViewport() {
@@ -59,7 +63,7 @@
 	}
 
 	function recalculateWatchLocationsAndTrigger() {
-		exports.viewportHeight = $window.height();
+		exports.viewportHeight = windowHeight();
 		calculateViewport();
 		updateAndTriggerWatchers();
 	}
