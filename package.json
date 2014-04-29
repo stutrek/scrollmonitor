@@ -21,6 +21,7 @@
 	"scroll",
 	"dom"
   ],
+  "main": "./scrollMonitor.js",
   "dependencies" : {
 	"jquery"   :  ">= 1.2.6"
   }
