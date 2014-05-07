@@ -1,18 +1,33 @@
 (function( factory ) {
 	if (typeof define !== 'undefined' && define.amd) {
-		define(['jquery'], factory);
+		define([], factory);
 	} else if (typeof module !== 'undefined' && module.exports) {
-		var $ = require('jquery');
-		module.exports = factory( $ );
+		module.exports = factory();
 	} else {
-		window.scrollMonitor = factory( jQuery );
+		window.scrollMonitor = factory();
 	}
-})(function( $ ) {
-	
+})(function() {
+
+	var scrollTop = function() {
+		return window.pageYOffset
+			|| (document.documentElement && document.documentElement.scrollTop)
+			|| document.body.scrollTop;
+	}
+
+	var extend = function(obj) {
+		var sources = Array.prototype.slice.call(arguments, 1);
+		for (var i = 0; i < sources.length; i++) {
+			var source = sources[i];
+			if (source) {
+				for (var prop in source) {
+					obj[prop] = source[prop];
+				}
+			}
+		}
+		return obj;
+	};
+
 	var exports = {};
-	
-	var $window = $(window);
-	var $document = $(document);
 
 	var watchers = [];
 
@@ -48,11 +63,23 @@
 		return window.innerHeight || document.documentElement.clientHeight;
 	}
 
+	var pageHeight = (window.orientation !== undefined || (screen.width !== undefined && screen.availHeight !== undefined))
+	? function() {
+		var screenWidth, screenHeight;
+		switch (window.orientation) {
+			case 90: case -90: screenWidth = screen.height, screenHeight = screen.availWidth; break;
+			default: screenWidth = screen.width, screenHeight = screen.availHeight; break;
+		}
+		return screenHeight / screenWidth * document.body.clientWidth;
+	} : function() {
+		return window.innerHeight || document.documentElement.clientHeight;
+	}
+
 	var calculateViewportI;
 	function calculateViewport() {
-		exports.viewportTop = $window.scrollTop();
+		exports.viewportTop = scrollTop();
 		exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
-		exports.documentHeight = $document.height();
+		exports.documentHeight = pageHeight();
 		if (exports.documentHeight !== previousDocumentHeight) {
 			calculateViewportI = watchers.length;
 			while( calculateViewportI-- ) {
@@ -93,13 +120,13 @@
 		var self = this;
 
 		this.watchItem = watchItem;
-		
+
 		if (!offsets) {
 			this.offsets = defaultOffsets;
 		} else if (offsets === +offsets) {
 			this.offsets = {top: offsets, bottom: offsets};
 		} else {
-			this.offsets = $.extend({}, defaultOffsets, offsets);
+			this.offsets = extend(defaultOffsets, offsets);
 		}
 
 		this.callbacks = {}; // {callback: function, isOne: true }
@@ -131,7 +158,7 @@
 			}
 		}
 		this.triggerCallbacks = function triggerCallbacks() {
-			
+
 			if (this.isInViewport && !wasInViewport) {
 				triggerCallbackArray( this.callbacks[ENTERVIEWPORT] );
 			}
@@ -139,12 +166,12 @@
 				triggerCallbackArray( this.callbacks[FULLYENTERVIEWPORT] );
 			}
 
-			
-			if (this.isAboveViewport !== wasAboveViewport && 
+
+			if (this.isAboveViewport !== wasAboveViewport &&
 				this.isBelowViewport !== wasBelowViewport) {
 
 				triggerCallbackArray( this.callbacks[VISIBILITYCHANGE] );
-				
+
 				// if you skip completely past this element
 				if (!wasFullyInViewport && !this.isFullyInViewport) {
 					triggerCallbackArray( this.callbacks[FULLYENTERVIEWPORT] );
@@ -191,10 +218,9 @@
 				if (cachedDisplay === 'none') {
 					this.watchItem.style.display = '';
 				}
-				
-				var elementLocation = $(this.watchItem).offset();
-				this.top = elementLocation.top;
-				this.bottom = elementLocation.top + this.watchItem.offsetHeight;
+
+				this.top = this.watchItem.offsetTop;
+				this.bottom = this.top + this.watchItem.offsetHeight;
 
 				if (cachedDisplay === 'none') {
 					this.watchItem.style.display = cachedDisplay;
@@ -308,11 +334,7 @@
 		ElementWatcher.prototype[type] = eventHandlerFactory(type);
 	}
 
-	try {
-		calculateViewport();
-	} catch (e) {
-		$(calculateViewport);
-	}
+	calculateViewport();
 
 	function scrollMonitorListener(event) {
 		latestEvent = event;
@@ -320,16 +342,16 @@
 		updateAndTriggerWatchers();
 	}
 
-	$window.on('scroll', scrollMonitorListener);
-	$window.on('resize', debouncedRecalcuateAndTrigger);
+	window.addEventListener('scroll', scrollMonitorListener);
+	window.addEventListener('resize', debouncedRecalcuateAndTrigger);
 
 	exports.beget = exports.create = function( element, offsets ) {
 		if (typeof element === 'string') {
-			element = $(element)[0];
-		}
-		if (element instanceof $) {
+			element = document.querySelector(element);
+		} else if (element && element.length > 0) {
 			element = element[0];
 		}
+
 		var watcher = new ElementWatcher( element, offsets );
 		watchers.push(watcher);
 		watcher.update();
@@ -345,6 +367,6 @@
 		exports.documentHeight = 0;
 		exports.update();
 	};
-	
+
 	return exports;
 });
