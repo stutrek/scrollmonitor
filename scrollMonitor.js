@@ -51,35 +51,33 @@
 
 	var defaultOffsets = {top: 0, bottom: 0};
 
+	var viewportHeight = function() {
+		return window.innerHeight || document.documentElement.clientHeight;
+	}
+
+	var documentHeight = function() {
+		// jQuery approach
+		// whichever is greatest
+		return Math.max(
+			document.body.scrollHeight, document.documentElement.scrollHeight,
+			document.body.offsetHeight, document.documentElement.offsetHeight,
+			document.documentElement.clientHeight
+		);
+	}
+
 	exports.viewportTop;
 	exports.viewportBottom;
 	exports.documentHeight;
-	exports.viewportHeight = windowHeight();
+	exports.viewportHeight = viewportHeight();
 
 	var previousDocumentHeight;
 	var latestEvent;
-
-	function windowHeight() {
-		return window.innerHeight || document.documentElement.clientHeight;
-	}
-
-	var pageHeight = (window.orientation !== undefined || (screen.width !== undefined && screen.availHeight !== undefined))
-	? function() {
-		var screenWidth, screenHeight;
-		switch (window.orientation) {
-			case 90: case -90: screenWidth = screen.height, screenHeight = screen.availWidth; break;
-			default: screenWidth = screen.width, screenHeight = screen.availHeight; break;
-		}
-		return screenHeight / screenWidth * document.body.clientWidth;
-	} : function() {
-		return window.innerHeight || document.documentElement.clientHeight;
-	}
 
 	var calculateViewportI;
 	function calculateViewport() {
 		exports.viewportTop = scrollTop();
 		exports.viewportBottom = exports.viewportTop + exports.viewportHeight;
-		exports.documentHeight = pageHeight();
+		exports.documentHeight = documentHeight();
 		if (exports.documentHeight !== previousDocumentHeight) {
 			calculateViewportI = watchers.length;
 			while( calculateViewportI-- ) {
@@ -90,7 +88,7 @@
 	}
 
 	function recalculateWatchLocationsAndTrigger() {
-		exports.viewportHeight = windowHeight();
+		exports.viewportHeight = viewportHeight();
 		calculateViewport();
 		updateAndTriggerWatchers();
 	}
