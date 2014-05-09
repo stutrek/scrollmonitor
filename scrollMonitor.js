@@ -217,8 +217,10 @@
 					this.watchItem.style.display = '';
 				}
 
-				this.top = this.watchItem.offsetTop;
-				this.bottom = this.top + this.watchItem.offsetHeight;
+				var r = this.watchItem.getBoundingClientRect();
+				var offset = scrollTop();
+				this.top = r.top + offset;
+				this.bottom = r.bottom + offset;
 
 				if (cachedDisplay === 'none') {
 					this.watchItem.style.display = cachedDisplay;
