@@ -24,5 +24,11 @@
   "main": "./scrollMonitor.js",
   "dependencies" : {
 	"jquery"   :  ">= 1.2.6"
+  },
+  "spm": {
+    "main": "scrollMonitor.js",
+    "dependencies": {
+      "jquery": "1.7.2"
+    }
   }
 }
