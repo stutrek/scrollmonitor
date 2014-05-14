@@ -218,7 +218,8 @@
 				}
 
 				var r = this.watchItem.getBoundingClientRect();
-				var offset = scrollTop();
+				var offset = exports.viewportTop === undefined ?
+					scrollTop() : exports.viewportTop;
 				this.top = r.top + offset;
 				this.bottom = r.bottom + offset;
 
@@ -342,8 +343,14 @@
 		updateAndTriggerWatchers();
 	}
 
-	window.addEventListener('scroll', scrollMonitorListener);
-	window.addEventListener('resize', debouncedRecalcuateAndTrigger);
+	if (window.addEventListener) {
+		window.addEventListener('scroll', scrollMonitorListener);
+		window.addEventListener('resize', debouncedRecalcuateAndTrigger);
+	} else {
+		// Old IE support
+		window.attachEvent('onscroll', scrollMonitorListener);
+		window.attachEvent('onresize', debouncedRecalcuateAndTrigger);
+	}
 
 	exports.beget = exports.create = function( element, offsets ) {
 		if (typeof element === 'string') {
