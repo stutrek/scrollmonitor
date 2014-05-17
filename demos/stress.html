@@ -1,5 +1,6 @@
 <!doctype html>
 <head>
+	<meta charset="utf-8">
 	<style type="text/css">
 		body {
 			font-family: helvetica, arial;
@@ -28,7 +29,7 @@
 		#container span.partial-below {
 			background-color: #ffc;
 		}
-		
+
 		#counter {
 			position: fixed;
 			font-size: 30px;
@@ -73,18 +74,18 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="../scrollMonitor.js"></script>
 <script type="text/javascript">
-	
+
 	var setImmediate = (function(){
-		var fnsQueue = [] 
+		var fnsQueue = []
 		  , hasSI = !!(window.setImmediate || window.msSetImmediate)
-		  , hasPM = window.addEventListener && window.postMessage 
-		
+		  , hasPM = window.addEventListener && window.postMessage
+
 		if ( !hasSI && hasPM  )
 		  window.addEventListener('message', function(e){
 			  if ( e.data === "sleipnirImmediate" ) if (fnsQueue.length)
 				fnsQueue.shift()() // take the first fn from the array and execute it
 		  }, false)
-		
+
 		return window.setImmediate || window.msSetImmediate ||
 			   (function(){
 				   if ( hasPM )
@@ -97,31 +98,31 @@
 				   }
 			   }())
 	}())
-	
+
 	//requirejs(['../scrollMonitor'], function( scrollMonitor ) {
 		var count = parseInt(window.location.search.substr(1), 10) || 10000;
 		$('.fill-with-count').html(count);
-		
+
 		var container = document.getElementById('container');
 		var counter = $('#progress_numbers')[0]
 		var progress = $('#counter progress')[0]
-		
+
 		var frag = document.createDocumentFragment();
 		var i = 0;
-		
+
 		function addElements() {
 			var elements = Array.prototype.slice.apply(frag.childNodes);
 			container.appendChild( frag );
 			elements.forEach(makeWatcher);
 		}
-		
+
 		function draw() {
 			var el;
 			while (i < count) {
 				el = document.createElement('span');
 				el.innerHTML = i += 1;
 				frag.appendChild(el);
-				
+
 				if ((i % 423) === 0) {
 					addElements();
 					counter.innerHTML = (i)+' of '+count;
@@ -142,13 +143,13 @@
 				setImmediate(draw);
 			}
 		}
-		
+
 		progress.max = count;
 		draw();
-		
+
 		function makeWatcher( element ) {
 			var watcher = scrollMonitor.create( element );
-	
+
 			function addClass() {
 				if (!watcher.isInViewport) {
 					return
@@ -160,11 +161,11 @@
 					element.style.backgroundColor = '#ffc'
 				}
 			}
-	
+
 			watcher.stateChange(addClass);
 			addClass();
 		}
-	
+
 	//});
 </script>
 

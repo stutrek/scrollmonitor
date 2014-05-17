@@ -5,6 +5,8 @@ The scroll monitor allows you to receive events when elements enter or exit the 
 
 The scroll monitor was designed to be very fast. On each scroll event the DOM is only touched twice, once to find the document height and again to find the viewport top. No variables are declared, nor are any objects, arrays, or strings created.
 
+The code is based on vanilla javascript and has no external dependencies. Except if you want to put it in the head of the document, then you'll need jQuery for the DOMContentLoaded event.
+
 Watchers are _very_ cheap. Create them liberally.
 
 ## Basic Usage
@@ -39,6 +41,7 @@ Create watcher objects with `scrollMonitor.create( watchItem )`. An optional sec
 * **Object** - `obj.top` and `obj.bottom` will be used for watcher.top and watcher.bottom.
 * **Number** - the watcher will watch a 1px area this many pixels from the top. Negative numbers will watch from the bottom.
 * **jQuery object** - it will use the first DOM element.
+* **NodeList** or **Array** - it will use the first DOM element.
 * **string** - it will use the string as a CSS selector and watch the first match.
 
 Watchers are automatically recalculated on the first scroll event after the height of the document changes.
@@ -106,7 +109,7 @@ Because the watcher was locked on the second line, the scroll monitor will never
 
 If you want to trigger an event when the edge of an element is near the edge of the viewport, you can use offsets. The offset is the second argument to `scrollMonitor.create`.
 
-This will trigger events when an element gets within 200px of the viewport: 
+This will trigger events when an element gets within 200px of the viewport:
 ```javascript
 scrollMonitor.create( element, 200 )
 ```
@@ -116,7 +119,7 @@ This will trigger when the element is 200px inside the viewport:
 scrollMonitor.create( element, -200 )
 ```
 
- If you only want it to affect the top and bottom differently you can send an object in. 
+ If you only want it to affect the top and bottom differently you can send an object in.
  ```javascript
  scrollMonitor.create( element, {top: 200, bottom: 50})
  ```
@@ -129,7 +132,7 @@ scrollMonitor.create( element, -200 )
 ## scrollMonitor Module
 
 ### Methods
-* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, CSS selector, object with .top and .bottom, or a number.
+* `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, NodeList, CSS selector, object with .top and .bottom, or a number.
 * `scrollMonitor.update()` - update and trigger all watchers.
 * `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
 
