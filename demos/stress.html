@@ -99,74 +99,72 @@
 			   }())
 	}())
 
-	//requirejs(['../scrollMonitor'], function( scrollMonitor ) {
-		var count = parseInt(window.location.search.substr(1), 10) || 10000;
-		$('.fill-with-count').html(count);
+	var count = parseInt(window.location.search.substr(1), 10) || 10000;
+	$('.fill-with-count').html(count);
 
-		var container = document.getElementById('container');
-		var counter = $('#progress_numbers')[0]
-		var progress = $('#counter progress')[0]
+	var container = document.getElementById('container');
+	var counter = $('#progress_numbers')[0]
+	var progress = $('#counter progress')[0]
 
-		var frag = document.createDocumentFragment();
-		var i = 0;
+	var frag = document.createDocumentFragment();
+	var i = 0;
 
-		function addElements() {
-			var elements = Array.prototype.slice.apply(frag.childNodes);
-			container.appendChild( frag );
-			elements.forEach(makeWatcher);
-		}
+	function addElements() {
+		var elements = Array.prototype.slice.apply(frag.childNodes);
+		container.appendChild( frag );
+		elements.forEach(makeWatcher);
+	}
 
-		function draw() {
-			var el;
-			while (i < count) {
-				el = document.createElement('span');
-				el.innerHTML = i += 1;
-				frag.appendChild(el);
+	function draw() {
+		var el;
+		while (i < count) {
+			el = document.createElement('span');
+			el.innerHTML = i += 1;
+			frag.appendChild(el);
 
-				if ((i % 423) === 0) {
-					addElements();
-					counter.innerHTML = (i)+' of '+count;
-					progress.value = i;
-					break;
-				}
-			}
-			if (i === count) {
+			if ((i % 423) === 0) {
 				addElements();
-				$(counter).remove();
-				$('#status').html('recalculating locations...');
-				progress.removeAttribute('value');
-				setImmediate(function() {
-					scrollMonitor.recalculateLocations();
-					$('#counter').remove();
-				});
-			} else {
-				setImmediate(draw);
+				counter.innerHTML = (i)+' of '+count;
+				progress.value = i;
+				break;
+			}
+		}
+		if (i === count) {
+			addElements();
+			$(counter).remove();
+			$('#status').html('recalculating locations...');
+			progress.removeAttribute('value');
+			setImmediate(function() {
+				scrollMonitor.recalculateLocations();
+				$('#counter').remove();
+			});
+		} else {
+			setImmediate(draw);
+		}
+	}
+
+	progress.max = count;
+	draw();
+
+	function makeWatcher( element ) {
+		var watcher = scrollMonitor.create( element );
+
+		function addClass() {
+			if (!watcher.isInViewport) {
+				return
+			} else if (watcher.isFullyInViewport) {
+				element.style.backgroundColor = '#fcc'
+			} else if (watcher.isAboveViewport) {
+				element.style.backgroundColor = '#ccf'
+			} else if (watcher.isBelowViewport) {
+				element.style.backgroundColor = '#ffc'
 			}
 		}
 
-		progress.max = count;
-		draw();
+		watcher.stateChange(addClass);
+		addClass();
+	}
 
-		function makeWatcher( element ) {
-			var watcher = scrollMonitor.create( element );
-
-			function addClass() {
-				if (!watcher.isInViewport) {
-					return
-				} else if (watcher.isFullyInViewport) {
-					element.style.backgroundColor = '#fcc'
-				} else if (watcher.isAboveViewport) {
-					element.style.backgroundColor = '#ccf'
-				} else if (watcher.isBelowViewport) {
-					element.style.backgroundColor = '#ffc'
-				}
-			}
-
-			watcher.stateChange(addClass);
-			addClass();
-		}
-
-	//});
 </script>
 
 </body>

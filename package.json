@@ -28,9 +28,26 @@
   "main": "./scrollMonitor.js",
   "dependencies" : {
   },
+   "devDependencies": {
+    "mocha": "~1.14.0",
+    "chai": "~1.8.1",
+    "sinon": "~1.7.3",
+    "sinon-chai": "~2.4.0",
+    "testem": "~0.6.15",
+    "requirejs": "~2.1.11"
+ },
+  "testling": {
+    "browsers": [
+        "ie6", "ie7", "ie8", "ie9",
+        "firefox/latest", "chrome/latest", "opera/latest", "safari/latest"
+    ],
+    "harness" : "mocha",
+    "files": "test/*.js"
+  },
   "spm": {
     "main": "scrollMonitor.js",
     "dependencies": {
       "jquery": "1.7.2"
     }
+  }
 }

@@ -1,0 +1,4 @@
+{
+  "framework": "mocha+chai",
+  "test_page": "spec-runner/index.html"
+}

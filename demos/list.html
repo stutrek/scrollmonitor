@@ -70,7 +70,7 @@
 		
 		$('section').each(function(index, section) {
 			
-			var sectionWatcher = scrollMonitor.beget(section)
+			var sectionWatcher = scrollMonitor.create(section)
 			
 			var sectionMinusBottomHeadline = scrollMonitor.create(section, {bottom: -1*h2Height});
 			
