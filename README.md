@@ -92,10 +92,10 @@ Sometimes you want to change the element you're watching, but want to continue w
 var watcher = scrollMonitor.create( $element );
 watcher.lock(); // ensure that we're always watching the place the element originally was
 
-watcher.exitViewport(function() {
+watcher.enterViewport(function() {
     $element.addClass('fixed');
 });
-watcher.enterViewport(function() {
+watcher.exitViewport(function() {
     $element.removeClass('fixed');
 });
 ```
