@@ -1,4 +1,4 @@
-/* global require: false, describe: false, it: false, expect: false, sinon: false */
+/* global require: false, describe: false, it: false, expect: false, sinon: false, beforeEach: false, afterEach: false */
 define(function(require) {
 
 	var scrollMonitor = require('../scrollMonitor');
@@ -21,7 +21,51 @@ define(function(require) {
 		STATECHANGE
 	];
 
+	var requestAnimationFrame = window.requestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function (cb) { setTimeout(cb, 20); };
+
+		var getViewportHeight = function() {
+		return window.innerHeight || document.documentElement.clientHeight;
+	};
+
+	var getDocumentHeight = function() {
+		// jQuery approach
+		// whichever is greatest
+		return Math.max(
+			document.body.scrollHeight, document.documentElement.scrollHeight,
+			document.body.offsetHeight, document.documentElement.offsetHeight,
+			document.documentElement.clientHeight
+		);
+	};
+
+	var fixture = document.getElementById('fixture');
+	
+	var div;
+	var setup = function (done) {
+		div = document.createElement('div');
+		div.style.position = 'absolute';
+		div.style.top = '0px';
+		div.style.left = '0px';
+		div.style.width = '10px';
+		div.style.backgroundColor = 'silver';
+		div.style.height = ''+(getViewportHeight() * 2)+'px';
+		fixture.appendChild(div);
+		// the browser doesn't trigger the scroll event synchronously.
+		window.scrollTo(0,0);
+		requestAnimationFrame(function () {done();});
+	};
+
+	var destroy =function (done) {
+		fixture.innerHTML = '';
+		window.scrollTo(0,0);
+		requestAnimationFrame(function () {done();});
+	};
+
 	describe('API', function () {
+
 		it('module should have correct API.', function () {
 			expect(scrollMonitor).to.respondTo('create');
 			expect(scrollMonitor).to.respondTo('update');
@@ -63,7 +107,6 @@ define(function(require) {
 	});
 
 	describe('calculating locations', function () {
-		var fixture = document.getElementById('fixture');
 
 		it('should calculate numbers correctly', function () {
 			var watcher10 = scrollMonitor.create(10);
@@ -105,7 +148,116 @@ define(function(require) {
 			watcher.destroy();
 		});
 
+		it('should calculate DOM elements correctly', function () {
+			var div = document.createElement('div');
+
+			div.style.position = 'relative';
+			div.style.top = '10px';
+			div.style.width = '100px';
+			div.style.height = '15px';
+			div.style.backgroundColor = 'gray';
+
+			fixture.appendChild(div);
+			var watcher = scrollMonitor.create(div);
+
+			var offset = fixture.offsetTop;
+			expect(watcher.top).to.equal(offset+10);
+			expect(watcher.bottom).to.equal(offset+25);
+			expect(watcher.height).to.equal(offset+15);
+
+			watcher.destroy();
+			fixture.innerHTML = '';
+		});
 	});
+
+	describe('location booleans', function () {
+		beforeEach(setup);
+		afterEach(destroy);
+
+		it('should calculate fully in viewport correctly', function () {
+			var watcher = scrollMonitor.create(10);
+
+			expect(watcher.isInViewport).to.equal(true);
+			expect(watcher.isFullyInViewport).to.equal(true);
+			expect(watcher.isAboveViewport).to.equal(false);
+			expect(watcher.isBelowViewport).to.equal(false);
+
+			watcher.destroy();
+		});
+
+		it('should calculate partially below viewport correctly', function () {
+			var windowHeight = getViewportHeight();
+			var watcher = scrollMonitor.create({top: windowHeight-10, bottom: windowHeight+10});
+
+			expect(watcher.isInViewport).to.equal(true);
+			expect(watcher.isFullyInViewport).to.equal(false);
+			expect(watcher.isAboveViewport).to.equal(false);
+			expect(watcher.isBelowViewport).to.equal(true);
+
+			watcher.destroy();
+		});
+
+		it('should calculate partially above viewport correctly', function (done) {
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				//var windowHeight = getViewportHeight();
+				var watcher = scrollMonitor.create({top: 0, bottom: 200});
+
+				expect(watcher.isInViewport).to.equal(true);
+				expect(watcher.isFullyInViewport).to.equal(false);
+				expect(watcher.isAboveViewport).to.equal(true);
+				expect(watcher.isBelowViewport).to.equal(false);
+
+				watcher.destroy();
+				done();
+			});
+		});
+
+		it('should calculate below viewport correctly', function () {
+			var windowHeight = getViewportHeight();
+			var watcher = scrollMonitor.create({top: windowHeight+10, bottom: windowHeight+20});
+
+			expect(watcher.isInViewport).to.equal(false);
+			expect(watcher.isFullyInViewport).to.equal(false);
+			expect(watcher.isAboveViewport).to.equal(false);
+			expect(watcher.isBelowViewport).to.equal(true);
+
+			watcher.destroy();
+		});
+
+		it('should calculate above viewport correctly', function (done) {
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				//var windowHeight = getViewportHeight();
+				var watcher = scrollMonitor.create({top: 0, bottom: 20});
+
+				expect(watcher.isInViewport).to.equal(false);
+				expect(watcher.isFullyInViewport).to.equal(false);
+				expect(watcher.isAboveViewport).to.equal(true);
+				expect(watcher.isBelowViewport).to.equal(false);
+
+				watcher.destroy();
+				done();
+			});
+		});
+
+		it('should calculate larger than and fully in viewport correctly', function (done) {
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				var windowHeight = getViewportHeight();
+				var watcher = scrollMonitor.create({top: 0, bottom: windowHeight+200});
+
+				expect(watcher.isInViewport).to.equal(true);
+				expect(watcher.isFullyInViewport).to.equal(true);
+				expect(watcher.isAboveViewport).to.equal(true);
+				expect(watcher.isBelowViewport).to.equal(true);
+
+				watcher.destroy();
+				done();
+			});
+		});
+	});
+
 	describe('setting offsets', function () {
 		it('should not have offsets by default', function () {
 			var watcher = scrollMonitor.create(10);
@@ -134,7 +286,7 @@ define(function(require) {
 		});
 	});
 
-	describe('callbacks', function () {
+	describe('callback application', function () {
 		function noop () {}
 		it('arrays should exist to hold callbacks.', function () {
 			var watcher = scrollMonitor.create(10);
@@ -208,4 +360,35 @@ define(function(require) {
 			watcher.destroy();
 		});
 	});
+	
+	describe('what happens as the user scrolls', function () {
+		beforeEach(setup);
+		afterEach(destroy);
+
+		it('should call isInViewport immediately if the element is already there.', function () {
+
+			div.style.top = '0px';
+
+			var watcher = scrollMonitor.create(div);
+			var spy = sinon.spy();
+
+			watcher.enterViewport(spy);
+			expect(spy.called).to.equal(true);
+		});
+
+		it('isFullyInViewport should be called immediately if the element is in the viewport', function () {
+
+			div.style.top = '0px';
+
+			var watcher = scrollMonitor.create(div);
+			var spy = sinon.spy();
+
+			watcher.enterViewport(spy);
+			expect(spy.called).to.equal(true);
+		});
+
+
+	});
+
+
 });
