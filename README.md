@@ -9,6 +9,8 @@ The code is based on vanilla javascript and has no external dependencies. Except
 
 Watchers are _very_ cheap. Create them liberally.
 
+[![browser support](http://ci.testling.com/sakabako/scrollMonitor.png)](http://ci.testling.com/sakabako/scrollMonitor)
+
 ## Basic Usage
 
 ```javascript

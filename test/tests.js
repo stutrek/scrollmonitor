@@ -1,7 +1,5 @@
 /* global require: false, describe: false, it: false, expect: false, sinon: false, beforeEach: false, afterEach: false */
-define(function(require) {
-
-	var scrollMonitor = require('../scrollMonitor');
+//define(function(require) {
 	
 	var VISIBILITYCHANGE = 'visibilityChange';
 	var ENTERVIEWPORT = 'enterViewport';
@@ -47,6 +45,10 @@ define(function(require) {
 	};
 
 	var fixture = document.getElementById('fixture');
+	if (!fixture) {
+		fixture = document.createElement('div');
+		document.body.appendChild( fixture );
+	}
 	
 	var div;
 	var setup = function (done) {
@@ -168,7 +170,7 @@ define(function(require) {
 			var offset = fixture.offsetTop;
 			expect(watcher.top).to.equal(offset+10);
 			expect(watcher.bottom).to.equal(offset+25);
-			expect(watcher.height).to.equal(offset+15);
+			expect(watcher.height).to.equal(15);
 
 			watcher.destroy();
 			fixture.innerHTML = '';
@@ -515,4 +517,4 @@ define(function(require) {
 
 	});
 
-});
+//});
