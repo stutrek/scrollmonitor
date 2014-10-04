@@ -146,23 +146,21 @@
 	progress.max = count;
 	draw();
 
+	function addClass() {
+		if (!this.isInViewport) {
+			return
+		} else if (this.isFullyInViewport) {
+			this.watchItem.style.backgroundColor = '#fcc'
+		} else if (this.isAboveViewport) {
+			this.watchItem.style.backgroundColor = '#ccf'
+		} else if (this.isBelowViewport) {
+			this.watchItem.style.backgroundColor = '#ffc'
+		}
+	}
 	function makeWatcher( element ) {
 		var watcher = scrollMonitor.create( element );
-
-		function addClass() {
-			if (!watcher.isInViewport) {
-				return
-			} else if (watcher.isFullyInViewport) {
-				element.style.backgroundColor = '#fcc'
-			} else if (watcher.isAboveViewport) {
-				element.style.backgroundColor = '#ccf'
-			} else if (watcher.isBelowViewport) {
-				element.style.backgroundColor = '#ffc'
-			}
-		}
-
 		watcher.stateChange(addClass);
-		addClass();
+		addClass.call( watcher );
 	}
 
 </script>
