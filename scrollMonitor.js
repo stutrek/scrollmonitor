@@ -240,7 +240,7 @@
 				case event === FULLYENTERVIEWPORT && this.isFullyInViewport:
 				case event === EXITVIEWPORT && this.isAboveViewport && !this.isInViewport:
 				case event === PARTIALLYEXITVIEWPORT && this.isAboveViewport:
-					callback();
+					callback.call( this, latestEvent );
 					if (isOne) {
 						return;
 					}
