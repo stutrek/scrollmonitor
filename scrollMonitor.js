@@ -262,7 +262,7 @@
 			}
 
 			if (this.callbacks[event]) {
-				this.callbacks[event].push({callback: callback, isOne: isOne});
+				this.callbacks[event].push({callback: callback, isOne: isOne||false});
 			} else {
 				throw new Error('Tried to add a scroll monitor listener of type '+event+'. Your options are: '+eventTypes.join(', '));
 			}
