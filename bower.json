@@ -1,6 +1,6 @@
 {
   "name": "scrollMonitor",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "main": "./scrollMonitor.js",
   "dependencies": {
 	"jquery": ">= 1.2.6"
