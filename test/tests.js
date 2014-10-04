@@ -21,7 +21,7 @@ define(function(require) {
 		STATECHANGE
 	];
 
-	var requestAnimationFrame = window.requestAnimationFrame ||
+	var requestAnimationFrameDoer = window.requestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.msRequestAnimationFrame ||
@@ -30,8 +30,13 @@ define(function(require) {
 		var getViewportHeight = function() {
 		return window.innerHeight || document.documentElement.clientHeight;
 	};
+	var requestAnimationFrame = function (cb) {
+		setTimeout(function () {
+			requestAnimationFrameDoer(cb);
+		}, 4);
+	};
 
-	var getDocumentHeight = function() {
+	var getDocumentHeight = function () {
 		// jQuery approach
 		// whichever is greatest
 		return Math.max(
@@ -288,7 +293,7 @@ define(function(require) {
 
 	describe('callback application', function () {
 		function noop () {}
-		it('arrays should exist to hold callbacks.', function () {
+		it('should create arrays to hold callbacks.', function () {
 			var watcher = scrollMonitor.create(10);
 			eventTypes.forEach(function(type) {
 				expect(watcher.callbacks[type]).to.be.an('array');
@@ -361,34 +366,153 @@ define(function(require) {
 		});
 	});
 	
-	describe('what happens as the user scrolls', function () {
+	describe('events as the user scrolls', function () {
 		beforeEach(setup);
 		afterEach(destroy);
 
-		it('should call isInViewport immediately if the element is already there.', function () {
-
-			div.style.top = '0px';
+		it('should call enterViewport immediately if the element is already in the viewport.', function () {
 
 			var watcher = scrollMonitor.create(div);
 			var spy = sinon.spy();
 
 			watcher.enterViewport(spy);
 			expect(spy.called).to.equal(true);
+			watcher.destroy();
 		});
 
-		it('isFullyInViewport should be called immediately if the element is in the viewport', function () {
+		it('should call enterViewport and fullyEnterViewport callbacks immediately if the element is fully in the viewport', function () {
 
 			div.style.top = '0px';
 
-			var watcher = scrollMonitor.create(div);
-			var spy = sinon.spy();
+			var watcher = scrollMonitor.create(10);
+			var spy1 = sinon.spy();
+			var spy2 = sinon.spy();
 
-			watcher.enterViewport(spy);
-			expect(spy.called).to.equal(true);
+			watcher.enterViewport(spy1);
+			watcher.fullyEnterViewport(spy2);
+			expect(spy1.called).to.equal(true);
+			expect(spy2.called).to.equal(true);
+
+			watcher.destroy();
 		});
 
+		it('should call exitViewport immediately if the element is already above the viewport.', function (done) {
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				var watcher = scrollMonitor.create(10);
+				var spy = sinon.spy();
+
+				watcher.exitViewport(spy);
+				expect(spy.called).to.equal(true);
+				done();
+			});
+		});
+
+		it('should call partiallyExitViewport immediately if the element is already above the viewport.', function (done) {
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				var watcher = scrollMonitor.create(10);
+				var spy = sinon.spy();
+
+				watcher.partiallyExitViewport(spy);
+				expect(spy.called).to.equal(true);
+				watcher.destroy();
+				done();
+			});
+		});
+
+		it('should call exitViewport and partiallyExitViewport when the element exits the viewport.', function (done) {
+			var watcher = scrollMonitor.create(10);
+			var spy1 = sinon.spy();
+			var spy2 = sinon.spy();
+
+			watcher.exitViewport(spy1);
+			watcher.partiallyExitViewport(spy2);
+			expect(spy1.called).to.equal(false);
+			expect(spy2.called).to.equal(false);
+			
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				expect(spy1.called).to.equal(true);
+				expect(spy2.called).to.equal(true);
+				done();
+			});
+		});
+
+		it('should call enterViewport and fullyEnterViewport when the element enters the viewport.', function (done) {
+			var watcher = scrollMonitor.create(getViewportHeight()+10);
+			var spy1 = sinon.spy();
+			var spy2 = sinon.spy();
+
+			watcher.enterViewport(spy1);
+			watcher.fullyEnterViewport(spy2);
+			expect(spy1.called).to.equal(false);
+			expect(spy2.called).to.equal(false);
+			
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				expect(spy1.called).to.equal(true);
+				expect(spy2.called).to.equal(true);
+				done();
+			});
+		});
+
+		it('should only call partiallyExitViewport when the element partially exits the viewport.', function (done) {
+			var watcher = scrollMonitor.create({top: 10, bottom: 200});
+			var spy1 = sinon.spy();
+			var spy2 = sinon.spy();
+
+			watcher.exitViewport(spy1);
+			watcher.partiallyExitViewport(spy2);
+			expect(spy1.called).to.equal(false);
+			expect(spy2.called).to.equal(false);
+			
+			window.scrollTo(0,100);
+			requestAnimationFrame(function () {
+				expect(spy1.called).to.equal(false);
+				expect(spy2.called).to.equal(true);
+				done();
+			});
+		});
+
+		it('should only call enterViewport when the element halfway enters the viewport.', function (done) {
+			var watcher = scrollMonitor.create({top: getViewportHeight()+10,  bottom: (getViewportHeight()*2)+100});
+			var spy1 = sinon.spy();
+			var spy2 = sinon.spy();
+
+			watcher.enterViewport(spy1);
+			watcher.fullyEnterViewport(spy2);
+			expect(spy1.called).to.equal(false);
+			expect(spy2.called).to.equal(false);
+			
+			window.scrollTo(0,getViewportHeight()+20);
+			requestAnimationFrame(function () {
+				expect(spy1.called).to.equal(true);
+				expect(spy2.called).to.equal(false);
+				done();
+			});
+		});
 
 	});
 
+	describe('arguments and context', function() {
+		
+		it('should use the watcher as the context.', function () {
+			var watcher = scrollMonitor.create(10);
+			watcher.enterViewport(function () {
+				expect(this).to.equal(watcher);
+			});
+			watcher.destroy();
+		});
+
+		it('should use the scroll event as the only argument.', function () {
+			var watcher = scrollMonitor.create(10);
+			watcher.enterViewport(function (arg) {
+				expect(arg.type).to.equal('scroll');
+			});
+			watcher.destroy();
+		});
+
+	});
 
 });
