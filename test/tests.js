@@ -1,4 +1,4 @@
-/* global require: false, describe: false, it: false, expect: false, sinon: false, beforeEach: false, afterEach: false */
+/* global require: false, describe: false, it: false, expect: false, sinon: false, beforeEach: false, afterEach: false, scrollMonitor: false, expect: false */
 //define(function(require) {
 	
 	var VISIBILITYCHANGE = 'visibilityChange';
@@ -32,16 +32,6 @@
 		setTimeout(function () {
 			requestAnimationFrameDoer(cb);
 		}, 4);
-	};
-
-	var getDocumentHeight = function () {
-		// jQuery approach
-		// whichever is greatest
-		return Math.max(
-			document.body.scrollHeight, document.documentElement.scrollHeight,
-			document.body.offsetHeight, document.documentElement.offsetHeight,
-			document.documentElement.clientHeight
-		);
 	};
 
 	var fixture = document.getElementById('fixture');
