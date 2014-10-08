@@ -147,10 +147,10 @@
 		}
 		this.triggerCallbacks = function triggerCallbacks(eventName) {
 
-      if (eventName) {
-        triggerCallbackArray( this.callbacks[eventName] );
-        return;
-      }
+			if (eventName) {
+				triggerCallbackArray( this.callbacks[eventName] );
+				return;
+			}
 
 			if (this.isInViewport && !wasInViewport) {
 				triggerCallbackArray( this.callbacks[ENTERVIEWPORT] );
