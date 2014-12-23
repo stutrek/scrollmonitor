@@ -25,6 +25,7 @@
     "scroll",
     "dom"
   ],
+  "license": "MIT",
   "main": "./scrollMonitor.js",
   "dependencies": {},
   "devDependencies": {
