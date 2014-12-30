@@ -27,7 +27,16 @@
   ],
   "license": "MIT",
   "main": "./scrollMonitor.js",
-  "dependencies": {},
+  "dependencies": {
+    "karma": "^0.12.24",
+    "karma-chai": "^0.1.0",
+    "karma-expect": "^1.1.0",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-ie-launcher": "^0.1.5",
+    "karma-ios-launcher": "0.0.3",
+    "karma-mocha": "^0.1.9",
+    "karma-sinon-ie": "^1.0.1"
+  },
   "devDependencies": {
     "browser-launcher": "^1.0.0",
     "chai": "~1.8.1",

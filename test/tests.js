@@ -1,6 +1,17 @@
 /* global require: false, describe: false, it: false, expect: false, sinon: false, beforeEach: false, afterEach: false, scrollMonitor: false, expect: false */
 //define(function(require) {
 	
+	window.scrollMonitor = scrollMonitor;
+	window.chai = chai;
+	window.expect = chai.expect;
+	window.assert = chai.assert;
+	window.should = chai.should();
+	window.notrack = true;
+
+	mocha.setup({
+		ui: 'bdd'
+	});
+
 	var VISIBILITYCHANGE = 'visibilityChange';
 	var ENTERVIEWPORT = 'enterViewport';
 	var FULLYENTERVIEWPORT = 'fullyEnterViewport';
@@ -506,5 +517,7 @@
 		});
 
 	});
+	
+	mocha.run();
 
 //});
