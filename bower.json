@@ -2,6 +2,26 @@
   "name": "scrollMonitor",
   "version": "1.0.11",
   "main": "./scrollMonitor.js",
-  "dependencies": {
-  }
+  "dependencies": {},
+  "devDependencies": {},
+  "ignore": [
+    ".bowerrc",
+    ".gitignore",
+    ".npmignore",
+    ".jshintignore",
+    ".spmignore",
+    ".jshintrc",
+    "karma.conf.js",
+    "spec-runner",
+    "package.json",
+    "testem.json",
+    "**/.*",
+    "*.yml",
+    "*.xml",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "testling.js"
+  ]
 }
