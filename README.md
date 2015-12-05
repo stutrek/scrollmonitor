@@ -137,10 +137,10 @@ scrollMonitor.create( element, -200 )
 * `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, NodeList, CSS selector, object with .top and .bottom, or a number.
 * `scrollMonitor.update()` - update and trigger all watchers.
 * `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
+* `scrollMonitor.destroyAll()` - destroy all watchers.
 
 ### Properties
 * `scrollMonitor.viewportTop` - distance from the top of the document to the top of the viewport.
 * `scrollMonitor.viewportBottom` - distance from the top of the document to the bottom of the viewport.
 * `scrollMonitor.viewportHeight` - height of the viewport.
 * `scrollMonitor.documentHeight` - height of the document.
-
