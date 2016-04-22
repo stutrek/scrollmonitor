@@ -28,10 +28,10 @@ elementWatcher.exitViewport(function() {
 ```
 ## Demos
 
-* [Stress Test](http://sakabako.github.com/scrollMonitor/demos/stress.html) - Test with as many watchers as you'd like
-* [Fixed Positioning and Locking](http://sakabako.github.com/scrollMonitor/demos/fixed.html)
-* [Anchored section headers](http://sakabako.github.com/scrollMonitor/demos/list.html)
-* [Complex sidebar behavior](http://sakabako.github.com/scrollMonitor/demos/scoreboard.html)
+* [Stress Test](http://stutrek.github.com/scrollMonitor/demos/stress.html) - Test with as many watchers as you'd like
+* [Fixed Positioning and Locking](http://stutrek.github.com/scrollMonitor/demos/fixed.html)
+* [Anchored section headers](http://stutrek.github.com/scrollMonitor/demos/list.html)
+* [Complex sidebar behavior](http://stutrek.github.com/scrollMonitor/demos/scoreboard.html)
 
 ## Watcher Objects
 
