@@ -327,7 +327,7 @@
 		calculateViewport();
 	} catch (e) {
 		try {
-			window.$(calculateViewport);
+			window.jQuery(calculateViewport);
 		} catch (e) {
 			throw new Error('If you must put scrollMonitor in the <head>, you must use jQuery.');
 		}
