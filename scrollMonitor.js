@@ -8,11 +8,18 @@
 	}
 })(function() {
 
+	var isOnServer = (typeof window === 'undefined');
+	var isInBrowser = !isOnServer;
+
 	var scrollTop = function() {
+		if (isOnServer) {
+			return 0;
+		}
 		return window.pageYOffset ||
 			(document.documentElement && document.documentElement.scrollTop) ||
 			document.body.scrollTop;
 	};
+
 
 	var exports = {};
 
@@ -39,10 +46,16 @@
 	var defaultOffsets = {top: 0, bottom: 0};
 
 	var getViewportHeight = function() {
+		if (isOnServer) {
+			return 0;
+		}
 		return window.innerHeight || document.documentElement.clientHeight;
 	};
 
 	var getDocumentHeight = function() {
+		if (isOnServer) {
+			return 0;
+		}
 		// jQuery approach
 		// whichever is greatest
 		return Math.max(
@@ -323,13 +336,15 @@
 		ElementWatcher.prototype[type] = eventHandlerFactory(type);
 	}
 
-	try {
-		calculateViewport();
-	} catch (e) {
+	if (isInBrowser) {
 		try {
-			window.$(calculateViewport);
+			calculateViewport();
 		} catch (e) {
-			throw new Error('If you must put scrollMonitor in the <head>, you must use jQuery.');
+			try {
+				window.$(calculateViewport);
+			} catch (e) {
+				throw new Error('If you must put scrollMonitor in the <head>, you must use jQuery.');
+			}
 		}
 	}
 
@@ -339,13 +354,15 @@
 		updateAndTriggerWatchers();
 	}
 
-	if (window.addEventListener) {
-		window.addEventListener('scroll', scrollMonitorListener);
-		window.addEventListener('resize', debouncedRecalcuateAndTrigger);
-	} else {
-		// Old IE support
-		window.attachEvent('onscroll', scrollMonitorListener);
-		window.attachEvent('onresize', debouncedRecalcuateAndTrigger);
+	if (isInBrowser) {
+		if (window.addEventListener) {
+			window.addEventListener('scroll', scrollMonitorListener);
+			window.addEventListener('resize', debouncedRecalcuateAndTrigger);
+		} else {
+			// Old IE support
+			window.attachEvent('onscroll', scrollMonitorListener);
+			window.attachEvent('onresize', debouncedRecalcuateAndTrigger);
+		}
 	}
 
 	exports.beget = exports.create = function( element, offsets ) {
