@@ -388,5 +388,9 @@
 		exports.update();
 	};
 
+	exports.removeAll = function() {
+		watchers = [];
+	}
+
 	return exports;
 });
