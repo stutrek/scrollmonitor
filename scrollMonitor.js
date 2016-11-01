@@ -4,7 +4,7 @@
 	} else if (typeof module !== 'undefined' && module.exports) {
 		module.exports = factory();
 	} else {
-		window.scrollMonitor = factory();
+		factory();
 	}
 })(function() {
 
@@ -390,6 +390,10 @@
 	};
 
 	exports.eventTypes = eventTypes;
+
+	if (isInBrowser) {
+		window.scrollMonitor = exports;
+	}
 
 	return exports;
 });
