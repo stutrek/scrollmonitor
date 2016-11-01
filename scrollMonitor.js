@@ -383,10 +383,13 @@
 		calculateViewport();
 		updateAndTriggerWatchers();
 	};
+
 	exports.recalculateLocations = function() {
 		exports.documentHeight = 0;
 		exports.update();
 	};
+
+	exports.eventTypes = eventTypes;
 
 	return exports;
 });
