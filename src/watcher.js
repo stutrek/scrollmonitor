@@ -14,7 +14,7 @@ export default function ElementWatcher (rootWatcher, watchItem, offsets) {
 	var self = this;
 
 	this.watchItem = watchItem;
-	this.root = root;
+	this.root = rootWatcher;
 
 	if (!offsets) {
 		this.offsets = defaultOffsets;
@@ -118,12 +118,12 @@ export default function ElementWatcher (rootWatcher, watchItem, offsets) {
 			}
 
 			var rootOffset = 0;
-			if (this.rootWatcher) {
-				rootOffset = rootWatcher.top - rootWatcher.item.scrollTop;
+			if (this.root) {
+				rootOffset = this.root.top - this.root.item.scrollTop;
 			}
 
 			var boundingRect = this.watchItem.getBoundingClientRect();
-			this.top = rootOffset + boundingRect.top + this.rootWatcher.viewportTop;
+			this.top = rootOffset + boundingRect.top + this.root.viewportTop;
 			this.bottom = rootOffset + boundingRect.bottom + this.root.viewportTop;
 
 			if (cachedDisplay === 'none') {
@@ -225,3 +225,15 @@ ElementWatcher.prototype = {
 		this.locked = false;
 	}
 };
+
+var eventHandlerFactory = function (type) {
+	return function( callback, isOne ) {
+		this.on.call(this, type, callback, isOne);
+	};
+};
+
+for (var i = 0, j = eventTypes.length; i < j; i++) {
+	var type =  eventTypes[i];
+	ElementWatcher.prototype[type] = eventHandlerFactory(type);
+}
+

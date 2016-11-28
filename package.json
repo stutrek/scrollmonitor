@@ -29,33 +29,12 @@
   "main": "./scrollMonitor.js",
   "dependencies": {},
   "devDependencies": {
-    "karma": "^0.12.24",
-    "karma-chai": "^0.1.0",
-    "karma-expect": "^1.1.0",
-    "karma-firefox-launcher": "^0.1.3",
-    "karma-ie-launcher": "^0.1.5",
-    "karma-ios-launcher": "0.0.3",
-    "karma-mocha": "^0.1.9",
-    "karma-sinon-ie": "^1.0.1",
-    "browser-launcher": "^1.0.0",
-    "chai": "~1.8.1",
-    "mocha": "~1.14.0",
-    "sinon": "~1.7.3",
-    "sinon-chai": "~2.4.0",
-    "testem": "~0.6.15"
-  },
-  "testling": {
-    "browsers": [
-      "ie6..latest",
-      "firefox/latest",
-      "chrome/latest",
-      "opera/latest",
-      "safari/latest"
-    ],
-    "harness": "mocha",
-    "files": [
-      "testling.js"
-    ]
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.5.0",
+    "webpack": "^1.13.1"
   },
   "spm": {
     "main": "scrollMonitor.js"

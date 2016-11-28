@@ -58,15 +58,15 @@ class RootItem {
 
 		var calculateViewportI;
 		function calculateViewport() {
-			root.viewportTop = scrollTop(item);
-			root.viewportBottom = root.viewportTop + root.viewportHeight;
-			root.documentHeight = getContentHeight(item);
-			if (root.documentHeight !== previousDocumentHeight) {
+			this.viewportTop = scrollTop(item);
+			this.viewportBottom = this.viewportTop + this.viewportHeight;
+			this.documentHeight = getContentHeight(item);
+			if (this.documentHeight !== previousDocumentHeight) {
 				calculateViewportI = this.watchers.length;
 				while( calculateViewportI-- ) {
 					this.watchers[calculateViewportI].recalculateLocation();
 				}
-				previousDocumentHeight = root.documentHeight;
+				previousDocumentHeight = this.documentHeight;
 			}
 		}
 
@@ -86,7 +86,7 @@ class RootItem {
 		}
 
 		function recalculateWatchLocationsAndTrigger() {
-			root.viewportHeight = getViewportHeight();
+			this.viewportHeight = getViewportHeight();
 			calculateViewport();
 			updateAndTriggerWatchers();
 		}
@@ -97,27 +97,14 @@ class RootItem {
 			recalculateAndTriggerTimer = setTimeout( recalculateWatchLocationsAndTrigger, 100 );
 		}
 
-		root.beget = root.create = function( element, offsets ) {
-			if (typeof element === 'string') {
-				element = document.querySelector(element);
-			} else if (element && element.length > 0) {
-				element = element[0];
-			}
-
-			var watcher = new ElementWatcher( element, offsets );
-			watchers.push(watcher);
-			watcher.update();
-			return watcher;
-		};
-
-		root.update = function() {
+		this.update = function() {
 			latestEvent = null;
 			calculateViewport();
 			updateAndTriggerWatchers();
 		};
-		root.recalculateLocations = function() {
-			root.documentHeight = 0;
-			root.update();
+		this.recalculateLocations = function() {
+			this.documentHeight = 0;
+			this.update();
 		};
 
 	}
@@ -220,7 +207,7 @@ class RootItem {
 		} else if (item && item.length > 0) {
 			item = item[0];
 		}
-		this.rootWatcher = scrollMonitor.create(item);
+		// this.rootWatcher = scrollMonitor.create(item);
 		var root = new RootItem(item);
 		root.setStateFromDOM();
 		root.listenToDOM();
@@ -241,8 +228,5 @@ class RootItem {
 	}
 }
 
-var scrollMonitor = new RootItem(isOnServer ? null : document.body);
-scrollMonitor.setStateFromDOM(null);
-scrollMonitor.listenToDOM();
+export default RootItem;
 
-export default scrollMonitor;

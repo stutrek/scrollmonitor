@@ -20,3 +20,5 @@ export const isOnServer = (typeof window === 'undefined');
 export const isInBrowser = !isOnServer;
 
 export const defaultOffsets = {top: 0, bottom: 0};
+
+console.log('isOnServer', isOnServer, 'isInBrowser', isInBrowser);
