@@ -205,7 +205,7 @@ ElementWatcher.prototype = {
 		this.isAboveViewport = this.top < this.root.viewportTop;
 		this.isBelowViewport = this.bottom > this.root.viewportBottom;
 
-		this.isInViewport = (this.top <= this.root.viewportBottom && this.bottom >= this.root.viewportTop);
+		this.isInViewport = (this.top < this.root.viewportBottom && this.bottom > this.root.viewportTop);
 		this.isFullyInViewport = (this.top >= this.root.viewportTop && this.bottom <= this.root.viewportBottom) || (this.isAboveViewport && this.isBelowViewport);
 
 	},
