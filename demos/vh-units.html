@@ -1,0 +1,58 @@
+<!doctype html>
+<head>
+	<style type="text/css">
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		.whats-in {
+			position: fixed;
+			background: white;
+			padding: 10px;
+			top: 0;
+			left: 0;
+		}
+		span {
+			display: block;
+			height: 100vh;
+			background-color: gray;
+		}
+		span.two {
+			background-color: red;
+		}
+		span.three {
+			background-color: blue;
+		}
+	​</style>
+</head>
+<body>
+<div>
+	<div class="whats-in"></div>
+	<span class="one">One!</span>
+	<span class="two">Two!</span>
+	<span class="three">Three!</span>
+</div>
+<a href="https://github.com/sakabako/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="../scrollMonitor.js"></script>
+<script type="text/javascript">
+	var watchers;
+	function update () {
+		var str = watchers.reduce(function (str, watcher) {
+			if (watcher.isInViewport) {
+				return str + ' ' + watcher.watchItem.innerHTML;
+			}
+			return str;
+		}, '');
+		$('.whats-in').html(str + ' is in the viewport');
+	}
+	watchers = $('span').toArray().map(function(element) {
+		var watcher = scrollMonitor.create(element);
+		watcher.stateChange(update);
+		return watcher;
+	});
+
+	update();
+
+</script>
+</body>

@@ -303,7 +303,7 @@
 			this.isAboveViewport = this.top < exports.viewportTop;
 			this.isBelowViewport = this.bottom > exports.viewportBottom;
 
-			this.isInViewport = (this.top <= exports.viewportBottom && this.bottom >= exports.viewportTop);
+			this.isInViewport = (this.top < exports.viewportBottom && this.bottom > exports.viewportTop);
 			this.isFullyInViewport = (this.top >= exports.viewportTop && this.bottom <= exports.viewportBottom) ||
 								 (this.isAboveViewport && this.isBelowViewport);
 
