@@ -95,6 +95,7 @@
 			expect(watcher).to.respondTo('destroy');
 			expect(watcher).to.respondTo('update');
 			expect(watcher).to.respondTo('triggerCallbacks');
+			expect(watcher).to.respondTo('trigger');
 
 			eventTypes.forEach(function(type) {
 				expect(watcher).to.respondTo(type);
@@ -364,6 +365,17 @@
 				} else {
 					expect(spy.called).to.equal(false);
 				}
+			});
+			watcher.destroy();
+		});
+
+		it('should call all call backs for a given event when the trigger method is invoked', function () {
+			var watcher = scrollMonitor.create(10);
+			eventTypes.forEach(function(type) {
+				var spy = sinon.spy();
+				watcher.on(type, spy);
+				watcher.trigger(type);
+				expect(spy.called).to.equal(true);
 			});
 			watcher.destroy();
 		});

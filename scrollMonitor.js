@@ -158,40 +158,46 @@
 				}
 			}
 		}
-		this.triggerCallbacks = function triggerCallbacks() {
+
+		this.trigger = function trigger (eventName) {
+			triggerCallbackArray(this.callbacks[eventName]);
+		};
+
+		this.triggerCallbacks = function triggerCallbacks(eventName) {
+
 
 			if (this.isInViewport && !wasInViewport) {
-				triggerCallbackArray( this.callbacks[ENTERVIEWPORT] );
+				this.trigger( ENTERVIEWPORT );
 			}
 			if (this.isFullyInViewport && !wasFullyInViewport) {
-				triggerCallbackArray( this.callbacks[FULLYENTERVIEWPORT] );
+				this.trigger( FULLYENTERVIEWPORT );
 			}
 
 
 			if (this.isAboveViewport !== wasAboveViewport &&
 				this.isBelowViewport !== wasBelowViewport) {
 
-				triggerCallbackArray( this.callbacks[VISIBILITYCHANGE] );
+				this.trigger( VISIBILITYCHANG );
 
 				// if you skip completely past this element
 				if (!wasFullyInViewport && !this.isFullyInViewport) {
-					triggerCallbackArray( this.callbacks[FULLYENTERVIEWPORT] );
-					triggerCallbackArray( this.callbacks[PARTIALLYEXITVIEWPORT] );
+					this.trigger( FULLYENTERVIEWPORT );
+					this.trigger( PARTIALLYEXITVIEWPORT );
 				}
 				if (!wasInViewport && !this.isInViewport) {
-					triggerCallbackArray( this.callbacks[ENTERVIEWPORT] );
-					triggerCallbackArray( this.callbacks[EXITVIEWPORT] );
+					this.trigger( ENTERVIEWPORT );
+					this.trigger( EXITVIEWPORT );
 				}
 			}
 
 			if (!this.isFullyInViewport && wasFullyInViewport) {
-				triggerCallbackArray( this.callbacks[PARTIALLYEXITVIEWPORT] );
+				this.trigger( PARTIALLYEXITVIEWPORT );
 			}
 			if (!this.isInViewport && wasInViewport) {
-				triggerCallbackArray( this.callbacks[EXITVIEWPORT] );
+				this.trigger( EXITVIEWPORT );
 			}
 			if (this.isInViewport !== wasInViewport) {
-				triggerCallbackArray( this.callbacks[VISIBILITYCHANGE] );
+				this.trigger( VISIBILITYCHANGE );
 			}
 			switch( true ) {
 				case wasInViewport !== this.isInViewport:
