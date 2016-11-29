@@ -388,6 +388,14 @@
 		exports.documentHeight = 0;
 		exports.update();
 	};
+	exports.destroyAll = function() {
+		for (var w = 0, x = watchers.length; w < x; w++) {
+			for (var i = 0, j = eventTypes.length; i < j; i++) {
+				watchers[w].callbacks[eventTypes[i]].length = 0;
+			}
+		}
+		watchers.length = 0;
+	};
 
 	exports.eventTypes = eventTypes;
 
