@@ -119,7 +119,7 @@ export default function ElementWatcher (rootWatcher, watchItem, offsets) {
 
 			var rootOffset = 0;
 			if (this.root.rootWatcher) {
-				rootOffset = this.root.rootWatcher.top - this.root.item.scrollTop;
+				rootOffset = this.root.rootWatcher.top;
 			}
 
 			var boundingRect = this.watchItem.getBoundingClientRect();

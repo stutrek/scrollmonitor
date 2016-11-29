@@ -1,4 +1,11 @@
 {
-  "framework": "mocha+chai",
-  "test_page": "spec-runner/index.html"
+	"framework": "mocha",
+
+	"src_files": [
+		"tests/built.js"
+	],
+
+	"launch_in_dev": [
+		"phantomjs"
+	]
 }
