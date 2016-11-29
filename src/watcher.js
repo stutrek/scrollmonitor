@@ -118,13 +118,13 @@ export default function ElementWatcher (rootWatcher, watchItem, offsets) {
 			}
 
 			var rootOffset = 0;
-			if (this.root) {
-				rootOffset = this.root.top - this.root.item.scrollTop;
+			if (this.root.rootWatcher) {
+				rootOffset = this.root.rootWatcher.top - this.root.item.scrollTop;
 			}
 
 			var boundingRect = this.watchItem.getBoundingClientRect();
-			this.top = rootOffset + boundingRect.top + this.root.viewportTop;
-			this.bottom = rootOffset + boundingRect.bottom + this.root.viewportTop;
+			this.top = boundingRect.top + this.root.viewportTop - rootOffset;
+			this.bottom = boundingRect.bottom + this.root.viewportTop - rootOffset;
 
 			if (cachedDisplay === 'none') {
 				this.watchItem.style.display = cachedDisplay;

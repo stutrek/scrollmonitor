@@ -25,6 +25,10 @@
     "scroll",
     "dom"
   ],
+  "scripts": {
+    "test": "webpack; testem ci",
+    "start": "webpack; testem"
+  },
   "license": "MIT",
   "main": "./scrollMonitor.js",
   "dependencies": {},
@@ -34,6 +38,7 @@
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.5.0",
+    "testem": "^1.13.0",
     "webpack": "^1.13.1"
   },
   "spm": {

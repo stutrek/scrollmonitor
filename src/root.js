@@ -45,7 +45,8 @@ function scrollTop (element) {
 
 
 class RootItem {
-	constructor (item) {
+	constructor (item, parentWatcher) {
+		var self = this;
 		this.item = item;
 		this.watchers = [];
 		this.viewportTop = null;
@@ -54,39 +55,43 @@ class RootItem {
 		this.viewportHeight = getViewportHeight(item);
 		this.DOMListener = this.DOMListener.bind(this);
 
+		if (parentWatcher) {
+			this.rootWatcher = parentWatcher.create(item);
+		}
+
 		var previousDocumentHeight;
 
 		var calculateViewportI;
 		function calculateViewport() {
-			this.viewportTop = scrollTop(item);
-			this.viewportBottom = this.viewportTop + this.viewportHeight;
-			this.documentHeight = getContentHeight(item);
-			if (this.documentHeight !== previousDocumentHeight) {
-				calculateViewportI = this.watchers.length;
+			self.viewportTop = scrollTop(item);
+			self.viewportBottom = self.viewportTop + self.viewportHeight;
+			self.documentHeight = getContentHeight(item);
+			if (self.documentHeight !== previousDocumentHeight) {
+				calculateViewportI = self.watchers.length;
 				while( calculateViewportI-- ) {
-					this.watchers[calculateViewportI].recalculateLocation();
+					self.watchers[calculateViewportI].recalculateLocation();
 				}
-				previousDocumentHeight = this.documentHeight;
+				previousDocumentHeight = self.documentHeight;
 			}
 		}
 
 		var updateAndTriggerWatchersI;
 		function updateAndTriggerWatchers() {
 			// update all watchers then trigger the events so one can rely on another being up to date.
-			updateAndTriggerWatchersI = this.watchers.length;
+			updateAndTriggerWatchersI = self.watchers.length;
 			while( updateAndTriggerWatchersI-- ) {
-				this.watchers[updateAndTriggerWatchersI].update();
+				self.watchers[updateAndTriggerWatchersI].update();
 			}
 
-			updateAndTriggerWatchersI = this.watchers.length;
+			updateAndTriggerWatchersI = self.watchers.length;
 			while( updateAndTriggerWatchersI-- ) {
-				this.watchers[updateAndTriggerWatchersI].triggerCallbacks();
+				self.watchers[updateAndTriggerWatchersI].triggerCallbacks();
 			}
 
 		}
 
 		function recalculateWatchLocationsAndTrigger() {
-			this.viewportHeight = getViewportHeight();
+			self.viewportHeight = getViewportHeight();
 			calculateViewport();
 			updateAndTriggerWatchers();
 		}
@@ -98,7 +103,6 @@ class RootItem {
 		}
 
 		this.update = function() {
-			latestEvent = null;
 			calculateViewport();
 			updateAndTriggerWatchers();
 		};
@@ -171,6 +175,11 @@ class RootItem {
 	setState (newViewportTop, newViewportHeight, newContentHeight, event) {
 		var needsRecalcuate = (newViewportHeight !== this.viewportHeight || newContentHeight !== this.contentHeight);
 
+		var rootOffset = 0;
+		if (this.rootWatcher) {
+			rootOffset = this.rootWatcher.top;
+		}
+
 		this.viewportTop = newViewportTop;
 		this.viewportHeight = newViewportHeight;
 		this.viewportBottom = newViewportTop + newViewportHeight;
@@ -208,7 +217,7 @@ class RootItem {
 			item = item[0];
 		}
 		// this.rootWatcher = scrollMonitor.create(item);
-		var root = new RootItem(item);
+		var root = new RootItem(item, this);
 		root.setStateFromDOM();
 		root.listenToDOM();
 		return root;
@@ -220,7 +229,9 @@ class RootItem {
 		} else if (item && item.length > 0) {
 			item = item[0];
 		}
-		return new Watcher(this, item, offsets);
+		var watcher = new Watcher(this, item, offsets);
+		this.watchers.push(watcher);
+		return watcher;
 	}
 
 	beget (item, offsets) {
