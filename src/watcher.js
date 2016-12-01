@@ -10,11 +10,11 @@ import {
 	defaultOffsets
 } from './constants';
 
-export default function ElementWatcher (rootWatcher, watchItem, offsets) {
+export default function ElementWatcher (containerWatcher, watchItem, offsets) {
 	var self = this;
 
 	this.watchItem = watchItem;
-	this.root = rootWatcher;
+	this.container = containerWatcher;
 
 	if (!offsets) {
 		this.offsets = defaultOffsets;
@@ -117,14 +117,14 @@ export default function ElementWatcher (rootWatcher, watchItem, offsets) {
 				this.watchItem.style.display = '';
 			}
 
-			var rootOffset = 0;
-			if (this.root.rootWatcher) {
-				rootOffset = this.root.rootWatcher.top;
+			var containerOffset = 0;
+			if (this.container.containerWatcher) {
+				containerOffset = this.container.containerWatcher.top;
 			}
 
 			var boundingRect = this.watchItem.getBoundingClientRect();
-			this.top = boundingRect.top + this.root.viewportTop - rootOffset;
-			this.bottom = boundingRect.bottom + this.root.viewportTop - rootOffset;
+			this.top = boundingRect.top + this.container.viewportTop - containerOffset;
+			this.bottom = boundingRect.bottom + this.container.viewportTop - containerOffset;
 
 			if (cachedDisplay === 'none') {
 				this.watchItem.style.display = cachedDisplay;
@@ -134,7 +134,7 @@ export default function ElementWatcher (rootWatcher, watchItem, offsets) {
 			if (this.watchItem > 0) {
 				this.top = this.bottom = this.watchItem;
 			} else {
-				this.top = this.bottom = this.root.documentHeight - this.watchItem;
+				this.top = this.bottom = this.container.documentHeight - this.watchItem;
 			}
 
 		} else { // an object with a top and bottom property
@@ -170,7 +170,7 @@ ElementWatcher.prototype = {
 			case event === FULLYENTERVIEWPORT && this.isFullyInViewport:
 			case event === EXITVIEWPORT && this.isAboveViewport && !this.isInViewport:
 			case event === PARTIALLYEXITVIEWPORT && this.isAboveViewport:
-				callback(this);
+				callback.call(this, this.container.latestEvent, this);
 				if (isOne) {
 					return;
 				}
@@ -202,17 +202,17 @@ ElementWatcher.prototype = {
 		this.bottom = this.top + this.height;
 	},
 	update: function() {
-		this.isAboveViewport = this.top < this.root.viewportTop;
-		this.isBelowViewport = this.bottom > this.root.viewportBottom;
+		this.isAboveViewport = this.top < this.container.viewportTop;
+		this.isBelowViewport = this.bottom > this.container.viewportBottom;
 
-		this.isInViewport = (this.top < this.root.viewportBottom && this.bottom > this.root.viewportTop);
-		this.isFullyInViewport = (this.top >= this.root.viewportTop && this.bottom <= this.root.viewportBottom) || (this.isAboveViewport && this.isBelowViewport);
+		this.isInViewport = (this.top < this.container.viewportBottom && this.bottom > this.container.viewportTop);
+		this.isFullyInViewport = (this.top >= this.container.viewportTop && this.bottom <= this.container.viewportBottom) || (this.isAboveViewport && this.isBelowViewport);
 
 	},
 	destroy: function() {
-		var index = watchers.indexOf(this),
+		var index = this.container.watchers.indexOf(this),
 			self  = this;
-		watchers.splice(index, 1);
+		this.container.watchers.splice(index, 1);
 		for (var i = 0, j = eventTypes.length; i < j; i++) {
 			self.callbacks[eventTypes[i]].length = 0;
 		}

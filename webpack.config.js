@@ -15,10 +15,12 @@ module.exports = {
 			test: /\.js$/,
 			loader: 'babel-loader',
 			query: {
-				presets: ['es2015', 'stage-0'],
-				plugins: ['transform-object-assign']
+				presets: ['es2015', 'stage-0']
 			}
 		}]
 	},
+	plugins: [
+		new webpack.optimize.UglifyJsPlugin()
+	],
 	devtool: '#sourcemap',
 };

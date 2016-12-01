@@ -44,9 +44,10 @@ function scrollTop (element) {
 }
 
 
-class RootItem {
+class ScrollMonitorContainer {
 	constructor (item, parentWatcher) {
 		var self = this;
+
 		this.item = item;
 		this.watchers = [];
 		this.viewportTop = null;
@@ -54,10 +55,6 @@ class RootItem {
 		this.documentHeight = getContentHeight(item);
 		this.viewportHeight = getViewportHeight(item);
 		this.DOMListener = this.DOMListener.bind(this);
-
-		if (parentWatcher) {
-			this.rootWatcher = parentWatcher.create(item);
-		}
 
 		var previousDocumentHeight;
 
@@ -88,18 +85,6 @@ class RootItem {
 				self.watchers[updateAndTriggerWatchersI].triggerCallbacks();
 			}
 
-		}
-
-		function recalculateWatchLocationsAndTrigger() {
-			self.viewportHeight = getViewportHeight();
-			calculateViewport();
-			updateAndTriggerWatchers();
-		}
-
-		var recalculateAndTriggerTimer;
-		function debouncedRecalcuateAndTrigger() {
-			clearTimeout(recalculateAndTriggerTimer);
-			recalculateAndTriggerTimer = setTimeout( recalculateWatchLocationsAndTrigger, 100 );
 		}
 
 		this.update = function() {
@@ -135,7 +120,6 @@ class RootItem {
 				if (window.addEventListener) {
 					if (this.item === document.body) {
 						window.removeEventListener('scroll', this.DOMListener);
-						this.rootWatcher.destroy();
 					} else {
 						this.item.removeEventListener('scroll', this.DOMListener);
 					}
@@ -144,7 +128,6 @@ class RootItem {
 					// Old IE support
 					if (this.item === document.body) {
 						window.detachEvent('onscroll', this.DOMListener);
-						this.rootWatcher.destroy();
 					} else {
 						this.item.detachEvent('onscroll', this.DOMListener);
 					}
@@ -175,11 +158,7 @@ class RootItem {
 	setState (newViewportTop, newViewportHeight, newContentHeight, event) {
 		var needsRecalcuate = (newViewportHeight !== this.viewportHeight || newContentHeight !== this.contentHeight);
 
-		var rootOffset = 0;
-		if (this.rootWatcher) {
-			rootOffset = this.rootWatcher.top;
-		}
-
+		this.latestEvent = event;
 		this.viewportTop = newViewportTop;
 		this.viewportHeight = newViewportHeight;
 		this.viewportBottom = newViewportTop + newViewportHeight;
@@ -206,21 +185,20 @@ class RootItem {
 		}
 	}
 
-	createCustomRoot () {
-		return new RootItem();
+	createCustomContainer () {
+		return new ScrollMonitorContainer();
 	}
 
-	createRoot (item) {
+	createContainer (item) {
 		if (typeof item === 'string') {
 			item = document.querySelector(item);
 		} else if (item && item.length > 0) {
 			item = item[0];
 		}
-		// this.rootWatcher = scrollMonitor.create(item);
-		var root = new RootItem(item, this);
-		root.setStateFromDOM();
-		root.listenToDOM();
-		return root;
+		var container = new ScrollMonitorContainer(item, this);
+		container.setStateFromDOM();
+		container.listenToDOM();
+		return container;
 	}
 
 	create (item, offsets) {
@@ -239,5 +217,5 @@ class RootItem {
 	}
 }
 
-export default RootItem;
+export default ScrollMonitorContainer;
 

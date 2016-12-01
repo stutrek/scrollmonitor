@@ -1,12 +1,17 @@
 import { isOnServer } from './src/constants';
 
-import RootItem from './src/root';
-import Watcher from './src/watcher';
+import ScrollMonitorContainer from './src/container';
 
-var scrollMonitor = new RootItem(isOnServer ? null : document.body);
-scrollMonitor.setStateFromDOM(null);
-scrollMonitor.listenToDOM();
+var scrollMonitor = new ScrollMonitorContainer(isOnServer ? null : document.body);
 
-// export { RootItem, Watcher };
+function init () {
+	scrollMonitor.setStateFromDOM(null);
+	scrollMonitor.listenToDOM();
+}
+if (document.body) {
+	init();
+} else {
+	document.addEventListener('DOMContentLoaded', init);
+}
 
 module.exports = scrollMonitor;
