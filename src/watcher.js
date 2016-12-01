@@ -118,8 +118,10 @@ export default function ElementWatcher (containerWatcher, watchItem, offsets) {
 			}
 
 			var containerOffset = 0;
-			if (this.container.containerWatcher) {
-				containerOffset = this.container.containerWatcher.top;
+			var container = this.container;
+			while (container.containerWatcher) {
+				containerOffset += container.containerWatcher.top - container.containerWatcher.container.viewportTop;
+				container = container.containerWatcher.container;
 			}
 
 			var boundingRect = this.watchItem.getBoundingClientRect();

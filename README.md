@@ -175,7 +175,7 @@ There is a set of unit tests written with Mocha + Chai that run in testem. Getti
 
 ```
 npm install
-npm start
+npm test
 ```
 
 then open http://localhost:7357
