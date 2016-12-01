@@ -1,17 +1,17 @@
 scrollMonitor
 =============
 
-The scroll monitor allows you to receive events when elements enter or exit the viewport. It does this using watcher objects, which watch an element and trigger events. Watcher objects also contain information about the element they watch, including the element's visibility and location relative to the viewport.
+The scroll monitor allows you to receive events when elements enter or exit a viewport. It does this using watcher objects, which watch an element and trigger events. Watcher objects also contain information about the element they watch, including the element's visibility and location relative to the viewport. If your scroll container is an element other than the body you can create a container that creates watchers.
 
 The scroll monitor was designed to be very fast. On each scroll event the DOM is only touched twice, once to find the document height and again to find the viewport top. No variables are declared, nor are any objects, arrays, or strings created.
 
-The code is based on vanilla javascript and has no external dependencies. Except if you want to put it in the head of the document, then you'll need jQuery for the DOMContentLoaded event.
+The code is based on vanilla javascript and has no external dependencies. _The script cannot be put in the head_.
 
 Watchers are _very_ cheap. Create them liberally.
 
-[![browser support](http://ci.testling.com/sakabako/scrollMonitor.png)](http://ci.testling.com/sakabako/scrollMonitor)
-
 ## Basic Usage
+
+### When the body scrolls
 
 ```javascript
 var scrollMonitor = require("./scrollMonitor"); // if you're not using require, you can use the scrollMonitor global.
@@ -26,9 +26,34 @@ elementWatcher.exitViewport(function() {
     console.log( 'I have left the viewport' );
 });
 ```
+
+### For a scroll container
+
+```javascript
+var containerElement = document.getElementById("container");
+
+var containerMonitor = scrollMonitor.createContainer(containerElement);
+// this containerMonitor is an instance of the scroll monitor
+// that listens to scroll events on your container.
+
+var childElement = document.getElementById("child-of-container");
+var elementWatcher = containerMonitor.create(childElement);
+
+elementWatcher.enterViewport(function() {
+    console.log( 'I have entered the viewport' );
+});
+elementWatcher.exitViewport(function() {
+    console.log( 'I have left the viewport' );
+});
+```
+
+_Note: an element is said to be in the viewport if it is scrolled into its parent, it does not matter if the parent is in the viewport._
+
 ## Demos
 
 * [Stress Test](http://stutrek.github.com/scrollMonitor/demos/stress.html) - Test with as many watchers as you'd like
+* [Stress Test in a div](http://stutrek.github.com/scrollMonitor/demos/stressTestInADiv.html) - Note how much slower scrolling a div is than scrolling the body.
+* [Nested scrollers](http://stutrek.github.com/scrollMonitor/demos/divInADiv.html)
 * [Fixed Positioning and Locking](http://stutrek.github.com/scrollMonitor/demos/fixed.html)
 * [Anchored section headers](http://stutrek.github.com/scrollMonitor/demos/list.html)
 * [Complex sidebar behavior](http://stutrek.github.com/scrollMonitor/demos/scoreboard.html)
@@ -134,6 +159,7 @@ scrollMonitor.create( element, -200 )
 ## scrollMonitor Module
 
 ### Methods
+* `scrollMonitor.createContainer( containerEl )` - returns a new ScrollMonitorContainer that can be used just like the scrollMonitor module.
 * `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, NodeList, CSS selector, object with .top and .bottom, or a number.
 * `scrollMonitor.update()` - update and trigger all watchers.
 * `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
@@ -144,3 +170,13 @@ scrollMonitor.create( element, -200 )
 * `scrollMonitor.viewportHeight` - height of the viewport.
 * `scrollMonitor.documentHeight` - height of the document.
 
+# Contributing
+
+There is a set of unit tests written with Mocha + Chai that run in testem. Getting them running is simple:
+
+```
+npm install
+npm test
+```
+
+then open http://localhost:7357

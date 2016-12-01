@@ -1,0 +1,135 @@
+<!doctype html>
+<head>
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Helvetica, Arial, sans-serif;
+		}
+		.screen {
+			height: 100vh;
+			width: 100%;
+			position: relative;
+			min-height: 900px;
+		}
+		.content {
+			position: absolute;
+			height: 400px;
+			width: 615px;
+			padding: 15px;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			margin: auto;
+			background-color: white;
+		}
+		.content img {
+			width: 100%;
+		}
+		.one {
+			background-color: silver;
+		}
+		.two {
+			background-color: #c00;
+		}
+		.three {
+			background-color: #00c;
+		}
+		h1 {
+			margin-top: 0;
+		}
+		.insert-boxes-here {
+			margin: 0 -5px;
+		}
+		.box {
+			display: inline-block;
+			background-color: #ccc;
+			width: 75px;
+			height: 75px;
+			margin: 5px;
+			line-height: 75px;
+			text-align: center;
+			color: #999;
+			/*border: 1px solid black;*/
+		}
+		.box.in {
+			background-color: #fcc;
+		}
+		.box.partial-above {
+			background-color: #ccf;
+		}
+		.box.partial-below {
+			background-color: #ffc;
+		}
+
+		.internal {
+			height: 300px;
+			margin: 0 73px 10px;
+			text-align: center;
+			background-color: #aaa;
+		}
+
+		.scroller {
+			overflow-y: auto;
+		}
+	​</style>
+</head>
+<body>
+<div>
+	<div class="screen one">
+		<div class="content scroller">
+			<h1>Here are a couple of boxes from the stress test.</h1>
+			<div class="insert-boxes-here"></div>
+		</div>
+	</div>
+	<div class="screen two">
+		<div class="content scroller">
+			<h1>And a few more, just to prove that it works down here too.</h1>
+			<div class="insert-boxes-here"></div>
+		</div>
+	</div>
+	<div class="screen three">
+		<div class="content scroller">
+			<h1>And a scroller in a scroller.</h1>
+			<div class="internal scroller">
+				<h2>Just for you.</h2>
+				<div class="insert-boxes-here"></div>
+			</div>
+			<div class="insert-boxes-here"></div>
+		</div>
+	</div>
+</div>
+<a href="https://github.com/sakabako/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="../scrollMonitor.js"></script>
+<script type="text/javascript">
+	var boxHtml = (new Array(100)).join('<span class="box"></span>');
+	$('.insert-boxes-here').html(boxHtml);
+
+	function listener(event, watcher) {
+		if (!watcher.isInViewport) {
+			return;
+		} else if (watcher.isFullyInViewport) {
+			watcher.watchItem.style.backgroundColor = '#fcc';
+		} else if (watcher.isAboveViewport) {
+			watcher.watchItem.style.backgroundColor = '#ccf';
+		} else if (watcher.isBelowViewport) {
+			watcher.watchItem.style.backgroundColor = '#ffc';
+		}
+	}
+
+	$('.scroller').each(function (i, element) {
+		var boxes = $('> .insert-boxes-here > .box', element);
+		var container = scrollMonitor.createContainer(element);
+		boxes.each(function (i, boxEl) {
+			var watcher = container.create(boxEl);
+			watcher.stateChange(listener);
+			listener(null, watcher);
+		});
+	});
+
+</script>
+</body>

@@ -1,4 +1,14 @@
 {
-  "framework": "mocha+chai",
-  "test_page": "spec-runner/index.html"
+	"framework": "mocha+chai",
+
+	"src_files": [
+		"test/polyfills.js",
+		"node_modules/sinon/pkg/sinon.js",
+		"scrollMonitor.js",
+		"test/tests.js"
+	],
+
+	"launch_in_dev": [
+		"phantomjs"
+	]
 }

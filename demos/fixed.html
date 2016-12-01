@@ -40,7 +40,7 @@
 <script src="../scrollMonitor.js"></script>
 <script type="text/javascript">
 
-	$('span').each(function(i, element) {
+	var watchers = $('span').map(function(i, element) {
 
 		var watcher = scrollMonitor.create( element );
 
@@ -49,8 +49,9 @@
 		watcher.stateChange(function() {
 			$(element).toggleClass('fixed', this.isAboveViewport)
 		});
-
-	})
+		return watcher;
+	});
+	console.log(watchers);
 
 </script>
 </body>

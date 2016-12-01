@@ -9,6 +9,14 @@
 			text-align: center;
 			margin: 20px;
 		}
+		#container {
+			position: absolute;
+			top: 200px;
+			bottom: 0;
+			left: 100px;
+			right: 100px;
+			overflow-y: auto;
+		}
 		#container span {
 			display: inline-block;
 			background-color: #ccc;
@@ -109,6 +117,8 @@
 	var frag = document.createDocumentFragment();
 	var i = 0;
 
+	var container = scrollMonitor.createContainer(container);
+
 	function addElements() {
 		var elements = Array.prototype.slice.apply(frag.childNodes);
 		container.appendChild( frag );
@@ -136,6 +146,7 @@
 			progress.removeAttribute('value');
 			setImmediate(function() {
 				scrollMonitor.recalculateLocations();
+				container.recalculateLocations();
 				$('#counter').remove();
 			});
 		} else {
@@ -148,17 +159,17 @@
 
 	function addClass() {
 		if (!this.isInViewport) {
-			return;
+			return
 		} else if (this.isFullyInViewport) {
-			this.watchItem.style.backgroundColor = '#fcc';
+			this.watchItem.style.backgroundColor = '#fcc'
 		} else if (this.isAboveViewport) {
-			this.watchItem.style.backgroundColor = '#ccf';
+			this.watchItem.style.backgroundColor = '#ccf'
 		} else if (this.isBelowViewport) {
-			this.watchItem.style.backgroundColor = '#ffc';
+			this.watchItem.style.backgroundColor = '#ffc'
 		}
 	}
 	function makeWatcher( element ) {
-		var watcher = scrollMonitor.create( element );
+		var watcher = container.create( element );
 		watcher.stateChange(addClass);
 		addClass.call( watcher );
 	}
