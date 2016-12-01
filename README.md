@@ -52,7 +52,7 @@ _Note: an element is said to be in the viewport if it is scrolled into its paren
 ## Demos
 
 * [Stress Test](http://stutrek.github.com/scrollMonitor/demos/stress.html) - Test with as many watchers as you'd like
-* [Stress Test in a div](http://stutrek.github.com/scrollMonitor/demos/stressTestInADiv.html) - Note how much slower scrolling a div is than scrolling the body.
+* [Stress Test in a div](http://stutrek.github.com/scrollMonitor/demos/stressTestInDiv.html) - Note how much slower scrolling a div is than scrolling the body.
 * [Nested scrollers](http://stutrek.github.com/scrollMonitor/demos/divInADiv.html)
 * [Fixed Positioning and Locking](http://stutrek.github.com/scrollMonitor/demos/fixed.html)
 * [Anchored section headers](http://stutrek.github.com/scrollMonitor/demos/list.html)
