@@ -1,4 +1,4 @@
-var { isOnServer, isInBrowser } = require('./constants');
+var { isOnServer, isInBrowser, eventTypes } = require('./constants');
 var Watcher = require('./watcher');
 
 function getViewportHeight (element) {
@@ -57,6 +57,7 @@ class ScrollMonitorContainer {
 		this.DOMListener = function () {
 			ScrollMonitorContainer.prototype.DOMListener.apply(self, arguments);
 		};
+		this.eventTypes = eventTypes;
 
 		if (parentWatcher) {
 			this.containerWatcher = parentWatcher.create(item);

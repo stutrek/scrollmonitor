@@ -73,6 +73,8 @@ describe('API', function () {
 		expect(scrollMonitor.viewportBottom).to.be.a('number');
 		expect(scrollMonitor.viewportHeight).to.be.a('number');
 		expect(scrollMonitor.documentHeight).to.be.a('number');
+
+		expect(scrollMonitor.eventTypes).to.eql(['visibilityChange', 'enterViewport', 'fullyEnterViewport', 'exitViewport', 'partiallyExitViewport', 'locationChange', 'stateChange']);
 	});
 	it('watcher should have correct API.', function () {
 		var watcher = scrollMonitor.create(10);
