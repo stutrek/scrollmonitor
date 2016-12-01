@@ -164,7 +164,7 @@ describe('calculating locations', function () {
 		expect(watcher.height).to.equal(15);
 
 		watcher.destroy();
-		fixture.innerHTML = '';
+		fixture.removeChild(div);
 	});
 });
 
@@ -198,7 +198,6 @@ describe('location booleans', function () {
 	it('should calculate partially above viewport correctly', function (done) {
 		window.scrollTo(0,100);
 		requestAnimationFrame(function () {
-			var windowHeight = getViewportHeight();
 			var watcher = scrollMonitor.create({top: 0, bottom: 200});
 
 			expect(watcher.isInViewport).to.equal(true);
@@ -227,8 +226,6 @@ describe('location booleans', function () {
 	it('should calculate above viewport correctly', function (done) {
 		window.scrollTo(0,100);
 		requestAnimationFrame(function () {
-			console.log(scrollMonitor.viewportTop);
-			//var windowHeight = getViewportHeight();
 			var watcher = scrollMonitor.create({top: 0, bottom: 20});
 
 			expect(watcher.isInViewport).to.equal(false);
