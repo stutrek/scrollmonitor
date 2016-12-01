@@ -121,9 +121,9 @@
 
 	$('.scroller').each(function (i, element) {
 		var boxes = $('> .insert-boxes-here > .box', element);
-		var root = scrollMonitor.createRoot(element);
+		var container = scrollMonitor.createContainer(element);
 		boxes.each(function (i, boxEl) {
-			var watcher = root.create(boxEl);
+			var watcher = container.create(boxEl);
 			watcher.stateChange(listener);
 			listener(null, watcher);
 		});

@@ -117,7 +117,7 @@
 	var frag = document.createDocumentFragment();
 	var i = 0;
 
-	var root = scrollMonitor.createRoot(container);
+	var container = scrollMonitor.createContainer(container);
 
 	function addElements() {
 		var elements = Array.prototype.slice.apply(frag.childNodes);
@@ -146,7 +146,7 @@
 			progress.removeAttribute('value');
 			setImmediate(function() {
 				scrollMonitor.recalculateLocations();
-				root.recalculateLocations();
+				container.recalculateLocations();
 				$('#counter').remove();
 			});
 		} else {
@@ -169,7 +169,7 @@
 		}
 	}
 	function makeWatcher( element ) {
-		var watcher = root.create( element );
+		var watcher = container.create( element );
 		watcher.stateChange(addClass);
 		addClass.call( watcher );
 	}

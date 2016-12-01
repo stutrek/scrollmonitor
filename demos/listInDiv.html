@@ -77,7 +77,7 @@
 			htmlBuffer.push('</li></section>');
 		});
 		$(target).html(htmlBuffer.join(''));
-		var rootWatcher = scrollMonitor.createRoot(target);
+		var containerWatcher = scrollMonitor.createContainer(target);
 
 		// anchor the section header
 		var h2Height = $('h2').innerHeight();
@@ -86,9 +86,9 @@
 
 		$('section').each(function(index, section) {
 
-			var sectionWatcher = rootWatcher.create(section)
+			var sectionWatcher = containerWatcher.create(section)
 
-			var sectionMinusBottomHeadline = rootWatcher.create(section, {bottom: -1*h2Height});
+			var sectionMinusBottomHeadline = containerWatcher.create(section, {bottom: -1*h2Height});
 
 			sectionMinusBottomHeadline.stateChange( function() {
 

@@ -1,17 +1,13 @@
-import { isOnServer } from './src/constants';
+import { isInBrowser } from './src/constants';
 
 import ScrollMonitorContainer from './src/container';
 
-var scrollMonitor = new ScrollMonitorContainer(isOnServer ? null : document.body);
+var scrollMonitor = new ScrollMonitorContainer(isInBrowser ? document.body : null);
+scrollMonitor.setStateFromDOM(null);
+scrollMonitor.listenToDOM();
 
-function init () {
-	scrollMonitor.setStateFromDOM(null);
-	scrollMonitor.listenToDOM();
-}
-if (document.body) {
-	init();
-} else {
-	document.addEventListener('DOMContentLoaded', init);
+if (isInBrowser) {
+	window.scrollMonitor = scrollMonitor;
 }
 
 module.exports = scrollMonitor;

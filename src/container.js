@@ -56,6 +56,10 @@ class ScrollMonitorContainer {
 		this.viewportHeight = getViewportHeight(item);
 		this.DOMListener = this.DOMListener.bind(this);
 
+		if (parentWatcher) {
+			this.containerWatcher = parentWatcher.create(item);
+		}
+
 		var previousDocumentHeight;
 
 		var calculateViewportI;
@@ -120,6 +124,7 @@ class ScrollMonitorContainer {
 				if (window.addEventListener) {
 					if (this.item === document.body) {
 						window.removeEventListener('scroll', this.DOMListener);
+						this.containerWatcher.destroy();
 					} else {
 						this.item.removeEventListener('scroll', this.DOMListener);
 					}
@@ -128,6 +133,7 @@ class ScrollMonitorContainer {
 					// Old IE support
 					if (this.item === document.body) {
 						window.detachEvent('onscroll', this.DOMListener);
+						this.containerWatcher.destroy();
 					} else {
 						this.item.detachEvent('onscroll', this.DOMListener);
 					}
