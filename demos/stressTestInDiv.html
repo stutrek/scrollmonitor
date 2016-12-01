@@ -110,18 +110,18 @@
 	var count = parseInt(window.location.search.substr(1), 10) || 10000;
 	$('.fill-with-count').html(count);
 
-	var container = document.getElementById('container');
+	var containerEl = document.getElementById('container');
 	var counter = $('#progress_numbers')[0]
 	var progress = $('#counter progress')[0]
 
 	var frag = document.createDocumentFragment();
 	var i = 0;
 
-	var container = scrollMonitor.createContainer(container);
+	var container = scrollMonitor.createContainer(containerEl);
 
 	function addElements() {
 		var elements = Array.prototype.slice.apply(frag.childNodes);
-		container.appendChild( frag );
+		containerEl.appendChild( frag );
 		elements.forEach(makeWatcher);
 	}
 
