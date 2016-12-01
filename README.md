@@ -11,7 +11,7 @@ Watchers are _very_ cheap. Create them liberally.
 
 ## Basic Usage
 
-This example shows how to use the scroll monitor when the whole body scrolls.
+### When the body scrolls
 
 ```javascript
 var scrollMonitor = require("./scrollMonitor"); // if you're not using require, you can use the scrollMonitor global.
@@ -27,14 +27,14 @@ elementWatcher.exitViewport(function() {
 });
 ```
 
-### For a Scroll Container
-
-This example shows how to use the scroll monitor if you're scrolling an element other than the body.
+### For a scroll container
 
 ```javascript
 var containerElement = document.getElementById("container");
 
 var containerMonitor = scrollMonitor.createContainer(containerElement);
+// this containerMonitor is an instance of the scroll monitor
+// that listens to scroll events on your container.
 
 var childElement = document.getElementById("child-of-container");
 var elementWatcher = containerMonitor.create(childElement);
@@ -159,6 +159,7 @@ scrollMonitor.create( element, -200 )
 ## scrollMonitor Module
 
 ### Methods
+* `scrollMonitor.createContainer( containerEl )` - returns a new ScrollMonitorContainer that can be used just like the scrollMonitor module.
 * `scrollMonitor.create( watchItem, offsets )` - Returns a new watcher. `watchItem` is a DOM element, jQuery object, NodeList, CSS selector, object with .top and .bottom, or a number.
 * `scrollMonitor.update()` - update and trigger all watchers.
 * `scrollMonitor.recalculateLocations()` - recalculate the location of all unlocked watchers and trigger if needed.
