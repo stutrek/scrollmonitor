@@ -27,7 +27,7 @@ var requestAnimationFrameDoer = window.requestAnimationFrame ||
 	window.msRequestAnimationFrame ||
 	function (cb) { setTimeout(cb, 20); };
 
-	var getViewportHeight = function() {
+var getViewportHeight = function() {
 	return window.innerHeight || document.documentElement.clientHeight;
 };
 var requestAnimationFrame = function (cb) {
@@ -41,24 +41,23 @@ if (!fixture) {
 	fixture = document.createElement('div');
 	document.body.appendChild( fixture );
 }
-
 var div;
+div = document.createElement('div');
+div.style.position = 'absolute';
+div.style.top = '0px';
+div.style.left = '0px';
+div.style.width = '10px';
+div.style.backgroundColor = 'silver';
+div.style.height = ''+(getViewportHeight() * 2)+'px';
+fixture.appendChild(div);
+
 var setup = function (done) {
-	div = document.createElement('div');
-	div.style.position = 'absolute';
-	div.style.top = '0px';
-	div.style.left = '0px';
-	div.style.width = '10px';
-	div.style.backgroundColor = 'silver';
-	div.style.height = ''+(getViewportHeight() * 2)+'px';
-	fixture.appendChild(div);
 	// the browser doesn't trigger the scroll event synchronously.
 	window.scrollTo(0,0);
 	requestAnimationFrame(function () {done();});
 };
 
 var destroy =function (done) {
-	fixture.innerHTML = '';
 	window.scrollTo(0,0);
 	requestAnimationFrame(function () {done();});
 };
@@ -116,7 +115,7 @@ describe('calculating locations', function () {
 
 		expect(watcher10.bottom).to.equal(10);
 		expect(watcher15.bottom).to.equal(15);
-		
+
 		expect(watcher10.height).to.equal(0);
 		expect(watcher15.height).to.equal(0);
 
@@ -199,7 +198,7 @@ describe('location booleans', function () {
 	it('should calculate partially above viewport correctly', function (done) {
 		window.scrollTo(0,100);
 		requestAnimationFrame(function () {
-			//var windowHeight = getViewportHeight();
+			var windowHeight = getViewportHeight();
 			var watcher = scrollMonitor.create({top: 0, bottom: 200});
 
 			expect(watcher.isInViewport).to.equal(true);
@@ -216,6 +215,7 @@ describe('location booleans', function () {
 		var windowHeight = getViewportHeight();
 		var watcher = scrollMonitor.create({top: windowHeight+10, bottom: windowHeight+20});
 
+		expect(scrollMonitor.viewportTop).to.equal(0);
 		expect(watcher.isInViewport).to.equal(false);
 		expect(watcher.isFullyInViewport).to.equal(false);
 		expect(watcher.isAboveViewport).to.equal(false);
@@ -227,6 +227,7 @@ describe('location booleans', function () {
 	it('should calculate above viewport correctly', function (done) {
 		window.scrollTo(0,100);
 		requestAnimationFrame(function () {
+			console.log(scrollMonitor.viewportTop);
 			//var windowHeight = getViewportHeight();
 			var watcher = scrollMonitor.create({top: 0, bottom: 20});
 

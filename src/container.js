@@ -1,5 +1,5 @@
-import { isOnServer, isInBrowser } from './constants';
-import Watcher from './watcher';
+var { isOnServer, isInBrowser } = require('./constants');
+var Watcher = require('./watcher');
 
 function getViewportHeight (element) {
 	if (isOnServer) {
@@ -54,7 +54,9 @@ class ScrollMonitorContainer {
 		this.viewportBottom = null;
 		this.documentHeight = getContentHeight(item);
 		this.viewportHeight = getViewportHeight(item);
-		this.DOMListener = this.DOMListener.bind(this);
+		this.DOMListener = function () {
+			ScrollMonitorContainer.prototype.DOMListener.apply(self, arguments);
+		};
 
 		if (parentWatcher) {
 			this.containerWatcher = parentWatcher.create(item);
@@ -149,6 +151,7 @@ class ScrollMonitorContainer {
 	}
 
 	DOMListener (event) {
+		//alert('got scroll');
 		this.setStateFromDOM(event);
 		this.updateAndTriggerWatchers(event);
 	}
@@ -223,5 +226,5 @@ class ScrollMonitorContainer {
 	}
 }
 
-export default ScrollMonitorContainer;
+module.exports = ScrollMonitorContainer;
 

@@ -1,6 +1,6 @@
-import { isInBrowser } from './src/constants';
+var { isInBrowser } = require('./src/constants');
 
-import ScrollMonitorContainer from './src/container';
+var ScrollMonitorContainer = require('./src/container');
 
 var scrollMonitor = new ScrollMonitorContainer(isInBrowser ? document.body : null);
 scrollMonitor.setStateFromDOM(null);

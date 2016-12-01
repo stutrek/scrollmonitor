@@ -1,22 +1,22 @@
-export const VISIBILITYCHANGE = 'visibilityChange';
-export const ENTERVIEWPORT = 'enterViewport';
-export const FULLYENTERVIEWPORT = 'fullyEnterViewport';
-export const EXITVIEWPORT = 'exitViewport';
-export const PARTIALLYEXITVIEWPORT = 'partiallyExitViewport';
-export const LOCATIONCHANGE = 'locationChange';
-export const STATECHANGE = 'stateChange';
+exports.VISIBILITYCHANGE = 'visibilityChange';
+exports.ENTERVIEWPORT = 'enterViewport';
+exports.FULLYENTERVIEWPORT = 'fullyEnterViewport';
+exports.EXITVIEWPORT = 'exitViewport';
+exports.PARTIALLYEXITVIEWPORT = 'partiallyExitViewport';
+exports.LOCATIONCHANGE = 'locationChange';
+exports.STATECHANGE = 'stateChange';
 
-export const eventTypes = [
-	VISIBILITYCHANGE,
-	ENTERVIEWPORT,
-	FULLYENTERVIEWPORT,
-	EXITVIEWPORT,
-	PARTIALLYEXITVIEWPORT,
-	LOCATIONCHANGE,
-	STATECHANGE
+exports.eventTypes = [
+	exports.VISIBILITYCHANGE,
+	exports.ENTERVIEWPORT,
+	exports.FULLYENTERVIEWPORT,
+	exports.EXITVIEWPORT,
+	exports.PARTIALLYEXITVIEWPORT,
+	exports.LOCATIONCHANGE,
+	exports.STATECHANGE
 ];
 
-export const isOnServer = (typeof window === 'undefined');
-export const isInBrowser = !isOnServer;
+exports.isOnServer = (typeof window === 'undefined');
+exports.isInBrowser = !exports.isOnServer;
 
-export const defaultOffsets = {top: 0, bottom: 0};
+exports.defaultOffsets = {top: 0, bottom: 0};

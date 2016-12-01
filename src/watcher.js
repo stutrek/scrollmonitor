@@ -1,4 +1,4 @@
-import {
+var {
 	VISIBILITYCHANGE,
 	ENTERVIEWPORT,
 	FULLYENTERVIEWPORT,
@@ -8,9 +8,9 @@ import {
 	STATECHANGE,
 	eventTypes,
 	defaultOffsets
-} from './constants';
+} = require('./constants');
 
-export default function ElementWatcher (containerWatcher, watchItem, offsets) {
+function ElementWatcher (containerWatcher, watchItem, offsets) {
 	var self = this;
 
 	this.watchItem = watchItem;
@@ -239,3 +239,4 @@ for (var i = 0, j = eventTypes.length; i < j; i++) {
 	ElementWatcher.prototype[type] = eventHandlerFactory(type);
 }
 
+module.exports = ElementWatcher;
