@@ -3,11 +3,11 @@ scrollMonitor
 
 The scroll monitor allows you to receive events when elements enter or exit a viewport. It does this using watcher objects, which watch an element and trigger events. Watcher objects also contain information about the element they watch, including the element's visibility and location relative to the viewport. If your scroll container is an element other than the body you can create a container that creates watchers.
 
-The scroll monitor was designed to be very fast. On each scroll event the DOM is only touched twice, once to find the document height and again to find the viewport top. No variables are declared, nor are any objects, arrays, or strings created.
+The scroll monitor was designed to be very fast. On each scroll event the DOM is only touched twice, once to find the document height and again to find the viewport top. No variables are declared, nor are any objects, arrays, or strings created. Watchers are _very_ cheap. Create them liberally.
 
-The code is based on vanilla javascript and has no external dependencies. _The script cannot be put in the head_.
+The code is vanilla javascript and has no external dependencies, however _the script cannot be put in the head_.
 
-Watchers are _very_ cheap. Create them liberally.
+Also see the [React component](https://github.com/stutrek/scrollmonitor-react) and the [parallax library](https://github.com/stutrek/scrollmonitor-parallax).
 
 ## Basic Usage
 
