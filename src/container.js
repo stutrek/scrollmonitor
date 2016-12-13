@@ -154,7 +154,6 @@ class ScrollMonitorContainer {
 	DOMListener (event) {
 		//alert('got scroll');
 		this.setStateFromDOM(event);
-		this.updateAndTriggerWatchers(event);
 	}
 
 	setStateFromDOM (event) {
