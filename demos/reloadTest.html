@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+	<title>Scrolling Test</title>
+	<style>
+		.header {
+			background-color: rgb(0, 0, 128);
+			height: 100px;
+		}
+
+		.content {
+			background-color:  rgb(128, 0, 0);
+			height: 3000px;
+			padding: 50px 0 0 50px;
+		}
+
+		.footer {
+			background-color:  rgb(0, 128, 0);
+			height: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header"></div>
+	<div class="content">
+	  <div id="test">TEST</div>
+	</div>
+	<div class="footer"></div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="../scrollMonitor.js"></script>
+	<script>
+		var myElement = jQuery('.content');
+
+		var elementWatcher = scrollMonitor.create( myElement );
+
+		elementWatcher.fullyEnterViewport(function() {
+			console.log( 'I have fully entered the viewport' );
+		});
+		elementWatcher.partiallyExitViewport(function() {
+			console.log( 'I have partially left the viewport' );
+		});
+
+	</script>
+</body>

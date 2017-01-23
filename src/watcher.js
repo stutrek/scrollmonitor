@@ -171,7 +171,7 @@ ElementWatcher.prototype = {
 			case event === ENTERVIEWPORT && this.isInViewport:
 			case event === FULLYENTERVIEWPORT && this.isFullyInViewport:
 			case event === EXITVIEWPORT && this.isAboveViewport && !this.isInViewport:
-			case event === PARTIALLYEXITVIEWPORT && this.isAboveViewport:
+			case event === PARTIALLYEXITVIEWPORT && this.isInViewport && this.isAboveViewport:
 				callback.call(this, this.container.latestEvent, this);
 				if (isOne) {
 					return;
