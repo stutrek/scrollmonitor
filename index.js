@@ -6,8 +6,4 @@ var scrollMonitor = new ScrollMonitorContainer(isInBrowser ? document.body : nul
 scrollMonitor.setStateFromDOM(null);
 scrollMonitor.listenToDOM();
 
-if (isInBrowser) {
-	window.scrollMonitor = scrollMonitor;
-}
-
 module.exports = scrollMonitor;
