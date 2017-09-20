@@ -43,6 +43,19 @@ function scrollTop (element) {
 	}
 }
 
+var browserSupportsPassive = false;
+if (isInBrowser) {
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function() {
+				browserSupportsPassive = true;
+			}
+		});
+		window.addEventListener('test', null, opts);
+	} catch (e) {}
+}
+const useCapture = browserSupportsPassive ? {capture: false, passive: true} : false;
+
 
 class ScrollMonitorContainer {
 	constructor (item, parentWatcher) {
@@ -106,18 +119,6 @@ class ScrollMonitorContainer {
 	}
 
 	listenToDOM () {
-		var browserSupportsPassive = false;
-		try {
-			var opts = Object.defineProperty({}, 'passive', {
-				get: function() {
-					browserSupportsPassive = true;
-				}
-			});
-			window.addEventListener('test', null, opts);
-		} catch (e) {}
-
-		const useCapture = browserSupportsPassive ? {capture: false, passive: true} : false;
-
 		if (isInBrowser) {
 			if (window.addEventListener) {
 				if (this.item === document.body) {
