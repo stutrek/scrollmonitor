@@ -402,14 +402,14 @@ describe('events as the user scrolls', function () {
 		});
 	});
 
-	it('should call partiallyExitViewport immediately if the element is already above the viewport.', function (done) {
+	it('should not call partiallyExitViewport immediately if the element is already above the viewport.', function (done) {
 		window.scrollTo(0,100);
 		requestAnimationFrame(function () {
 			var watcher = scrollMonitor.create(10);
 			var spy = sinon.spy();
 
 			watcher.partiallyExitViewport(spy);
-			expect(spy.called).to.equal(true);
+			expect(spy.called).to.equal(false);
 			watcher.destroy();
 			done();
 		});
