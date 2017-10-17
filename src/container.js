@@ -43,6 +43,19 @@ function scrollTop (element) {
 	}
 }
 
+var browserSupportsPassive = false;
+if (isInBrowser) {
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function() {
+				browserSupportsPassive = true;
+			}
+		});
+		window.addEventListener('test', null, opts);
+	} catch (e) {}
+}
+const useCapture = browserSupportsPassive ? {capture: false, passive: true} : false;
+
 
 class ScrollMonitorContainer {
 	constructor (item, parentWatcher) {
@@ -109,9 +122,9 @@ class ScrollMonitorContainer {
 		if (isInBrowser) {
 			if (window.addEventListener) {
 				if (this.item === document.body) {
-					window.addEventListener('scroll', this.DOMListener);
+					window.addEventListener('scroll', this.DOMListener, useCapture);
 				} else {
-					this.item.addEventListener('scroll', this.DOMListener);
+					this.item.addEventListener('scroll', this.DOMListener, useCapture);
 				}
 				window.addEventListener('resize', this.DOMListener);
 			} else {
@@ -126,10 +139,10 @@ class ScrollMonitorContainer {
 			this.destroy = function () {
 				if (window.addEventListener) {
 					if (this.item === document.body) {
-						window.removeEventListener('scroll', this.DOMListener);
+						window.removeEventListener('scroll', this.DOMListener, useCapture);
 						this.containerWatcher.destroy();
 					} else {
-						this.item.removeEventListener('scroll', this.DOMListener);
+						this.item.removeEventListener('scroll', this.DOMListener, useCapture);
 					}
 					window.removeEventListener('resize', this.DOMListener);
 				} else {
