@@ -14,7 +14,7 @@ Also see the [React component](https://github.com/stutrek/scrollmonitor-react) a
 ### When the body scrolls
 
 ```javascript
-var scrollMonitor = require("./scrollMonitor"); // if you're not using require, you can use the scrollMonitor global.
+var scrollMonitor = require("scrollmonitor"); // if you're old school you can use the scrollMonitor global.
 var myElement = document.getElementById("itemToWatch");
 
 var elementWatcher = scrollMonitor.create( myElement );
