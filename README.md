@@ -7,7 +7,7 @@ The scroll monitor was designed to be very fast. On each scroll event the DOM is
 
 The code is vanilla javascript and has no external dependencies, however _the script cannot be put in the head_.
 
-Also see the [React component](https://github.com/stutrek/scrollmonitor-react) and the [parallax library](https://github.com/stutrek/scrollmonitor-parallax).
+Also see the [React hooks](https://github.com/stutrek/scrollmonitor-hooks), [React component](https://github.com/stutrek/scrollmonitor-react) and the [parallax library](https://github.com/stutrek/scrollmonitor-parallax).
 
 ## Basic Usage
 
