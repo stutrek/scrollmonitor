@@ -214,7 +214,9 @@ ElementWatcher.prototype = {
 	destroy: function() {
 		var index = this.container.watchers.indexOf(this),
 			self  = this;
-		this.container.watchers.splice(index, 1);
+		if (index !== -1) {
+			this.container.watchers.splice(index, 1);
+		}
 		for (var i = 0, j = eventTypes.length; i < j; i++) {
 			self.callbacks[eventTypes[i]].length = 0;
 		}
