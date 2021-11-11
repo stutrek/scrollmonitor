@@ -9,6 +9,7 @@
 })(function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    exports.Watcher = void 0;
     var constants_js_1 = require("./constants.js");
     var Watcher = /** @class */ (function () {
         function Watcher(container, watchItem, offsets) {
@@ -224,6 +225,7 @@
         };
         return Watcher;
     }());
+    exports.Watcher = Watcher;
     var eventHandlerFactory = function (type) {
         return function (callback, isOne) {
             if (isOne === void 0) { isOne = false; }
@@ -234,6 +236,5 @@
         var type = constants_js_1.eventTypes[i];
         Watcher.prototype[type] = eventHandlerFactory(type);
     }
-    exports["default"] = Watcher;
 });
 //# sourceMappingURL=watcher.js.map

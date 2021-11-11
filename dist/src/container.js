@@ -9,6 +9,7 @@
 })(function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    exports.ScrollMonitorContainer = void 0;
     var constants_js_1 = require("./constants.js");
     var watcher_js_1 = require("./watcher.js");
     function getViewportHeight(element) {
@@ -225,7 +226,7 @@
             else {
                 item = input;
             }
-            var watcher = new watcher_js_1["default"](this, item, offsets);
+            var watcher = new watcher_js_1.Watcher(this, item, offsets);
             this.watchers.push(watcher);
             return watcher;
         };
@@ -237,6 +238,6 @@
         };
         return ScrollMonitorContainer;
     }());
-    exports["default"] = ScrollMonitorContainer;
+    exports.ScrollMonitorContainer = ScrollMonitorContainer;
 });
 //# sourceMappingURL=container.js.map

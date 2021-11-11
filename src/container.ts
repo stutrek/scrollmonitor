@@ -1,6 +1,6 @@
 import { isOnServer, isInBrowser, eventTypes } from './constants.js';
 import { WatchItem, Offsets, WatchItemInput, ScrollEvent } from './types.js';
-import Watcher from './watcher.js';
+import { Watcher } from './watcher.js';
 
 function getViewportHeight(element: HTMLElement) {
     if (isOnServer) {
@@ -61,7 +61,7 @@ if (isInBrowser) {
 }
 const useCapture = browserSupportsPassive ? { capture: false, passive: true } : false;
 
-class ScrollMonitorContainer {
+export class ScrollMonitorContainer {
     item: HTMLElement;
     watchers: Watcher[];
 
@@ -261,5 +261,3 @@ class ScrollMonitorContainer {
         return this.create(input, offsets);
     }
 }
-
-export default ScrollMonitorContainer;

@@ -1,4 +1,4 @@
-import type Watcher from './watcher.js';
+import type { Watcher } from './watcher.js';
 
 export type EventName =
     | 'visibilityChange'

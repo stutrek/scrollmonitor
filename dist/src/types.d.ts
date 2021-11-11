@@ -1,4 +1,4 @@
-import type Watcher from './watcher.js';
+import type { Watcher } from './watcher.js';
 export declare type EventName = 'visibilityChange' | 'enterViewport' | 'fullyEnterViewport' | 'exitViewport' | 'partiallyExitViewport' | 'locationChange' | 'stateChange';
 export declare type WatchItemInput = HTMLElement | {
     top: number;

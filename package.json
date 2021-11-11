@@ -26,8 +26,8 @@
         "dom"
     ],
     "scripts": {
-        "test": "tsc --outDir ./testOutput --module es6 && testem ci",
-        "start": "tsc --outDir ./testOutput --module es6 && testem",
+        "test": "tsc testEntry.ts --outDir ./testOutput --module es6 && testem ci",
+        "start": "tsc testEntry.ts --outDir ./testOutput --module es6 && testem",
         "build": "tsc"
     },
     "license": "MIT",

@@ -1,6 +1,6 @@
 import { Offsets, WatchItemInput, ScrollEvent } from './types.js';
-import Watcher from './watcher.js';
-declare class ScrollMonitorContainer {
+import { Watcher } from './watcher.js';
+export declare class ScrollMonitorContainer {
     item: HTMLElement;
     watchers: Watcher[];
     viewportTop: number;
@@ -25,4 +25,3 @@ declare class ScrollMonitorContainer {
      */
     beget(input: WatchItemInput, offsets?: Offsets): Watcher;
 }
-export default ScrollMonitorContainer;

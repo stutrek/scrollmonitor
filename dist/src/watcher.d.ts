@@ -1,6 +1,6 @@
-import type ScrollMonitorContainer from './container.js';
+import type { ScrollMonitorContainer } from './container.js';
 import type { EventName, Listener, Offsets, ScrollEvent, WatchItem } from './types';
-declare class Watcher {
+export declare class Watcher {
     container: ScrollMonitorContainer;
     watchItem: WatchItem;
     constructor(container: ScrollMonitorContainer, watchItem: WatchItem, offsets: Offsets);
@@ -38,4 +38,3 @@ declare class Watcher {
     lock(): void;
     unlock(): void;
 }
-export default Watcher;

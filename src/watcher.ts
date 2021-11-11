@@ -10,7 +10,7 @@ import {
     defaultOffsets,
 } from './constants.js';
 
-import type ScrollMonitorContainer from './container.js';
+import type { ScrollMonitorContainer } from './container.js';
 import type { EventName, Listener, Offsets, ScrollEvent, WatchItem, WatchItemInput } from './types';
 
 type ListenerItem = {
@@ -18,7 +18,7 @@ type ListenerItem = {
     isOne: boolean;
 };
 
-class Watcher {
+export class Watcher {
     constructor(
         public container: ScrollMonitorContainer,
         public watchItem: WatchItem,
@@ -287,5 +287,3 @@ for (var i = 0, j = eventTypes.length; i < j; i++) {
     var type = eventTypes[i];
     Watcher.prototype[type] = eventHandlerFactory(type);
 }
-
-export default Watcher;
