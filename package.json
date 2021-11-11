@@ -1,50 +1,45 @@
 {
-  "name": "scrollmonitor",
-  "version": "1.2.4",
-  "author": "Stu Kabakoff <stukabakoff@gmail.com>",
-  "description": "A simple and fast API to monitor DOM elements as you scroll",
-  "contributors": [
-    {
-      "name": "Stu Kabakoff",
-      "email": "stukabakoff@gmail.com"
+    "name": "scrollmonitor",
+    "version": "1.2.4",
+    "author": "Stu Kabakoff <stukabakoff@gmail.com>",
+    "description": "A simple and fast API to monitor DOM elements as you scroll",
+    "contributors": [
+        {
+            "name": "Stu Kabakoff",
+            "email": "stukabakoff@gmail.com"
+        },
+        {
+            "name": "Terrence Lee",
+            "email": "mr.lee@terrenceishere.com"
+        },
+        {
+            "name": "Roman Kalyakin",
+            "email": "roman@kalyakin.com"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/stutrek/scrollMonitor.git"
     },
-    {
-      "name": "Terrence Lee",
-      "email": "mr.lee@terrenceishere.com"
+    "keywords": [
+        "scroll",
+        "dom"
+    ],
+    "scripts": {
+        "test": "tsc --outDir ./testOutput --module es6 && testem ci",
+        "start": "tsc --outDir ./testOutput --module es6 && testem",
+        "build": "tsc"
     },
-    {
-      "name": "Roman Kalyakin",
-      "email": "roman@kalyakin.com"
+    "license": "MIT",
+    "main": "./dist/index.js",
+    "dependencies": {},
+    "devDependencies": {
+        "prettier": "^2.4.1",
+        "sinon": "^1.17.6",
+        "testem": "github:stutrek/testem",
+        "typescript": "^4.4.4"
+    },
+    "spm": {
+        "main": "scrollMonitor.js"
     }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/stutrek/scrollMonitor.git"
-  },
-  "keywords": [
-    "scroll",
-    "dom"
-  ],
-  "scripts": {
-    "test": "webpack; testem ci",
-    "start": "webpack; testem"
-  },
-  "license": "MIT",
-  "main": "./scrollMonitor.js",
-  "dependencies": {},
-  "devDependencies": {
-    "babel-core": "^6.2.1",
-    "babel-loader": "^6.2.0",
-    "babel-plugin-transform-es3-member-expression-literals": "^6.8.0",
-    "babel-plugin-transform-es3-property-literals": "^6.8.0",
-    "babel-plugin-transform-object-assign": "^6.8.0",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-0": "^6.5.0",
-    "sinon": "^1.17.6",
-    "testem": "github:stutrek/testem",
-    "webpack": "^1.13.1"
-  },
-  "spm": {
-    "main": "scrollMonitor.js"
-  }
 }

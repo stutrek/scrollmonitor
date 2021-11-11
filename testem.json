@@ -1,14 +1,7 @@
 {
-	"framework": "mocha+chai",
-	"src_files": [],
-	"footer_scripts": [
-		"test/polyfills.js",
-		"node_modules/sinon/pkg/sinon.js",
-		"scrollMonitor.js",
-		"test/tests.js"
-	],
+    "framework": "mocha+chai",
+    "src_files": [],
+    "footer_scripts": ["test/polyfills.js", "node_modules/sinon/pkg/sinon.js", "test/index.js"],
 
-	"launch_in_dev": [
-		"phantomjs"
-	]
+    "launch_in_dev": ["phantomjs"]
 }
