@@ -137,46 +137,21 @@ export class ScrollMonitorContainer {
 
     listenToDOM() {
         if (isInBrowser) {
-            if (window.addEventListener) {
-                if (this.item === document.body) {
-                    window.addEventListener('scroll', this.DOMListener, useCapture);
-                } else {
-                    this.item.addEventListener('scroll', this.DOMListener, useCapture);
-                }
-                window.addEventListener('resize', this.DOMListener);
+            if (this.item === document.body) {
+                window.addEventListener('scroll', this.DOMListener, useCapture);
             } else {
-                // Old IE support
-                if (this.item === document.body) {
-                    // @ts-ignore;
-                    window.attachEvent('onscroll', this.DOMListener);
-                } else {
-                    // @ts-ignore;
-                    this.item.attachEvent('onscroll', this.DOMListener);
-                }
-                // @ts-ignore;
-                window.attachEvent('onresize', this.DOMListener);
+                this.item.addEventListener('scroll', this.DOMListener, useCapture);
             }
+            window.addEventListener('resize', this.DOMListener);
+
             this.destroy = function () {
-                if (window.addEventListener) {
-                    if (this.item === document.body) {
-                        window.removeEventListener('scroll', this.DOMListener, useCapture);
-                        this.containerWatcher.destroy();
-                    } else {
-                        this.item.removeEventListener('scroll', this.DOMListener, useCapture);
-                    }
-                    window.removeEventListener('resize', this.DOMListener);
+                if (this.item === document.body) {
+                    window.removeEventListener('scroll', this.DOMListener, useCapture);
+                    this.containerWatcher.destroy();
                 } else {
-                    // Old IE support
-                    if (this.item === document.body) {
-                        // @ts-ignore;
-                        window.detachEvent('onscroll', this.DOMListener);
-                        this.containerWatcher.destroy();
-                    } else {
-                        this.item.detachEvent('onscroll', this.DOMListener);
-                    }
-                    // @ts-ignore;
-                    window.detachEvent('onresize', this.DOMListener);
+                    this.item.removeEventListener('scroll', this.DOMListener, useCapture);
                 }
+                window.removeEventListener('resize', this.DOMListener);
             };
         }
     }

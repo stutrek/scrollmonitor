@@ -50,7 +50,9 @@ export class Watcher {
 
         var listenerToTriggerListI;
         var listener;
+        let needToTriggerStateChange = false;
         function triggerCallbackArray(listeners: ListenerItem[], event: ScrollEvent) {
+            needToTriggerStateChange = true;
             if (listeners.length === 0) {
                 return;
             }
@@ -97,12 +99,9 @@ export class Watcher {
             if (this.isInViewport !== wasInViewport) {
                 triggerCallbackArray(this.callbacks[VISIBILITYCHANGE], event);
             }
-            switch (true) {
-                case wasInViewport !== this.isInViewport:
-                case wasFullyInViewport !== this.isFullyInViewport:
-                case wasAboveViewport !== this.isAboveViewport:
-                case wasBelowViewport !== this.isBelowViewport:
-                    triggerCallbackArray(this.callbacks[STATECHANGE], event);
+            if (needToTriggerStateChange) {
+                needToTriggerStateChange = false;
+                triggerCallbackArray(this.callbacks[STATECHANGE], event);
             }
 
             wasInViewport = this.isInViewport;
@@ -264,9 +263,7 @@ export class Watcher {
         var index = this.container.watchers.indexOf(this),
             self = this;
         this.container.watchers.splice(index, 1);
-        for (var i = 0, j = eventTypes.length; i < j; i++) {
-            self.callbacks[eventTypes[i]].length = 0;
-        }
+        self.callbacks = {};
     }
     // prevent recalculating the element location
     lock() {

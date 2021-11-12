@@ -1,33 +1,20 @@
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    exports.__esModule = true;
-    exports.defaultOffsets = exports.isInBrowser = exports.isOnServer = exports.eventTypes = exports.STATECHANGE = exports.LOCATIONCHANGE = exports.PARTIALLYEXITVIEWPORT = exports.EXITVIEWPORT = exports.FULLYENTERVIEWPORT = exports.ENTERVIEWPORT = exports.VISIBILITYCHANGE = void 0;
-    exports.VISIBILITYCHANGE = 'visibilityChange';
-    exports.ENTERVIEWPORT = 'enterViewport';
-    exports.FULLYENTERVIEWPORT = 'fullyEnterViewport';
-    exports.EXITVIEWPORT = 'exitViewport';
-    exports.PARTIALLYEXITVIEWPORT = 'partiallyExitViewport';
-    exports.LOCATIONCHANGE = 'locationChange';
-    exports.STATECHANGE = 'stateChange';
-    exports.eventTypes = [
-        exports.VISIBILITYCHANGE,
-        exports.ENTERVIEWPORT,
-        exports.FULLYENTERVIEWPORT,
-        exports.EXITVIEWPORT,
-        exports.PARTIALLYEXITVIEWPORT,
-        exports.LOCATIONCHANGE,
-        exports.STATECHANGE,
-    ];
-    exports.isOnServer = typeof window === 'undefined';
-    exports.isInBrowser = !exports.isOnServer;
-    exports.defaultOffsets = { top: 0, bottom: 0 };
-});
+export var VISIBILITYCHANGE = 'visibilityChange';
+export var ENTERVIEWPORT = 'enterViewport';
+export var FULLYENTERVIEWPORT = 'fullyEnterViewport';
+export var EXITVIEWPORT = 'exitViewport';
+export var PARTIALLYEXITVIEWPORT = 'partiallyExitViewport';
+export var LOCATIONCHANGE = 'locationChange';
+export var STATECHANGE = 'stateChange';
+export var eventTypes = [
+    VISIBILITYCHANGE,
+    ENTERVIEWPORT,
+    FULLYENTERVIEWPORT,
+    EXITVIEWPORT,
+    PARTIALLYEXITVIEWPORT,
+    LOCATIONCHANGE,
+    STATECHANGE,
+];
+export var isOnServer = typeof window === 'undefined';
+export var isInBrowser = !isOnServer;
+export var defaultOffsets = { top: 0, bottom: 0 };
 //# sourceMappingURL=constants.js.map

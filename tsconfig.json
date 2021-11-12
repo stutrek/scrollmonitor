@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "module": "umd",
+        "module": "es6",
         "noImplicitAny": true,
         "preserveConstEnums": true,
         "sourceMap": true,
         "moduleResolution": "node",
         "outDir": "./dist",
-        "target": "es3",
+        "target": "es5",
         "lib": ["es6", "dom"],
         "declaration": true
     },
