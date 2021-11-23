@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "es6",
+        "module": "umd",
         "noImplicitAny": true,
         "preserveConstEnums": true,
         "sourceMap": true,
