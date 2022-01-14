@@ -44,52 +44,52 @@
 <div id="target"></div>
 <a href="https://github.com/stutrek/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="../scrollMonitor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript">
-//requirejs(['../scrollMonitor'], function( scrollMonitor ) {
-	$.getJSON('./listdata.json', function( data ) {
-		
-		// fill the document with HTML
-		var htmlBuffer = [];
-		$.each(data, function( type, beerMap ) {
-			htmlBuffer.push('<section><h2>'+type+'</h2><ul>');
+	requirejs(['../dist/index.js'], function () {
+		$.getJSON('./listdata.json', function( data ) {
+			
+			// fill the document with HTML
+			var htmlBuffer = [];
+			$.each(data, function( type, beerMap ) {
+				htmlBuffer.push('<section><h2>'+type+'</h2><ul>');
+					
+				var breweries = Object.keys(beerMap);
+				breweries.sort();
+				breweries.forEach(function( brewery ) {
+					var beers = beerMap[brewery].sort();
+					htmlBuffer.push('<li>'+brewery+': <i>'+beers.join(', ')+'</i></li>');
+				})
+				htmlBuffer.push('</li></section>');
+			});
+			$('#target').html(htmlBuffer.join(''));
 				
-			var breweries = Object.keys(beerMap);
-			breweries.sort();
-			breweries.forEach(function( brewery ) {
-				var beers = beerMap[brewery].sort();
-				htmlBuffer.push('<li>'+brewery+': <i>'+beers.join(', ')+'</i></li>');
+			// anchor the section header
+			var h2Height = $('h2').innerHeight();
+			
+			
+			$('section').each(function(index, section) {
+				
+				var sectionWatcher = scrollMonitor.create(section)
+				
+				var sectionMinusBottomHeadline = scrollMonitor.create(section, {bottom: -1*h2Height});
+				
+				sectionMinusBottomHeadline.stateChange( function() {
+					
+					if (!sectionWatcher.isInViewport) {
+						section.className = '';
+					} else if (sectionMinusBottomHeadline.isInViewport && sectionMinusBottomHeadline.isAboveViewport) {
+						section.className = 'fixed';
+					} else if (sectionMinusBottomHeadline.isAboveViewport) {
+						section.className = 'bottom';
+					} else {
+						section.className = '';
+					}
+					
+				} )
 			})
-			htmlBuffer.push('</li></section>');
+			
 		});
-		$('#target').html(htmlBuffer.join(''));
-			
-		// anchor the section header
-		var h2Height = $('h2').innerHeight();
-		
-		
-		$('section').each(function(index, section) {
-			
-			var sectionWatcher = scrollMonitor.create(section)
-			
-			var sectionMinusBottomHeadline = scrollMonitor.create(section, {bottom: -1*h2Height});
-			
-			sectionMinusBottomHeadline.stateChange( function() {
-				
-				if (!sectionWatcher.isInViewport) {
-				 	section.className = '';
-				} else if (sectionMinusBottomHeadline.isInViewport && sectionMinusBottomHeadline.isAboveViewport) {
-					section.className = 'fixed';
-				} else if (sectionMinusBottomHeadline.isAboveViewport) {
-					section.className = 'bottom';
-				} else {
-				 	section.className = '';
-				}
-				
-			} )
-		})
-		
 	});
-//});
 </script>
 </body>

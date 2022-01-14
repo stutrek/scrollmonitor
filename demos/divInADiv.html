@@ -105,32 +105,33 @@
 </div>
 <a href="https://github.com/stutrek/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="../scrollMonitor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript">
-	var boxHtml = (new Array(100)).join('<span class="box"></span>');
-	$('.insert-boxes-here').html(boxHtml);
+	requirejs(['../dist/index.js'], function () {
+		var boxHtml = (new Array(100)).join('<span class="box"></span>');
+		$('.insert-boxes-here').html(boxHtml);
 
-	function listener(event, watcher) {
-		if (!watcher.isInViewport) {
-			return;
-		} else if (watcher.isFullyInViewport) {
-			watcher.watchItem.style.backgroundColor = '#fcc';
-		} else if (watcher.isAboveViewport) {
-			watcher.watchItem.style.backgroundColor = '#ccf';
-		} else if (watcher.isBelowViewport) {
-			watcher.watchItem.style.backgroundColor = '#ffc';
+		function listener(event, watcher) {
+			if (!watcher.isInViewport) {
+				return;
+			} else if (watcher.isFullyInViewport) {
+				watcher.watchItem.style.backgroundColor = '#fcc';
+			} else if (watcher.isAboveViewport) {
+				watcher.watchItem.style.backgroundColor = '#ccf';
+			} else if (watcher.isBelowViewport) {
+				watcher.watchItem.style.backgroundColor = '#ffc';
+			}
 		}
-	}
 
-	$('.scroller').each(function (i, element) {
-		var boxes = $('> .insert-boxes-here > .box', element);
-		var container = scrollMonitor.createContainer(element);
-		boxes.each(function (i, boxEl) {
-			var watcher = container.create(boxEl);
-			watcher.stateChange(listener);
-			listener(null, watcher);
+		$('.scroller').each(function (i, element) {
+			var boxes = $('> .insert-boxes-here > .box', element);
+			var container = scrollMonitor.createContainer(element);
+			boxes.each(function (i, boxEl) {
+				var watcher = container.create(boxEl);
+				watcher.stateChange(listener);				
+			});
+			container.recalculateLocations();
 		});
 	});
-
 </script>
 </body>

@@ -81,99 +81,73 @@
 <div id="counter"><div><div id="status">Rendering elements...</div><div id="progress_numbers"></div><progress></progress></div></div>
 <a href="https://github.com/stutrek/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="../scrollMonitor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript">
+	requirejs(['../dist/index.js'], function () {
 
-	var setImmediate = (function(){
-		var fnsQueue = []
-		  , hasSI = !!(window.setImmediate || window.msSetImmediate)
-		  , hasPM = window.addEventListener && window.postMessage
+		var count = parseInt(window.location.search.substr(1), 10) || 10000;
+		$('.fill-with-count').html(count);
 
-		if ( !hasSI && hasPM  )
-		  window.addEventListener('message', function(e){
-			  if ( e.data === "sleipnirImmediate" ) if (fnsQueue.length)
-				fnsQueue.shift()() // take the first fn from the array and execute it
-		  }, false)
+		var containerEl = document.getElementById('container');
+		var counter = $('#progress_numbers')[0]
+		var progress = $('#counter progress')[0]
 
-		return window.setImmediate || window.msSetImmediate ||
-			   (function(){
-				   if ( hasPM )
-					 return function(fn){
-						 fnsQueue.push(fn)
-						 window.postMessage('sleipnirImmediate', window.location.href)
-					 }
-				   return function(fn){
-					   setTimeout(fn, 0)
-				   }
-			   }())
-	}())
+		var frag = document.createDocumentFragment();
+		var i = 0;
 
-	var count = parseInt(window.location.search.substr(1), 10) || 10000;
-	$('.fill-with-count').html(count);
+		var container = scrollMonitor.createContainer(containerEl);
+		var elements = [];
 
-	var containerEl = document.getElementById('container');
-	var counter = $('#progress_numbers')[0]
-	var progress = $('#counter progress')[0]
+		function draw() {
+			var el;
+			while (i < count) {
+				el = document.createElement('span');
+				el.innerHTML = i += 1;
+				frag.appendChild(el);
+				elements.push(el);
 
-	var frag = document.createDocumentFragment();
-	var i = 0;
-
-	var container = scrollMonitor.createContainer(containerEl);
-
-	function addElements() {
-		var elements = Array.prototype.slice.apply(frag.childNodes);
-		containerEl.appendChild( frag );
-		elements.forEach(makeWatcher);
-	}
-
-	function draw() {
-		var el;
-		while (i < count) {
-			el = document.createElement('span');
-			el.innerHTML = i += 1;
-			frag.appendChild(el);
-
-			if ((i % 423) === 0) {
-				addElements();
-				counter.innerHTML = (i)+' of '+count;
-				progress.value = i;
-				break;
+				if ((i % 12345) === 0) {
+					containerEl.appendChild(frag);
+					counter.innerHTML = (i) + ' of ' + count;
+					progress.value = i;
+					break;
+				}
+			}
+			if (i === count) {
+				containerEl.appendChild(frag);
+				$(counter).remove();
+				$('#status').html('Calculating locations...');
+				progress.removeAttribute('value');
+				setTimeout(function () {
+					for (var i = 0; i < count; i++) {
+						var watcher = container.create(elements[i]);
+						watcher.on('stateChange', addClass);
+						addClass.call(watcher);
+					}
+					container.recalculateLocations();
+					$('#counter').remove();
+				}, 0);
+			} else {
+				setTimeout(draw, 0);
 			}
 		}
-		if (i === count) {
-			addElements();
-			$(counter).remove();
-			$('#status').html('recalculating locations...');
-			progress.removeAttribute('value');
-			setImmediate(function() {
-				scrollMonitor.recalculateLocations();
-				container.recalculateLocations();
-				$('#counter').remove();
-			});
-		} else {
-			setImmediate(draw);
-		}
-	}
 
-	progress.max = count;
-	draw();
+		progress.max = count;
+		draw();
 
-	function addClass() {
-		if (!this.isInViewport) {
-			return
-		} else if (this.isFullyInViewport) {
-			this.watchItem.style.backgroundColor = '#fcc'
-		} else if (this.isAboveViewport) {
-			this.watchItem.style.backgroundColor = '#ccf'
-		} else if (this.isBelowViewport) {
-			this.watchItem.style.backgroundColor = '#ffc'
+		function addClass() {
+			if (!this.isInViewport) {
+				return;
+			} else if (this.isFullyInViewport) {
+				this.watchItem.style.backgroundColor = '#fcc';
+			} else if (this.isAboveViewport) {
+				this.watchItem.style.backgroundColor = '#ccf';
+			} else if (this.isBelowViewport) {
+				this.watchItem.style.backgroundColor = '#ffc';
+			}
 		}
-	}
-	function makeWatcher( element ) {
-		var watcher = container.create( element );
-		watcher.stateChange(addClass);
-		addClass.call( watcher );
-	}
+	})
 
 </script>
 

@@ -37,21 +37,21 @@
 </div>
 <a href="https://github.com/stutrek/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="../scrollMonitor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript">
+	requirejs(['../dist/index.js'], function () {
+		var watchers = $('span').map(function(i, element) {
 
-	var watchers = $('span').map(function(i, element) {
+			var watcher = scrollMonitor.create( element );
 
-		var watcher = scrollMonitor.create( element );
+			watcher.lock();
 
-		watcher.lock();
-
-		watcher.stateChange(function() {
-			$(element).toggleClass('fixed', this.isAboveViewport)
+			watcher.stateChange(function() {
+				$(element).toggleClass('fixed', this.isAboveViewport)
+			});
+			return watcher;
 		});
-		return watcher;
+		console.log(watchers);
 	});
-	console.log(watchers);
-
 </script>
 </body>

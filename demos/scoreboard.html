@@ -59,52 +59,51 @@
 </div>
 <a href="https://github.com/stutrek/scrollMonitor"><img style="position: fixed; top: 0; right: 0; border: 0; z-index:1000000" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="../scrollMonitor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 <script type="text/javascript">
-//requirejs(['../scrollMonitor'], function( scrollMonitor ) {
+	requirejs(['../dist/index.js'], function () {
+		var $account = $('#top-bar-content-container');
+		var $header = $('#header-content-container');
+		var $minisb = $('#minisb');
+		var $footer = $('#footer');
 
-	var $account = $('#top-bar-content-container');
-	var $header = $('#header-content-container');
-	var $minisb = $('#minisb');
-	var $footer = $('#footer');
+		var accountWatcher = scrollMonitor.create( $account[0] );
+		var headerWatcher = scrollMonitor.create( $header[0] );
 
-	var accountWatcher = scrollMonitor.create( $account );
-	var headerWatcher = scrollMonitor.create( $header );
+		// watch an area above the footer as tall as the scoreboard and header
+		var footerWatcherTop = $minisb.height() + $header.height();
+		var footerWatcher = scrollMonitor.create( $footer[0], {top: footerWatcherTop} );
 
-	// watch an area above the footer as tall as the scoreboard and header
-	var footerWatcherTop = $minisb.height() + $header.height();
-	var footerWatcher = scrollMonitor.create( $footer, {top: footerWatcherTop} );
+		// the elements these two watch are going to have position: fixed.
+		// we need to be sure that it always watches their original location.
+		accountWatcher.lock();
+		headerWatcher.lock();
 
-	// the elements these two watch are going to have position: fixed.
-	// we need to be sure that it always watches their original location.
-	accountWatcher.lock();
-	headerWatcher.lock();
+		accountWatcher.visibilityChange(function() {
+			$header.toggleClass('fixed', !accountWatcher.isInViewport);
+		});
+		headerWatcher.visibilityChange(function() {
+			$minisb.toggleClass('fixed', !headerWatcher.isInViewport);
+		});
 
-	accountWatcher.visibilityChange(function() {
-		$header.toggleClass('fixed', !accountWatcher.isInViewport);
-	});
-	headerWatcher.visibilityChange(function() {
-		$minisb.toggleClass('fixed', !headerWatcher.isInViewport);
-	});
+		footerWatcher.fullyEnterViewport(function() {
+			if (footerWatcher.isAboveViewport) {
+				$minisb.removeClass('fixed')
+					.addClass('hug-footer')
+			}
+		});
+		footerWatcher.partiallyExitViewport(function() {
+			if (!footerWatcher.isAboveViewport) {
+				$minisb.addClass('fixed')
+					.removeClass('hug-footer')
+			}
+		});
 
-	footerWatcher.fullyEnterViewport(function() {
 		if (footerWatcher.isAboveViewport) {
 			$minisb.removeClass('fixed')
-			       .addClass('hug-footer')
+				.addClass('hug-footer')
 		}
-	});
-	footerWatcher.partiallyExitViewport(function() {
-		if (!footerWatcher.isAboveViewport) {
-			$minisb.addClass('fixed')
-			       .removeClass('hug-footer')
-		}
-	});
 
-	if (footerWatcher.isAboveViewport) {
-		$minisb.removeClass('fixed')
-		    .addClass('hug-footer')
-	}
-
-//});
+	});
 </script>
 </body>
