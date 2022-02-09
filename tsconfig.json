@@ -5,7 +5,7 @@
         "preserveConstEnums": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "outDir": "./dist",
+        "outDir": "./dist/umd",
         "target": "es5",
         "lib": ["es6", "dom"],
         "declaration": true
