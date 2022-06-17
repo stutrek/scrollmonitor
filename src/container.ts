@@ -6,8 +6,11 @@ function getViewportHeight(element: HTMLElement) {
     if (isOnServer) {
         return 0;
     }
+    if(typeof window !== 'undefined'){
+        return window.innerHeight;
+    }
     if (element === document.body) {
-        return window.innerHeight || document.documentElement.clientHeight;
+        return document.documentElement.clientHeight;
     } else {
         return element.clientHeight;
     }
