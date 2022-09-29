@@ -14,8 +14,8 @@ const scrollMonitor = new ScrollMonitorContainer(
 if (isInBrowser) {
     scrollMonitor.updateState();
     scrollMonitor.listenToDOM();
+    //@ts-ignore
+    window.scrollMonitor = scrollMonitor;
 }
-//@ts-ignore
-window.scrollMonitor = scrollMonitor;
 
 export default scrollMonitor;
