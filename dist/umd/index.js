@@ -34,9 +34,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     if (constants_js_1.isInBrowser) {
         scrollMonitor.updateState();
         scrollMonitor.listenToDOM();
+        //@ts-ignore
+        window.scrollMonitor = scrollMonitor;
     }
-    //@ts-ignore
-    window.scrollMonitor = scrollMonitor;
     exports.default = scrollMonitor;
 });
 //# sourceMappingURL=index.js.map

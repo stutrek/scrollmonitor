@@ -10,8 +10,8 @@ var scrollMonitor = new ScrollMonitorContainer(isInBrowser ? document.body : und
 if (isInBrowser) {
     scrollMonitor.updateState();
     scrollMonitor.listenToDOM();
+    //@ts-ignore
+    window.scrollMonitor = scrollMonitor;
 }
-//@ts-ignore
-window.scrollMonitor = scrollMonitor;
 export default scrollMonitor;
 //# sourceMappingURL=index.js.map
